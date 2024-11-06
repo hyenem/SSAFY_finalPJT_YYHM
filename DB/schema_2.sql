@@ -42,11 +42,11 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `healog`.`dairy`
+-- Table `healog`.`diary`
 -- -----------------------------------------------------
 -- user의 한 사람의 하루에 하나의 diary를 배정합니다.
 -- 누구의 며칠의 다이어리인지 정보를 저장합니다.
-CREATE TABLE IF NOT EXISTS `healog`.`dairy` (
+CREATE TABLE IF NOT EXISTS `healog`.`diary` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `year` INT NOT NULL,
   `month` INT NOT NULL,
@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS `healog`.`dairy` (
   `user_id` VARCHAR(45) NOT NULL,
   `condition` TEXT NULL DEFAULT NULL, -- 해당 일에 컨디션을 트레이너에게 전달하기 위해서 text타입의 컨디션을 저장합니다.
   PRIMARY KEY (`id`),
-  INDEX `fk_dairy_user1_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_dairy_user1`
+  INDEX `fk_diary_user1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_diary_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `healog`.`user` (`id`))
 ENGINE = InnoDB
@@ -66,12 +66,12 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `healog`.`exercise`
 -- -----------------------------------------------------
--- 하나의 dairy에 여러개의 운동이 연결됩니다.
--- 해당 dairy 날짜에 어떤 운동을 얼마의 무게로 몇세트할지를 기록합니다.
+-- 하나의 diary에 여러개의 운동이 연결됩니다.
+-- 해당 diary 날짜에 어떤 운동을 얼마의 무게로 몇세트할지를 기록합니다.
 CREATE TABLE IF NOT EXISTS `healog`.`exercise` (
   `id` INT NOT NULL AUTO_INCREMENT, 
   `category_id` INT NOT NULL, -- 어떤 운동인지를 카테고리 테이블에서 받아옵니다.
-  `dairy_id` INT NOT NULL,  -- diary의 id와 연결됩니다.
+  `diary_id` INT NOT NULL,  -- diary의 id와 연결됩니다.
   `weight` INT NULL DEFAULT NULL,
   `count` INT NULL DEFAULT NULL,
   `set` INT NULL DEFAULT NULL,
@@ -79,13 +79,13 @@ CREATE TABLE IF NOT EXISTS `healog`.`exercise` (
   `done` INT NOT NULL DEFAULT 0,  -- 운동의 완료 여부를 기록하기 위함입니다. 미완료 0, 완료 1입니다.
   PRIMARY KEY (`id`),
   INDEX `fk_exercise_category1_idx` (`category_id` ASC) VISIBLE,
-  INDEX `fk_exercise_dairy1_idx` (`dairy_id` ASC) VISIBLE,
+  INDEX `fk_exercise_diary1_idx` (`diary_id` ASC) VISIBLE,
   CONSTRAINT `fk_exercise_category1`
     FOREIGN KEY (`category_id`)
     REFERENCES `healog`.`category` (`id`),
-  CONSTRAINT `fk_exercise_dairy1`
-    FOREIGN KEY (`dairy_id`)
-    REFERENCES `healog`.`dairy` (`id`))
+  CONSTRAINT `fk_exercise_diary1`
+    FOREIGN KEY (`diary_id`)
+    REFERENCES `healog`.`diary` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -142,15 +142,15 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- 하나의 diary(어떤 사람의 어떤 날)에 트레이너가 작성하는 feedback을 저장하기 위함입니다.
 CREATE TABLE IF NOT EXISTS `healog`.`feedback` (
   `id` INT NOT NULL,
-  `dairy_id` INT NOT NULL,
+  `diary_id` INT NOT NULL,
   `trainer_id` VARCHAR(45) NOT NULL,
   `comment` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_feedback_dairy1_idx` (`dairy_id` ASC) VISIBLE,
+  INDEX `fk_feedback_diary1_idx` (`diary_id` ASC) VISIBLE,
   INDEX `fk_feedback_trainer1_idx` (`trainer_id` ASC) VISIBLE,
-  CONSTRAINT `fk_feedback_dairy1`
-    FOREIGN KEY (`dairy_id`)
-    REFERENCES `healog`.`dairy` (`id`),
+  CONSTRAINT `fk_feedback_diary1`
+    FOREIGN KEY (`diary_id`)
+    REFERENCES `healog`.`diary` (`id`),
   CONSTRAINT `fk_feedback_trainer1`
     FOREIGN KEY (`trainer_id`)
     REFERENCES `healog`.`trainer` (`id`))
@@ -168,12 +168,12 @@ CREATE TABLE IF NOT EXISTS `healog`.`meal` (
   `breakfast_img` VARCHAR(45) NULL DEFAULT NULL,
   `lunch_img` VARCHAR(45) NULL DEFAULT NULL,
   `diner_img` VARCHAR(45) NULL DEFAULT NULL,
-  `dairy_id` INT NOT NULL,
+  `diary_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_meal_dairy1_idx` (`dairy_id` ASC) VISIBLE,
-  CONSTRAINT `fk_meal_dairy1`
-    FOREIGN KEY (`dairy_id`)
-    REFERENCES `healog`.`dairy` (`id`))
+  INDEX `fk_meal_diary1_idx` (`diary_id` ASC) VISIBLE,
+  CONSTRAINT `fk_meal_diary1`
+    FOREIGN KEY (`diary_id`)
+    REFERENCES `healog`.`diary` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -230,20 +230,20 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `healog`.`personaltraining` (
   `id` INT NOT NULL,
   `trainer_id` VARCHAR(45) NOT NULL,
-  `dairy_id` INT NOT NULL, -- dairy의 id를 통해서 pt 날짜를 알 수 있습니다.
+  `diary_id` INT NOT NULL, -- diary의 id를 통해서 pt 날짜를 알 수 있습니다.
   `requestDate` VARCHAR(45) NULL, -- 회원이 수정 날짜를 전송할 수 있습니다.
   `requestState` INT NULL, -- 트레이너의 수정 요청에 대한 처리여부를 표시합니다. 미확인(0), 승인(1), 거절(2)
   PRIMARY KEY (`id`),
   INDEX `fk_personaltraining_trainer1_idx` (`trainer_id` ASC) VISIBLE,
-  INDEX `fk_personaltraining_dairy1_idx` (`dairy_id` ASC) VISIBLE,
+  INDEX `fk_personaltraining_diary1_idx` (`diary_id` ASC) VISIBLE,
   CONSTRAINT `fk_personaltraining_trainer1`
     FOREIGN KEY (`trainer_id`)
     REFERENCES `healog`.`trainer` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_personaltraining_dairy1`
-    FOREIGN KEY (`dairy_id`)
-    REFERENCES `healog`.`dairy` (`id`)
+  CONSTRAINT `fk_personaltraining_diary1`
+    FOREIGN KEY (`diary_id`)
+    REFERENCES `healog`.`diary` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
