@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/exercise")
+@RequestMapping("/user/exercise")
 public class ExerciseController {
 
     private final ExerciseService exerciseService;
@@ -16,9 +15,9 @@ public class ExerciseController {
         this.exerciseService = exerciseService;
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     public List<ExerciseDto> getExercisesByUser(@PathVariable String userId) {
-        return exerciseService.getExercisesByUser(userId);
+        return exerciseService.getExercisesByUser(userId); 
     }
 
     @PostMapping
