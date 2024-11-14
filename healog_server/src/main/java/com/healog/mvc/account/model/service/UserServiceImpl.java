@@ -12,10 +12,10 @@ public class UserServiceImpl implements UserService{
 	UserServiceImpl(UserDao userDao){
 		this.userDao = userDao;
 	}
-
+	
 	@Override
 	public boolean isValidId(String email) {
-		return userDao.searchByEmail(email)==0? true : false;
+		return userDao.searchByEmail(email) ==  null? true : false;
 	}
 
 	@Override

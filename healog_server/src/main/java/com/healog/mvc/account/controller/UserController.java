@@ -17,8 +17,8 @@ import com.healog.mvc.account.model.service.UserService;
 public class UserController {
 	private final UserService userService;
 	
-	UserController(UserService userService){
-		this.userService = userService;
+	UserController(UserService userServiceImpl){
+		this.userService = userServiceImpl;
 	}
 	
 	@PostMapping("/signup/id")
