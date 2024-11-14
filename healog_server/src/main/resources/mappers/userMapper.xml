@@ -3,7 +3,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.healog.mvc.accout.model.dao.UserDao">
-	<select id="searchByEmail" parameterType="String">
+	<select id="searchByEmail" parameterType="String" resultType="String">
 		SELECT id FROM user
 		WHERE email = #{email};
 	</select>
