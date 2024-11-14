@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healog.mvc.diary.model.dao.DiaryDao">
+
+    <!-- 사용자 diary 조회 -->
+    <select id="getDiaryListByUser" resultType="DiaryDto">
+        SELECT *
+        FROM diary
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 트레이너 : 특정 사용자의 diary 조회 -->
+
+
+    <!-- diary condition 수정 -->
+    <update id="updateDiaryCondition">
+        UPDATE diary
+        SET condition = #{condition}
+        WHERE id = #{diaryId}
+    </update>
+
+</mapper>
