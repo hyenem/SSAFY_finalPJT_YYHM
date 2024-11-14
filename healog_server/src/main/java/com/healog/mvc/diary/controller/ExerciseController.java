@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/user/exercise")
 public class ExerciseController {
 
@@ -19,7 +18,7 @@ public class ExerciseController {
 
     @GetMapping("/{userId}")
     public List<ExerciseDto> getExercisesByUser(@PathVariable String userId) {
-        return exerciseService.getExercisesByUser(userId);
+        return exerciseService.getExercisesByUser(userId); 
     }
 
     @PostMapping
