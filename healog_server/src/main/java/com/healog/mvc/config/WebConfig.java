@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 	    "com.healog.mvc.account.model.dao",
 	    "com.healog.mvc.diary.model.dao",
 	    "com.healog.mvc.feedback.model.dao",
-	    "com.healog.mvc.subscription.model.dao"
+	    "com.healog.mvc.subscription.model.dao",
+})
 public class WebConfig {
 
 }
