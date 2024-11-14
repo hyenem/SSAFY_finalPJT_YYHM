@@ -2,8 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.healog.mvc.exercise.model.dao.ExerciseDao">
-    운동 조회
+
+<mapper namespace="com.healog.mvc.diary.model.dao.ExerciseDao">
+
+    <!-- 운동 조회 -->
     <select id="findExercisesByUserId" resultType="ExerciseDto">
         SELECT e.*
         FROM exercise e
@@ -29,4 +31,4 @@
         DELETE FROM exercise WHERE id = #{id}
     </delete>
 
-</mapper> -->
+</mapper>
