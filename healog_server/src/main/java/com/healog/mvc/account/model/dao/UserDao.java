@@ -1,5 +1,12 @@
 package com.healog.mvc.account.model.dao;
 
-public class UserDao {
+import com.healog.mvc.account.model.dto.User;
+
+public interface UserDao {
+
+	int searchByEmail(String email);
+
+	int insertUser(User user);
+
 
 }

@@ -21,10 +21,17 @@ public class UserController {
 		this.userService = userService;
 	}
 	
+	@PostMapping("/signup/id")
+	public ResponseEntity<?> idCheck(@RequestBody User user){
+		boolean result = userService.isValidId(user.getEmail());
+		if (result) return new ResponseEntity<User>(user, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+	
 	@PostMapping("/signup")
-	public ResponseEntity<?> singUp(@RequestBody User user){
-		boolean idValid = UserService.isUserExist(user.id);
-		if(idValid) return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	public ResponseEntity<?> singUp(@RequestBody User user, @RequestBody boolean validEmail){
+		
+		if(!validEmail) return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		
 		boolean result = userService.signUp(user);
 		if (result) {
