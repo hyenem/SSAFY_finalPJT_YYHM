@@ -15,7 +15,7 @@ INSERT INTO category (exercise, exercise_area) VALUES
 
 -- 사용자 데이터
 INSERT INTO user (id, name, email, password, created_at_datetime, gender, birthday, phonenumber, trainer_exist) VALUES
-('u123e4567-e89b-12d3-a456-426614174000', '김헬스', 'kim@example.com', 'password123', '2023-12-01 10:00:00', 1, '1990-05-15', '010-1234-5678', 0);
+('1', '김헬스', 'kim@example.com', 'password123', '2023-12-01 10:00:00', 1, '1990-05-15', '010-1234-5678', 0);
 
 -- 2024년 1월 다이어리 데이터
 INSERT INTO diary (year, month, day, user_id, `condition`) VALUES
@@ -93,3 +93,7 @@ INSERT INTO exercise (category_id, diary_id, weight, count, `set`, done) VALUES
 (1, 14, 80, 8, 4, 1),  -- 벤치프레스
 (8, 14, 40, 10, 3, 1), -- 트라이셉스
 (10, 14, 0, 80, 3, 1); -- 플랭크
+
+-- 동일한 날짜에는 사용자의 컨디션이 하나만 등록되도록 고유키 추가
+ALTER TABLE diary
+ADD CONSTRAINT unique_diary_date UNIQUE (year, month, day, user_id);
