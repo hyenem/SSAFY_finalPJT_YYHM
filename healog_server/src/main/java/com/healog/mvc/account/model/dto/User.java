@@ -8,22 +8,24 @@ public class User {
 	private String name;
 	private String email;
 	private String password;
+	private String salt;
 	private String createdAtDatetime;
 	private int gender;
 	private String birthday;
 	private String phonenumber;
 	private int trainerExist;
 	
-	User(){}
+	public User(){}
 	
 	
-	public User(String id, String name, String email, String password, String createdAtDatetime, int gender,
+	public User(String id, String name, String email, String password, String salt, String createdAtDatetime, int gender,
 			String birthday, String phonenumber, int trainerExist) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.salt = salt;
 		this.createdAtDatetime = createdAtDatetime;
 		this.gender = gender;
 		this.birthday = birthday;
@@ -86,6 +88,14 @@ public class User {
 	public void setTrainerExist(int trainerExist) {
 		this.trainerExist = trainerExist;
 	}
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password

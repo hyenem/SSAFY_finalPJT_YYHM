@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS `healog`.`user` (
   `id` VARCHAR(45) NOT NULL, -- id는 숫자로 임의 접근을 방지하기 위해서 UUID를 이용합니다.
   `name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL, -- email을 이용하여 로그인합니다.
-  `password` VARCHAR(45) NOT NULL, -- password를 이용하여 로그인힙니다.
+  `password` VARCHAR(100) NOT NULL, -- password를 이용하여 로그인힙니다.
+  `salt` VARCHAR(20) NOT NULL,
   `created_at_datetime` DATETIME NOT NULL,
   `gender` INT NOT NULL,
   `birthday` VARCHAR(45) NULL DEFAULT NULL,
@@ -117,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`trainer` (
   `id` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
+  `salt` VARCHAR(20) NOT NULL,
   `created_at_datetime` DATETIME NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `phonenumber` VARCHAR(45) NOT NULL,
