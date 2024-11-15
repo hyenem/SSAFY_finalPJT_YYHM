@@ -2,29 +2,29 @@ package com.healog.mvc.diary.model.service;
 
 import com.healog.mvc.diary.model.dao.DiaryDao;
 import com.healog.mvc.diary.model.dto.DiaryDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DiaryServiceImpl implements DiaryService {
-    private final DiaryDao diaryDao;
 
-    public DiaryServiceImpl(DiaryDao diaryDao) {
-        this.diaryDao = diaryDao;
+    @Autowired
+    private DiaryDao diaryDao;
+
+    @Override
+    public List<DiaryDto> getDiaryList(String userId) {
+        return diaryDao.getDiaryListByUserId(userId);
     }
 
     @Override
-    public List<DiaryDto> getDiaryListByUser(String userId) {
-        return diaryDao.getDiaryListByUser(userId);
+    public DiaryDto getDiaryByDate(Map<String, Object> params) {
+        return diaryDao.getDiaryByDate(params);
     }
 
     @Override
-    public List<DiaryDto> getDiaryListByTrainer(String treatingUserId) {
-        return diaryDao.getDiaryListByTrainer(treatingUserId);
-    }
-
-    @Override
-    public void updateDiaryCondition(int diaryId, String condition) {
-        diaryDao.updateDiaryCondition(diaryId, condition);
+    public void saveDiary(DiaryDto diaryDto) {
+        diaryDao.insertOrUpdateDiary(diaryDto);
     }
 }

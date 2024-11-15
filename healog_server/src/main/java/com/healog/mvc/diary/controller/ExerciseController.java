@@ -2,7 +2,8 @@ package com.healog.mvc.diary.controller;
 
 import com.healog.mvc.diary.model.dto.ExerciseDto;
 import com.healog.mvc.diary.model.service.ExerciseService;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,29 +12,52 @@ import java.util.List;
 @RequestMapping("/user/exercise")
 public class ExerciseController {
 
-    private final ExerciseService exerciseService;
+    @Autowired
+    private ExerciseService exerciseService;
 
-    public ExerciseController(ExerciseService exerciseService) {
-        this.exerciseService = exerciseService;
+    // 특정 다이어리의 운동 목록 조회
+    @GetMapping
+    public ResponseEntity<List<ExerciseDto>> getExercisesByDiaryId(@RequestParam int diaryId) {
+        List<ExerciseDto> exercises = exerciseService.getExercisesByDiaryId(diaryId);
+        return ResponseEntity.ok(exercises);
     }
 
-    @GetMapping("/{userId}")
-    public List<ExerciseDto> getExercisesByUser(@PathVariable String userId) {
-        return exerciseService.getExercisesByUser(userId); 
+    // 특정 운동 계획 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<ExerciseDto> getExerciseById(@PathVariable int id) {
+        ExerciseDto exercise = exerciseService.getExerciseById(id);
+        return ResponseEntity.ok(exercise);
     }
 
+    // 운동 계획 등록
     @PostMapping
-    public void addExercise(@RequestBody ExerciseDto exercise) {
-        exerciseService.addExercise(exercise);
+    public ResponseEntity<String> registerExercise(@RequestBody ExerciseDto exerciseDto) {
+        exerciseService.registerExercise(exerciseDto);
+        return ResponseEntity.ok("Exercise registered successfully.");
     }
 
+    // 운동 계획 수정
     @PutMapping
-    public void updateExercise(@RequestBody ExerciseDto exercise) {
-        exerciseService.updateExercise(exercise);
+    public ResponseEntity<String> updateExercise(@RequestBody ExerciseDto exerciseDto) {
+        exerciseService.updateExercise(exerciseDto);
+        return ResponseEntity.ok("Exercise updated successfully.");
     }
 
+    // 운동 계획 삭제
     @DeleteMapping("/{id}")
-    public void deleteExercise(@PathVariable int id) {
+    public ResponseEntity<String> deleteExercise(@PathVariable int id) {
         exerciseService.deleteExercise(id);
+        return ResponseEntity.ok("Exercise deleted successfully.");
     }
+
+    // 운동 완료 여부 업데이트
+    @PostMapping("/done")
+    public ResponseEntity<String> markExerciseAsDone(@RequestParam(required = true) Integer id, @RequestParam String postureImg) {
+        if (id == null) {
+            return ResponseEntity.badRequest().body("Invalid ID provided.");
+        }
+        exerciseService.markExerciseAsDone(id, postureImg);
+        return ResponseEntity.ok("Exercise marked as done.");
+    }
+
 }
