@@ -1,154 +1,95 @@
 USE `healog`;
 
--- 기존에 추가된 카테고리 데이터 삭제 (옵션)
-DELETE FROM category WHERE exercise IN (
-    'Push-Up', 'Pull-Up', 'Squat', 'Deadlift', 'Bench Press',
-    'Overhead Press', 'Bicep Curl', 'Tricep Extension', 'Lunges', 
-    'Leg Press', 'Calf Raise', 'Crunch', 'Russian Twist', 'Plank', 
-    'Bicycle Crunch', 'Lat Pulldown', 'Seated Row', 'Face Pull', 
-    'Lateral Raise', 'Hip Thrust'
-);
+-- 카테고리 데이터
+INSERT INTO category (exercise, exercise_area) VALUES
+('벤치프레스', '가슴'),
+('덤벨프레스', '가슴'),
+('스쿼트', '하체'),
+('데드리프트', '전신'),
+('렛풀다운', '등'),
+('숄더프레스', '어깨'),
+('바이셉스 컬', '이두'),
+('트라이셉스 익스텐션', '삼두'),
+('레그프레스', '하체'),
+('플랭크', '코어');
 
--- Category 테이블에 20개의 더미 데이터 삽입
-INSERT INTO category (exercise, exercise_area)
-VALUES 
-('Push-Up', 'Upper Body'),
-('Pull-Up', 'Upper Body'),
-('Squat', 'Lower Body'),
-('Deadlift', 'Lower Body'),
-('Bench Press', 'Upper Body'),
-('Overhead Press', 'Upper Body'),
-('Bicep Curl', 'Arms'),
-('Tricep Extension', 'Arms'),
-('Lunges', 'Lower Body'),
-('Leg Press', 'Lower Body'),
-('Calf Raise', 'Lower Body'),
-('Crunch', 'Core'),
-('Russian Twist', 'Core'),
-('Plank', 'Core'),
-('Bicycle Crunch', 'Core'),
-('Lat Pulldown', 'Back'),
-('Seated Row', 'Back'),
-('Face Pull', 'Shoulders'),
-('Lateral Raise', 'Shoulders'),
-('Hip Thrust', 'Lower Body');
+-- 사용자 데이터
+INSERT INTO user (id, name, email, password, created_at_datetime, gender, birthday, phonenumber, trainer_exist) VALUES
+('u123e4567-e89b-12d3-a456-426614174000', '김헬스', 'kim@example.com', 'password123', '2023-12-01 10:00:00', 1, '1990-05-15', '010-1234-5678', 0);
 
+-- 2024년 1월 다이어리 데이터
+INSERT INTO diary (year, month, day, user_id, `condition`) VALUES
+(2024, 1, 1, 'u123e4567-e89b-12d3-a456-426614174000', '컨디션 좋음. 충분한 수면 취함'),
+(2024, 1, 2, 'u123e4567-e89b-12d3-a456-426614174000', '어깨가 살짝 불편'),
+(2024, 1, 3, 'u123e4567-e89b-12d3-a456-426614174000', '회복됨. 가벼운 운동 진행'),
+(2024, 1, 4, 'u123e4567-e89b-12d3-a456-426614174000', '컨디션 최상'),
+(2024, 1, 5, 'u123e4567-e89b-12d3-a456-426614174000', '피로감 있음'),
+(2024, 1, 15, 'u123e4567-e89b-12d3-a456-426614174000', '컨디션 좋음'),
+(2024, 1, 16, 'u123e4567-e89b-12d3-a456-426614174000', '가벼운 근육통'),
+(2024, 1, 17, 'u123e4567-e89b-12d3-a456-426614174000', '컨디션 회복중'),
+(2024, 1, 18, 'u123e4567-e89b-12d3-a456-426614174000', '활력 넘침'),
+(2024, 1, 19, 'u123e4567-e89b-12d3-a456-426614174000', '컨디션 좋음'),
+(2024, 1, 28, 'u123e4567-e89b-12d3-a456-426614174000', '피로감 있지만 운동 가능'),
+(2024, 1, 29, 'u123e4567-e89b-12d3-a456-426614174000', '컨디션 회복중'),
+(2024, 1, 30, 'u123e4567-e89b-12d3-a456-426614174000', '컨디션 좋음'),
+(2024, 1, 31, 'u123e4567-e89b-12d3-a456-426614174000', '활력 넘침');
 
--- Diary 테이블에 특정 User (Alice, ID: 0)에 대한 한 달치 더미 데이터 삽입
-INSERT INTO diary (year, month, day, user_id, `condition`)
-VALUES 
-(2023, 10, 1, 0, 'Good condition'),
-(2023, 10, 2, 0, 'Tired'),
-(2023, 10, 3, 0, 'Energetic'),
-(2023, 10, 4, 0, 'Moderate'),
-(2023, 10, 5, 0, 'Good condition'),
-(2023, 10, 6, 0, 'Tired'),
-(2023, 10, 7, 0, 'Energetic'),
-(2023, 10, 8, 0, 'Moderate'),
-(2023, 10, 9, 0, 'Good condition'),
-(2023, 10, 10, 0, 'Tired'),
-(2023, 10, 11, 0, 'Energetic'),
-(2023, 10, 12, 0, 'Moderate'),
-(2023, 10, 13, 0, 'Good condition'),
-(2023, 10, 14, 0, 'Tired'),
-(2023, 10, 15, 0, 'Energetic'),
-(2023, 10, 16, 0, 'Moderate'),
-(2023, 10, 17, 0, 'Good condition'),
-(2023, 10, 18, 0, 'Tired'),
-(2023, 10, 19, 0, 'Energetic'),
-(2023, 10, 20, 0, 'Moderate'),
-(2023, 10, 21, 0, 'Good condition'),
-(2023, 10, 22, 0, 'Tired'),
-(2023, 10, 23, 0, 'Energetic'),
-(2023, 10, 24, 0, 'Moderate'),
-(2023, 10, 25, 0, 'Good condition'),
-(2023, 10, 26, 0, 'Tired'),
-(2023, 10, 27, 0, 'Energetic'),
-(2023, 10, 28, 0, 'Moderate'),
-(2023, 10, 29, 0, 'Good condition'),
-(2023, 10, 30, 0, 'Tired'),
-(2023, 10, 31, 0, 'Energetic');
+-- 운동 데이터
+INSERT INTO exercise (category_id, diary_id, weight, count, `set`, done) VALUES
+-- 1월 1일 운동
+(1, 1, 60, 12, 4, 1),  -- 벤치프레스
+(2, 1, 20, 15, 3, 1),  -- 덤벨프레스
+(8, 1, 30, 12, 3, 1),  -- 트라이셉스
 
-USE `healog`;
+-- 1월 2일 운동
+(3, 2, 80, 10, 4, 1),  -- 스쿼트
+(9, 2, 100, 12, 3, 1), -- 레그프레스
 
--- 기존에 추가된 카테고리 데이터 삭제 (옵션)
-DELETE FROM category WHERE exercise IN (
-    'Push-Up', 'Pull-Up', 'Squat', 'Deadlift', 'Bench Press',
-    'Overhead Press', 'Bicep Curl', 'Tricep Extension', 'Lunges', 
-    'Leg Press', 'Calf Raise', 'Crunch', 'Russian Twist', 'Plank', 
-    'Bicycle Crunch', 'Lat Pulldown', 'Seated Row', 'Face Pull', 
-    'Lateral Raise', 'Hip Thrust'
-);
+-- 1월 3일 운동
+(5, 3, 50, 12, 4, 1),  -- 렛풀다운
+(7, 3, 15, 15, 3, 1),  -- 바이셉스 컬
 
--- Category 테이블에 20개의 더미 데이터 삽입
-INSERT INTO category (exercise, exercise_area)
-VALUES 
-('Push-Up', 'Upper Body'),
-('Pull-Up', 'Upper Body'),
-('Squat', 'Lower Body'),
-('Deadlift', 'Lower Body'),
-('Bench Press', 'Upper Body'),
-('Overhead Press', 'Upper Body'),
-('Bicep Curl', 'Arms'),
-('Tricep Extension', 'Arms'),
-('Lunges', 'Lower Body'),
-('Leg Press', 'Lower Body'),
-('Calf Raise', 'Lower Body'),
-('Crunch', 'Core'),
-('Russian Twist', 'Core'),
-('Plank', 'Core'),
-('Bicycle Crunch', 'Core'),
-('Lat Pulldown', 'Back'),
-('Seated Row', 'Back'),
-('Face Pull', 'Shoulders'),
-('Lateral Raise', 'Shoulders'),
-('Hip Thrust', 'Lower Body');
+-- 1월 4일 운동
+(6, 4, 40, 12, 4, 1),  -- 숄더프레스
+(10, 4, 0, 60, 3, 1),  -- 플랭크
 
+-- 1월 5일 운동
+(1, 5, 65, 10, 4, 1),  -- 벤치프레스
+(2, 5, 22, 12, 3, 1),  -- 덤벨프레스
 
--- Diary 테이블에 특정 User (Alice, ID: 0)에 대한 한 달치 더미 데이터 삽입
-INSERT INTO diary (year, month, day, user_id, `condition`)
-VALUES 
-(2023, 10, 1, 0, 'Good condition'),
-(2023, 10, 2, 0, 'Tired'),
-(2023, 10, 3, 0, 'Energetic'),
-(2023, 10, 4, 0, 'Moderate'),
-(2023, 10, 5, 0, 'Good condition'),
-(2023, 10, 6, 0, 'Tired'),
-(2023, 10, 7, 0, 'Energetic'),
-(2023, 10, 8, 0, 'Moderate'),
-(2023, 10, 9, 0, 'Good condition'),
-(2023, 10, 10, 0, 'Tired'),
-(2023, 10, 11, 0, 'Energetic'),
-(2023, 10, 12, 0, 'Moderate'),
-(2023, 10, 13, 0, 'Good condition'),
-(2023, 10, 14, 0, 'Tired'),
-(2023, 10, 15, 0, 'Energetic'),
-(2023, 10, 16, 0, 'Moderate'),
-(2023, 10, 17, 0, 'Good condition'),
-(2023, 10, 18, 0, 'Tired'),
-(2023, 10, 19, 0, 'Energetic'),
-(2023, 10, 20, 0, 'Moderate'),
-(2023, 10, 21, 0, 'Good condition'),
-(2023, 10, 22, 0, 'Tired'),
-(2023, 10, 23, 0, 'Energetic'),
-(2023, 10, 24, 0, 'Moderate'),
-(2023, 10, 25, 0, 'Good condition'),
-(2023, 10, 26, 0, 'Tired'),
-(2023, 10, 27, 0, 'Energetic'),
-(2023, 10, 28, 0, 'Moderate'),
-(2023, 10, 29, 0, 'Good condition'),
-(2023, 10, 30, 0, 'Tired'),
-(2023, 10, 31, 0, 'Energetic');
+-- 1월 15일 운동
+(3, 6, 85, 8, 4, 1),   -- 스쿼트
+(4, 6, 100, 8, 3, 1),  -- 데드리프트
 
-INSERT INTO `exercise` (`id`, `category_id`, `diary_id`, `weight`, `count`, `set`, `posture_img`, `done`)
-VALUES
-(1, 101, 1, 10, 15, 3, 'pushup1.jpg', 1),
-(2, 102, 1, NULL, 10, 3, 'pullup1.jpg', 0),
-(3, 103, 2, 20, 12, 4, 'squat1.jpg', 1),
-(4, 104, 2, 50, 8, 3, 'deadlift1.jpg', 1),
-(5, 105, 3, 30, 10, 3, 'benchpress1.jpg', 0),
-(6, 106, 3, 25, 10, 4, 'overheadpress1.jpg', 1),
-(7, 107, 4, 15, 20, 3, 'bicepcurl1.jpg', 1),
-(8, 108, 4, 10, 15, 3, 'tricepextension1.jpg', 0),
-(9, 109, 5, 20, 10, 3, 'lunges1.jpg', 1),
-(10, 110, 5, 60, 15, 4, 'legpress1.jpg', 1);
+-- 1월 16일 운동
+(5, 7, 55, 12, 4, 1),  -- 렛풀다운
+(7, 7, 17, 12, 3, 1),  -- 바이셉스 컬
+
+-- 1월 17일 운동
+(1, 8, 70, 10, 4, 1),  -- 벤치프레스
+(8, 8, 35, 12, 3, 1),  -- 트라이셉스
+
+-- 1월 18일 운동
+(3, 9, 90, 8, 4, 1),   -- 스쿼트
+(9, 9, 120, 10, 3, 1), -- 레그프레스
+
+-- 1월 19일 운동
+(6, 10, 45, 10, 4, 1), -- 숄더프레스
+(10, 10, 0, 70, 3, 1), -- 플랭크
+
+-- 1월 28일 운동
+(1, 11, 75, 8, 4, 1),  -- 벤치프레스
+(2, 11, 25, 12, 3, 1), -- 덤벨프레스
+
+-- 1월 29일 운동
+(5, 12, 60, 10, 4, 1), -- 렛풀다운
+(7, 12, 18, 12, 3, 1), -- 바이셉스 컬
+
+-- 1월 30일 운동
+(3, 13, 95, 8, 4, 1),  -- 스쿼트
+(4, 13, 110, 6, 3, 1), -- 데드리프트
+
+-- 1월 31일 운동
+(1, 14, 80, 8, 4, 1),  -- 벤치프레스
+(8, 14, 40, 10, 3, 1), -- 트라이셉스
+(10, 14, 0, 80, 3, 1); -- 플랭크
