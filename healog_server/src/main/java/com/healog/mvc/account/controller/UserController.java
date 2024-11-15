@@ -1,7 +1,5 @@
 package com.healog.mvc.account.controller;
 
-import java.net.http.HttpResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +14,8 @@ import com.healog.mvc.account.model.service.UserService;
 @RequestMapping("/user")
 public class UserController {
 	private final UserService userService;
-	
-	UserController(UserService userServiceImpl){
-		this.userService = userServiceImpl;
+	UserController(UserService userService){
+		this.userService = userService;
 	}
 	
 	@PostMapping("/signup/id")
