@@ -1,12 +1,14 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
+
+const REST_API_URL = 'http://localhost:8080/'
+
+const router = useRouter()
 
 export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
+  const goHome = function(){
+    router.push({name : 'home'})
   }
-
-  return { count, doubleCount, increment }
+  return { goHome }
 })

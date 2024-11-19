@@ -8,4 +8,6 @@ public interface UserService {
 
 	boolean signUp(User user);
 
+	User checkLogin(String email, String password);
+
 }
