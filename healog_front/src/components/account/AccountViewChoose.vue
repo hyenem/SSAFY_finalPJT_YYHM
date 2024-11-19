@@ -3,7 +3,6 @@
         <h3>accountviewchoose</h3>
         <button @click="gotoUser">회원</button>
         <button @click="gotoTrainter">트레이너</button>
-        <button @click="counterStore.goHome">goHome</button>
     </div>
 </template>
 

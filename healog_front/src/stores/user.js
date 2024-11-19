@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import router from '@/router'
 
 const REST_API_URL = 'http://localhost:8080/'
 
@@ -10,19 +11,8 @@ export const useUserStore = defineStore('user', () => {
   const logout = function(){
     loginUser.value={}
     sessionStorage.removeItem('access-token')
+    router.push({name : "account"})
   }
 
-  const checkTokenValid = function(){
-    if(sessionStorage.getItem('access-token')!==null){
-      axios.post(REST_API_URL+"user/login/validate",{
-        'access-token' : sessionStorage.getItem('access-token')
-      }).then((res)=>{
-      }).catch((error)=>{
-        sessionStorage.removeItem('access-token')
-        loginUser.value={}
-      })
-    }
-  }
-
-  return { loginUser, logout, checkTokenValid }
+  return { loginUser, logout}
 })
