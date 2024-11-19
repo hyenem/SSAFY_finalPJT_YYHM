@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import AccountViewUser from '@/views/account/user/AccountViewUser.vue';
-import AccountViewTrainer from '@/views/account/trainer/AccountViewTrainer.vue';
-import AccountViewChoose from '@/components/account/AccountViewChoose.vue';
-import AccountViewUserLogin from '@/views/account/user/AccountViewUserLogin.vue';
-import AccountViewUserSignup from '@/views/account/user/AccountViewUserSignup.vue';
+import AccountViewUser from '@/components/account/user/AccountViewUser.vue';
+import AccountViewTrainer from '@/components/account/trainer/AccountViewTrainer.vue';
+import AccountViewChoose from '@/views/account/AccountViewChoose.vue';
+import AccountViewUserLogin from '@/components/account/user/AccountViewUserLogin.vue';
+import AccountViewUserSignup from '@/components/account/user/AccountViewUserSignup.vue';
+import MainView from '@/views/MainView.vue';
 import App from '@/App.vue';
 import { useUserStore } from '@/stores/user';
 
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/user/signup',
       name: 'userSignup',
       component: AccountViewUserSignup,
+    },
+    {
+      path: '/main',
+      name: 'main',
+      component: MainView,
     },
   ],
 });

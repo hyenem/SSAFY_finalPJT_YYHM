@@ -1,20 +1,15 @@
 <template>
-  <div>
-    <h1>Healog</h1>
-    <AccountView v-if="!userStore.loginUser.value" />
-    <DiaryView v-if="userStore.loginUser.value" />
+  <div id="app">
+    <!-- Navbar 자리 -->
+    <router-view />
+    <!-- Footer 자리 -->
   </div>
 </template>
 
-<script setup>
-import { onMounted } from "vue";
-import AccountView from "./components/account/AccountView.vue";
-import DiaryView from "./components/diary/DiaryView.vue";
-
-import { useUserStore } from "./stores/user";
-
-const userStore = useUserStore()
-
+<script>
+export default {
+  name: "App",
+};
 </script>
 
 <style scoped>
