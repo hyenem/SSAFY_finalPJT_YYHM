@@ -2239,3 +2239,201 @@ END
 
 !ENTRY org.springframework.tooling.boot.ls 1 0 2024-11-19 09:21:21.438
 !MESSAGE Classpath changed for project: healog_server
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2024-11-19 10:42:04.113
+!MESSAGE Classpath changed for project: healog_server
+
+!ENTRY org.eclipse.jdt.core 2 0 2024-11-19 10:42:04.183
+!MESSAGE Java Index broken - will be automatically deleted to repair: file:/Users/hyenem/Desktop/GIT/GITHUB/SSAFY_finalPJT_YYHM/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index
+!STACK 0
+java.io.UTFDataFormatException: Failed to read index data from file:/Users/hyenem/Desktop/GIT/GITHUB/SSAFY_finalPJT_YYHM/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index at offset 983 and size 909194032
+	at org.eclipse.jdt.internal.core.index.DiskIndex.readCategoryTable(DiskIndex.java:685)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeCategory(DiskIndex.java:480)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeCategories(DiskIndex.java:472)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeWith(DiskIndex.java:573)
+	at org.eclipse.jdt.internal.core.index.Index.save(Index.java:228)
+	at org.eclipse.jdt.internal.core.index.MetaIndex.save(MetaIndex.java:99)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveMetaIndex(IndexManager.java:1239)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveIndexes(IndexManager.java:1215)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.notifyIdle(IndexManager.java:832)
+	at org.eclipse.jdt.internal.core.search.processing.JobManager.indexerLoop(JobManager.java:509)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.OutOfMemoryError: Java heap space
+	at org.eclipse.jdt.internal.compiler.util.HashtableOfObject.<init>(HashtableOfObject.java:57)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.readCategoryTable(DiskIndex.java:681)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeCategory(DiskIndex.java:480)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeCategories(DiskIndex.java:472)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeWith(DiskIndex.java:573)
+	at org.eclipse.jdt.internal.core.index.Index.save(Index.java:228)
+	at org.eclipse.jdt.internal.core.index.MetaIndex.save(MetaIndex.java:99)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveMetaIndex(IndexManager.java:1239)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveIndexes(IndexManager.java:1215)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.notifyIdle(IndexManager.java:832)
+	at org.eclipse.jdt.internal.core.search.processing.JobManager.indexerLoop(JobManager.java:509)
+	at org.eclipse.jdt.internal.core.search.processing.JobManager$$Lambda/0x00000000238ead18.run(Unknown Source)
+	at java.base/java.lang.Thread.runWith(Thread.java:1596)
+	... 1 more
+
+!ENTRY org.eclipse.jdt.core 4 0 2024-11-19 10:42:04.207
+!MESSAGE Failed to update qualified index.
+!STACK 0
+java.io.FileNotFoundException: /Users/hyenem/Desktop/GIT/GITHUB/SSAFY_finalPJT_YYHM/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
+	at org.eclipse.jdt.internal.core.index.FileIndexLocation.getInputStream(FileIndexLocation.java:84)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.readCategoryTable(DiskIndex.java:675)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeCategory(DiskIndex.java:480)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeCategories(DiskIndex.java:472)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeWith(DiskIndex.java:573)
+	at org.eclipse.jdt.internal.core.index.Index.save(Index.java:228)
+	at org.eclipse.jdt.internal.core.index.MetaIndex.save(MetaIndex.java:99)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveMetaIndex(IndexManager.java:1239)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveIndexes(IndexManager.java:1215)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.notifyIdle(IndexManager.java:832)
+	at org.eclipse.jdt.internal.core.search.processing.JobManager.indexerLoop(JobManager.java:509)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+!ENTRY org.eclipse.jdt.core 4 0 2024-11-19 10:42:07.267
+!MESSAGE Failed to update qualified index.
+!STACK 0
+java.io.FileNotFoundException: /Users/hyenem/Desktop/GIT/GITHUB/SSAFY_finalPJT_YYHM/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
+	at org.eclipse.jdt.internal.core.index.FileIndexLocation.getInputStream(FileIndexLocation.java:84)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.readAllDocumentNames(DiskIndex.java:624)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeWith(DiskIndex.java:527)
+	at org.eclipse.jdt.internal.core.index.Index.save(Index.java:228)
+	at org.eclipse.jdt.internal.core.index.MetaIndex.save(MetaIndex.java:99)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveMetaIndex(IndexManager.java:1239)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveIndexes(IndexManager.java:1215)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.notifyIdle(IndexManager.java:832)
+	at org.eclipse.jdt.internal.core.search.processing.JobManager.indexerLoop(JobManager.java:509)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+!ENTRY org.eclipse.core.resources 4 0 2024-11-19 10:47:04.510
+!MESSAGE Error occurred while reading master table file
+!STACK 0
+java.nio.charset.MalformedInputException: Input length = 1
+	at java.base/java.nio.charset.CoderResult.throwException(CoderResult.java:279)
+	at java.base/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:405)
+	at java.base/sun.nio.cs.StreamDecoder.lockedRead(StreamDecoder.java:217)
+	at java.base/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:171)
+	at java.base/java.io.InputStreamReader.read(InputStreamReader.java:188)
+	at java.base/java.io.BufferedReader.fill(BufferedReader.java:160)
+	at java.base/java.io.BufferedReader.implReadLine(BufferedReader.java:370)
+	at java.base/java.io.BufferedReader.readLine(BufferedReader.java:347)
+	at java.base/java.io.BufferedReader.readLine(BufferedReader.java:436)
+	at java.base/java.nio.file.Files.readAllLines(Files.java:3395)
+	at org.eclipse.core.internal.resources.SaveManager.getBadSequenceNumberErrorMessage(SaveManager.java:1670)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1651)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1330)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1321)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1294)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1205)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:51)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.jobs 4 2 2024-11-19 10:47:04.538
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 8, new: 3). Location: /Users/hyenem/Desktop/GIT/GITHUB/SSAFY_finalPJT_YYHM/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resourcesTimestamps and tree sequence numbers from file:
+	at org.eclipse.core.runtime.Assert.isLegal(Assert.java:68)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1652)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1330)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1321)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1294)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1205)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:51)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core 4 0 2024-11-19 11:21:51.273
+!MESSAGE Failed to update qualified index.
+!STACK 0
+java.io.FileNotFoundException: /Users/hyenem/Desktop/GIT/GITHUB/SSAFY_finalPJT_YYHM/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
+	at org.eclipse.jdt.internal.core.index.FileIndexLocation.getInputStream(FileIndexLocation.java:84)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.readAllDocumentNames(DiskIndex.java:624)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeWith(DiskIndex.java:527)
+	at org.eclipse.jdt.internal.core.index.Index.save(Index.java:228)
+	at org.eclipse.jdt.internal.core.index.MetaIndex.save(MetaIndex.java:99)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveMetaIndex(IndexManager.java:1239)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveIndexes(IndexManager.java:1215)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.notifyIdle(IndexManager.java:832)
+	at org.eclipse.jdt.internal.core.search.processing.JobManager.indexerLoop(JobManager.java:509)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+!ENTRY org.eclipse.jdt.core 4 0 2024-11-19 11:22:10.646
+!MESSAGE Failed to update qualified index.
+!STACK 0
+java.io.FileNotFoundException: /Users/hyenem/Desktop/GIT/GITHUB/SSAFY_finalPJT_YYHM/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
+	at org.eclipse.jdt.internal.core.index.FileIndexLocation.getInputStream(FileIndexLocation.java:84)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.readAllDocumentNames(DiskIndex.java:624)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeWith(DiskIndex.java:527)
+	at org.eclipse.jdt.internal.core.index.Index.save(Index.java:228)
+	at org.eclipse.jdt.internal.core.index.MetaIndex.save(MetaIndex.java:99)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveMetaIndex(IndexManager.java:1239)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveIndexes(IndexManager.java:1215)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.notifyIdle(IndexManager.java:832)
+	at org.eclipse.jdt.internal.core.search.processing.JobManager.indexerLoop(JobManager.java:509)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+!ENTRY org.eclipse.core.resources 4 0 2024-11-19 11:27:10.946
+!MESSAGE Error occurred while reading master table file
+!STACK 0
+java.nio.charset.MalformedInputException: Input length = 1
+	at java.base/java.nio.charset.CoderResult.throwException(CoderResult.java:279)
+	at java.base/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:405)
+	at java.base/sun.nio.cs.StreamDecoder.lockedRead(StreamDecoder.java:217)
+	at java.base/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:171)
+	at java.base/java.io.InputStreamReader.read(InputStreamReader.java:188)
+	at java.base/java.io.BufferedReader.fill(BufferedReader.java:160)
+	at java.base/java.io.BufferedReader.implReadLine(BufferedReader.java:370)
+	at java.base/java.io.BufferedReader.readLine(BufferedReader.java:347)
+	at java.base/java.io.BufferedReader.readLine(BufferedReader.java:436)
+	at java.base/java.nio.file.Files.readAllLines(Files.java:3395)
+	at org.eclipse.core.internal.resources.SaveManager.getBadSequenceNumberErrorMessage(SaveManager.java:1670)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1651)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1330)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1321)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1294)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1205)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:51)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.jobs 4 2 2024-11-19 11:27:10.965
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 8, new: 3). Location: /Users/hyenem/Desktop/GIT/GITHUB/SSAFY_finalPJT_YYHM/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resourcesTimestamps and tree sequence numbers from file:
+	at org.eclipse.core.runtime.Assert.isLegal(Assert.java:68)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1652)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1330)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1321)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1294)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1205)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:51)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core 4 0 2024-11-19 12:52:50.936
+!MESSAGE Failed to update qualified index.
+!STACK 0
+java.io.FileNotFoundException: /Users/hyenem/Desktop/GIT/GITHUB/SSAFY_finalPJT_YYHM/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
+	at org.eclipse.jdt.internal.core.index.FileIndexLocation.getInputStream(FileIndexLocation.java:84)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.readAllDocumentNames(DiskIndex.java:624)
+	at org.eclipse.jdt.internal.core.index.DiskIndex.mergeWith(DiskIndex.java:527)
+	at org.eclipse.jdt.internal.core.index.Index.save(Index.java:228)
+	at org.eclipse.jdt.internal.core.index.MetaIndex.save(MetaIndex.java:99)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveMetaIndex(IndexManager.java:1239)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.saveIndexes(IndexManager.java:1215)
+	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.notifyIdle(IndexManager.java:832)
+	at org.eclipse.jdt.internal.core.search.processing.JobManager.indexerLoop(JobManager.java:509)
+	at java.base/java.lang.Thread.run(Thread.java:1583)

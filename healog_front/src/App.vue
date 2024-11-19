@@ -2,18 +2,18 @@
   <div>
     <h1>Healog</h1>
     <AccountView v-if="!userStore.loginUser.value" />
-    <button @click="userStore.logout" v-if="userStore.loginUser.value">로그아웃</button>
+    <DiaryView v-if="userStore.loginUser.value" />
   </div>
 </template>
 
 <script setup>
-import AccountView from "@/components/account/AccountView.vue"
+import { onMounted } from "vue";
+import AccountView from "./components/account/AccountView.vue";
+import DiaryView from "./components/diary/DiaryView.vue";
+
 import { useUserStore } from "./stores/user";
-import { useCounterStore } from "./stores/counter";
 
 const userStore = useUserStore()
-const counterStore = useCounterStore()
-
 
 </script>
 
