@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.healog.mvc.diary.model.dao.MealDao">
+
+   <!-- 특정 다이어리의 식단 조회 -->
+    <select id="getMealsByDiaryId" parameterType="int" resultType="com.healog.mvc.diary.model.dto.MealDto">
+        SELECT id, breakfast_img, lunch_img, dinner_img, diary_id
+        FROM meal
+        WHERE diary_id = #{diaryId};
+    </select>
+
+    <!-- 식단 등록 -->
+    <insert id="insertMeal" parameterType="com.healog.mvc.diary.model.dto.MealDto">
+        INSERT INTO meal (breakfast_img, lunch_img, dinner_img, diary_id)
+        VALUES (#{breakfastImg}, #{lunchImg}, #{dinnerImg}, #{diaryId})
+        ON DUPLICATE KEY UPDATE
+        breakfast_img = COALESCE(#{breakfastImg}, breakfast_img),
+        lunch_img = COALESCE(#{lunchImg}, lunch_img),
+        dinner_img = COALESCE(#{dinnerImg}, dinner_img);
+    </insert>
+
+    <!-- 식단 삭제 -->
+    <delete id="deleteMealById" parameterType="int">
+        DELETE FROM meal
+        WHERE id = #{id};
+    </delete>
+
+</mapper>
