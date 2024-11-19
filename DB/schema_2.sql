@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`user` (
   `email` VARCHAR(45) NOT NULL, -- email을 이용하여 로그인합니다.
   `password` VARCHAR(100) NOT NULL, -- password를 이용하여 로그인힙니다.
   `salt` VARCHAR(20) NOT NULL,
-  `created_at_datetime` DATETIME NOT NULL,
+  `created_at_datetime` DATETIME DEFAULT NOW() NOT NULL,
   `gender` INT NOT NULL,
   `birthday` VARCHAR(45) NULL DEFAULT NULL,
   `phonenumber` VARCHAR(45) NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`trainer` (
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
   `salt` VARCHAR(20) NOT NULL,
-  `created_at_datetime` DATETIME NOT NULL,
+  `created_at_datetime` DATETIME NOT NULL DEFAULT NOW(),
   `name` VARCHAR(45) NOT NULL,
   `phonenumber` VARCHAR(45) NOT NULL,
   `birthday` VARCHAR(45) NULL DEFAULT NULL,
@@ -167,9 +167,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- 하루의 diary의 아침, 점심, 저녁 식단 이미지를 저장하기 위함입니다.
 CREATE TABLE IF NOT EXISTS `healog`.`meal` (
   `id` INT NOT NULL,
-  `breakfast_img` VARCHAR(45) NULL DEFAULT NULL,
-  `lunch_img` VARCHAR(45) NULL DEFAULT NULL,
-  `diner_img` VARCHAR(45) NULL DEFAULT NULL,
+  `breakfast_img` VARCHAR(255) NULL DEFAULT NULL,
+  `lunch_img` VARCHAR(255) NULL DEFAULT NULL,
+  `dinner_img` VARCHAR(255) NULL DEFAULT NULL,
   `diary_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_meal_diary1_idx` (`diary_id` ASC) VISIBLE,

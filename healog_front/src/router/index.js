@@ -1,23 +1,52 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import AccountViewUser from '@/components/account/user/AccountViewUser.vue'
+import AccountViewTrainer from '@/components/account/trainer/AccountViewTrainer.vue'
+import AccountViewChoose from '@/components/account/AccountViewChoose.vue'
+import AccountViewUserLogin from '@/components/account/user/AccountViewUserLogin.vue'
+import AccountViewUserSignup from '@/components/account/user/AccountViewUserSignup.vue'
+import App from '@/App.vue'
+import { useUserStore } from '@/stores/user'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/login',
+      path: '/',
       name: 'home',
-      component: HomeView,
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
+      path: '/user',
+      name: 'user',
+      component: AccountViewUser,
     },
+    {
+      path: '/trainer',
+      name: 'trainer',
+      component: AccountViewTrainer,
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: AccountViewChoose
+    },
+    {
+      path: '/user/login',
+      name: 'userLogin',
+      component: AccountViewUserLogin
+    },
+    {
+      path: '/user/signup',
+      name: 'userSignup',
+      component: AccountViewUserSignup
+    }
   ],
+})
+
+
+router.beforeEach((to, from)=>{
+  const store = useUserStore()
+  store.checkTokenValid()
 })
 
 export default router
