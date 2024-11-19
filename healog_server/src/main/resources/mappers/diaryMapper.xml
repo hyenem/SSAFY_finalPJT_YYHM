@@ -17,9 +17,10 @@
     </select>
 
     <!-- 다이어리 생성 및 업데이트 -->
-    <insert id="insertOrUpdateDiary" parameterType="com.healog.mvc.diary.model.dto.DiaryDto">
-        INSERT INTO diary (year, month, day, user_id, `condition`)
-        VALUES (#{year}, #{month}, #{day}, #{userId}, #{condition})
-        ON DUPLICATE KEY UPDATE `condition` = #{condition};
-    </insert>
+    <update id="updateDiary" parameterType="com.healog.mvc.diary.model.dto.DiaryDto">
+	    UPDATE diary
+	    SET `condition` = #{condition}
+	    WHERE user_id = #{userId} AND year = #{year} AND month = #{month} AND day = #{day};
+	</update>
+
 </mapper>

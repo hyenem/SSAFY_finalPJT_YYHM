@@ -12,6 +12,6 @@ public interface DiaryService {
     // 특정 날짜의 다이어리 조회
     DiaryDto getDiaryByDate(Map<String, Object> params);
 
-    // 다이어리 생성 또는 업데이트
+    // 다이어리 업데이트
     void saveDiary(DiaryDto diaryDto);
 }

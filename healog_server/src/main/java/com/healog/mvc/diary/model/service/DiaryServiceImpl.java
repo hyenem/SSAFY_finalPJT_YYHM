@@ -25,6 +25,6 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public void saveDiary(DiaryDto diaryDto) {
-        diaryDao.insertOrUpdateDiary(diaryDto);
+        diaryDao.updateDiary(diaryDto);
     }
 }
