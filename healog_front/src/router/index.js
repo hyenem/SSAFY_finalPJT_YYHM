@@ -4,7 +4,7 @@ import AccountViewTrainer from '@/components/account/trainer/AccountViewTrainer.
 import AccountViewChoose from '@/components/account/AccountViewChoose.vue'
 import AccountViewUserLogin from '@/components/account/user/AccountViewUserLogin.vue'
 import AccountViewUserSignup from '@/components/account/user/AccountViewUserSignup.vue'
-import App from '@/App.vue'
+import MainView from '@/views/MainView.vue'
 import { useUserStore } from '@/stores/user'
 
 
@@ -39,7 +39,13 @@ const router = createRouter({
       path: '/user/signup',
       name: 'userSignup',
       component: AccountViewUserSignup
-    }
+    },
+    {
+      path: '/main',
+      name: 'main',
+      component: MainView,
+    },
+    
   ],
 })
 
