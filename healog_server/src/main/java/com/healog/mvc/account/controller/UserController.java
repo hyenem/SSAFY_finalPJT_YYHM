@@ -19,7 +19,8 @@ import com.healog.mvc.util.JwtUtil;
 public class UserController {
 	private final UserService userService;
 	private final JwtUtil jwtUtil;
-	UserController(UserService userService, JwtUtil jwtUtil){
+	
+	public UserController(UserService userService, JwtUtil jwtUtil){
 		this.userService = userService;
 		this.jwtUtil = jwtUtil;
 	}
@@ -44,8 +45,8 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody User user){
-		User loginUser = userService.checkLogin(user.getEmail(), user.getPassword());
+	public ResponseEntity<?> login(@RequestBody Map<String, String> map){
+		User loginUser = userService.checkLogin(map.get("email"), map.get("password"));
 		if(loginUser.getEmail()==null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
@@ -54,25 +55,8 @@ public class UserController {
 		}
 
 		Map<String, Object> result = new HashMap<>();
-		result.put("id", loginUser.getId());
-		result.put("name", loginUser.getName());
-		result.put("email", loginUser.getEmail());
-		result.put("gender", loginUser.getGender());
-		result.put("access-token", jwtUtil.createToken(loginUser));
+		result.put("access-token", jwtUtil.createToken(map.get("email"), map.get("type")));
 		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
-	}
-	
-	@PostMapping("/login/validate")
-	public ResponseEntity<?> validate(@RequestBody Map<String, String> map){
-		String token = map.get("access-token");
-		try {
-			jwtUtil.vaildate(token);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-		} finally {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-		}
-		
 	}
 	
 }

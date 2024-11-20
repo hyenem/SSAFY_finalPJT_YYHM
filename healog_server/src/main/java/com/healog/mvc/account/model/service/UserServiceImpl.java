@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public boolean isValidId(String email) {
-		return userDao.selectIdByEmail(email).size() ==  0? true : false;
+		return userDao.selectIdByEmail(email)==null || userDao.selectIdByEmail(email).length()==0? true : false;
 	}
 
 	@Override
@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User checkLogin(String email, String password) {
 		User checkingUser = userDao.selectByEmail(email);
-		System.out.println(checkingUser);
 		User loginUser = new User();
 		//email자체가 없으면 null로 return
 		if(checkingUser!=null) {
@@ -53,6 +52,12 @@ public class UserServiceImpl implements UserService{
 			}
 		}
 		return loginUser;
+	}
+
+	@Override
+	public String getUserInfo(String email) {
+		String id= userDao.selectIdByEmail(email);
+		return id;
 	}
 
 }

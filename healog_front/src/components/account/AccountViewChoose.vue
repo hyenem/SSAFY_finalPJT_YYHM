@@ -7,16 +7,14 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
-import { useCounterStore } from '@/stores/counter';
-const counterStore = useCounterStore()
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const gotoUser = function(){
-    router.push({name : 'user'})
+    router.push({name : 'accountUser'})
 }
 const gotoTrainter = function(){
-    router.push({name : 'trainer'})
+    router.push({name : 'accountTrainer'})
 }
 </script>
 

@@ -7,8 +7,6 @@ import javax.crypto.SecretKey;
 
 import org.springframework.stereotype.Component;
 
-import com.healog.mvc.account.model.dto.User;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -19,10 +17,10 @@ public class JwtUtil {
 	private String key = "SSAFY_Final_PJT_127_HMYY_Healog_Secretkey";
 	private SecretKey  secretKey = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
 
-	public String createToken(User loginUser) {
-		Date exp = new Date(System.currentTimeMillis()+1000*10); //1시간 유효
+	public String createToken(String email, String type) {
+		Date exp = new Date(System.currentTimeMillis()+1000*60*60); //1시간 유효
 		return Jwts.builder().header().add("typ", "JWT").and()
-				.claim("loginUser", loginUser)
+				.claim("email", email).claim("type", type)
 				.expiration(exp)
 				.signWith(secretKey).compact();
 	}
