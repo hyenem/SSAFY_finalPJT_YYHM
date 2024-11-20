@@ -60,9 +60,14 @@ public class ExerciseController {
     }
 
     // 운동 완료 여부 업데이트
-    @PostMapping("/done")
-    public ResponseEntity<String> markExerciseAsDone(@RequestParam int id,
-            @RequestParam(required = false) MultipartFile postureImg) {
+    @PutMapping("/done")
+    public ResponseEntity<String> markExerciseAsDone(
+            @RequestParam int id,
+            @RequestParam(required = false) MultipartFile postureImg,
+            @RequestParam(required = false) Integer weight,
+            @RequestParam(required = false) Integer count,
+            @RequestParam(required = false) Integer set) {
+
         String savedFilePath = null;
 
         try {
@@ -71,13 +76,22 @@ public class ExerciseController {
                 savedFilePath = saveFile(postureImg);
             }
         } catch (IOException e) {
-            return new ResponseEntity<>("Error processing file upload: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error processing file upload: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        // 운동 완료 여부 업데이트
-        exerciseService.markExerciseAsDone(id, savedFilePath);
-        return new ResponseEntity<>("Exercise marked as done.", HttpStatus.OK);
+        // 운동 데이터 업데이트
+        ExerciseDto exerciseDto = new ExerciseDto();
+        exerciseDto.setId(id);
+        exerciseDto.setPostureImg(savedFilePath);
+        exerciseDto.setWeight(weight);
+        exerciseDto.setCount(count);
+        exerciseDto.setSet(set);
+
+        exerciseService.updateExercise(exerciseDto);
+        return new ResponseEntity<>("Exercise updated successfully.", HttpStatus.OK);
     }
+
 
     private String saveFile(MultipartFile file) throws IOException {
         Resource resource = resourceLoader.getResource("classpath:/static/img");

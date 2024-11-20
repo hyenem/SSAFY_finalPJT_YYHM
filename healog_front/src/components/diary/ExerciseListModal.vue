@@ -70,7 +70,10 @@ const saveChanges = async () => {
       formData.append('postureImg', postureImgFile.value);
     }
 
-    await axios.post('http://localhost:8080/user/exercise/done', formData, {
+    console.log('FormData:', Array.from(formData.entries()));
+
+
+    await axios.put('http://localhost:8080/user/exercise/done', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
 

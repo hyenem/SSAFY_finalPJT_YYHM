@@ -28,12 +28,12 @@
     <!-- 운동 계획 수정 -->
     <update id="updateExercise" parameterType="com.healog.mvc.diary.model.dto.ExerciseDto">
         UPDATE exercise
-        SET category_id = #{categoryId},
+        SET 
             weight = #{weight},
             count = #{count},
             `set` = #{set},
-            posture_img = #{postureImg},
-            done = #{done}
+            posture_img = CASE WHEN #{postureImg} IS NOT NULL THEN #{postureImg} ELSE posture_img END,
+            done = CASE WHEN #{done} IS NOT NULL THEN #{done} ELSE done END
         WHERE id = #{id};
     </update>
 
