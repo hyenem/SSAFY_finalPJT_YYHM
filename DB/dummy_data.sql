@@ -13,9 +13,10 @@ INSERT INTO category (exercise, exercise_area) VALUES
 ('레그프레스', '하체'),
 ('플랭크', '코어');
 
+
 -- 사용자 데이터
-INSERT INTO user (id, name, email, password, created_at_datetime, gender, birthday, phonenumber, trainer_exist) VALUES
-('1', '김헬스', 'kim@example.com', 'password123', '2023-12-01 10:00:00', 1, '1990-05-15', '010-1234-5678', 0);
+INSERT INTO user (id, name, email, password,salt, created_at_datetime, gender, birthday, phonenumber, trainer_exist) VALUES
+('u123e4567-e89b-12d3-a456-426614174000', '김헬스', 'kim@example.com', 'password123','123', '2023-12-01 10:00:00', 1, '1990-05-15', '010-1234-5678', 0);
 
 -- 2024년 1월 다이어리 데이터
 INSERT INTO diary (year, month, day, user_id, `condition`) VALUES
@@ -32,7 +33,8 @@ INSERT INTO diary (year, month, day, user_id, `condition`) VALUES
 (2024, 1, 28, 'u123e4567-e89b-12d3-a456-426614174000', '피로감 있지만 운동 가능'),
 (2024, 1, 29, 'u123e4567-e89b-12d3-a456-426614174000', '컨디션 회복중'),
 (2024, 1, 30, 'u123e4567-e89b-12d3-a456-426614174000', '컨디션 좋음'),
-(2024, 1, 31, 'u123e4567-e89b-12d3-a456-426614174000', '활력 넘침');
+(2024, 1, 31, 'u123e4567-e89b-12d3-a456-426614174000', '활력 넘침'),
+(2024, 11, 20, 'u123e4567-e89b-12d3-a456-426614174000', '굳이에요 굳굳굳');
 
 -- 운동 데이터
 INSERT INTO exercise (category_id, diary_id, weight, count, `set`, done) VALUES
@@ -97,3 +99,16 @@ INSERT INTO exercise (category_id, diary_id, weight, count, `set`, done) VALUES
 -- 동일한 날짜에는 사용자의 컨디션이 하나만 등록되도록 고유키 추가
 ALTER TABLE diary
 ADD CONSTRAINT unique_diary_date UNIQUE (year, month, day, user_id);
+
+INSERT INTO `healog`.`gym` (`name`, `address`, `phonenumber`) VALUES
+('Fit Nation Gym', '123 Main St, New York, NY', '212-555-1234'),
+('Iron Paradise', '456 Elm St, Los Angeles, CA', '213-555-5678'),
+('The Strength Center', '789 Oak St, Chicago, IL', '312-555-9012'),
+('Wellness Haven', '321 Maple Ave, San Francisco, CA', '415-555-3456'),
+('Peak Fitness', '654 Pine Ave, Houston, TX', '713-555-7890'),
+('Endurance Hub', '987 Cedar Dr, Boston, MA', '617-555-2345'),
+('Lift & Run Studio', '246 Birch Blvd, Miami, FL', '305-555-6789'),
+('Urban Fit Club', '135 Willow Rd, Seattle, WA', '206-555-0123'),
+('Flex Zone', '369 Spruce Ln, Austin, TX', '512-555-4567'),
+('Dynamic Fitness', '159 Ash St, Denver, CO', '303-555-8910');
+

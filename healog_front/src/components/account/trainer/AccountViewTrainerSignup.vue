@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>user signup</h3>
+        <h3>trainer signup</h3>
         <label for="name">name(*): </label>
         <input type="text" maxlength="10" name="name" id="name" v-model="name">
         <br>
@@ -30,17 +30,22 @@
         <label for="phonenumber">phonenumber(*): </label>
         <input type="tel" maxlength="13" name="name" id="id" v-model="phoneNumber">
         <br>
+        <label for="location">location(*): </label>
+        <select name="location" id="location" v-model="location">
+            <option v-for="gym in gyms" value="{{gym.id}}">{{ gym.name }}</option>
+        </select>
+        <br>
         <button @click="signup">회원가입</button>
     </div>
 </template>
 
 <script setup>
-import {ref, watch} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
-const REST_API_USER_SIGNUP_URL = 'http://localhost:8080/user/signup'
+const REST_API_TRAINER_URL = 'http://localhost:8080/trainer'
 
 const isOpenEmailCheck = ref(false)
 const openEmailCheck = function(){
@@ -63,10 +68,11 @@ const passwordCheckMessage = ref("")
 const gender = ref("")
 const birthday = ref("")
 const phoneNumber = ref("")
+const location = ref(0)
 
 //중복 채크 로직
 const emailCheck = function(){
-    axios.post(REST_API_USER_SIGNUP_URL+'/id', {email: checkingEmail.value})
+    axios.post(REST_API_TRAINER_URL+'/signup/id', {email: checkingEmail.value})
         .then((res)=>{
             checkedEmail.value = res.data
         }).catch((error)=>{
@@ -92,15 +98,16 @@ watch(()=>password.value, ()=>{
 
 const signup = function(){
     if(name.value.trim!=='' && checkedEmail.value.trim!=='' && password.value.trim!=='' && checkPassword.value.trim!==''
-        && gender.value.trim!=='' && phoneNumber.value.trim!==''){
+        && gender.value.trim!=='' && phoneNumber.value.trim!=='' && location.value!==0){
         if(password.value===checkPassword.value){
-            axios.post(REST_API_USER_SIGNUP_URL, {
+            axios.post(REST_API_TRAINER_URL+'/signup', {
                 name: name.value,
                 email : checkedEmail.value,
                 password: password.value,
                 gender : gender.value,
                 birthday : birthday.value,
-                phonenumber : phoneNumber.value
+                phonenumber : phoneNumber.value,
+                location : location.value
             }).then((res)=>{
                 alert("회원가입 되었습니다. 로그인창으로 이동합니다.")
                 router.replace({name: "userLogin"})
@@ -114,6 +121,14 @@ const signup = function(){
         alert("필수 정보를 모두 입력해주세요.")
     }
 }
+
+const gyms = ref(null)
+onMounted(()=>{
+    axios.get(REST_API_TRAINER_URL+'/signup/gym')
+    .then((res)=>{
+        gyms.value=res.data
+    })
+})
 
 </script>
 

@@ -6,9 +6,8 @@ import com.healog.mvc.account.model.dto.User;
 
 public interface UserDao {
 
-	List<String> selectIdByEmail(String email);
+	String selectIdByEmail(String email);
 	int insertUser(User user);
 	User selectByEmail(String email);
-
 
 }

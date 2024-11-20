@@ -1,5 +1,6 @@
 <template>
   <div>
+    <NavigationView/>
     <h1>Main View</h1>
     <!-- 날짜 선택 컴포넌트 -->
     <Calendar @dateSelected="onDateSelected" />
@@ -12,7 +13,8 @@
 <script setup>
 import { ref } from 'vue';
 import Calendar from '@/components/diary/Calendar.vue';
-import DiaryView from '@/views/diary/DiaryView.vue';
+import DiaryView from './DiaryView.vue';
+import NavigationView from './common/NavigationView.vue';
 
 const selectedDate = ref(null);
 

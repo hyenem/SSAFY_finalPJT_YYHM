@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+      
+<mapper namespace="com.healog.mvc.account.model.dao.TrainerDao">
+	<select id="selectAllGyms" resultType="Gym">
+		SELECT * FROM gym;
+	</select>
+	
+	<select id="selectIdByEmail" parameterType="String" resultType="String">
+		SELECT id FROM trainer
+		WHERE email = #{email};
+	</select>
+	
+	<insert id="insertTrainer" parameterType="Trainer">
+		INSERT INTO user (id, email, name, password, salt, gender, birthday, phonenumber, location)
+		VALUES (#{id}, #{email}, #{name}, #{password}, #{salt}, #{gender}, #{birthday}, #{phonenumber}, #{location});
+	</insert>
+</mapper>

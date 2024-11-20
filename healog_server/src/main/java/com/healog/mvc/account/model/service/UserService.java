@@ -10,4 +10,6 @@ public interface UserService {
 
 	User checkLogin(String email, String password);
 
+	String getUserInfo(String email);
+
 }

@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`trainer` (
   `phonenumber` VARCHAR(45) NOT NULL,
   `birthday` VARCHAR(45) NULL DEFAULT NULL,
   `bio` TEXT NULL DEFAULT NULL, -- 자기 소개 내용을 text로 저장합니다.
-  `img` VARCHAR(45) NOT NULL, -- 자신의 사진을 저장합니다
+  `img` VARCHAR(45) NULL, -- 자신의 사진을 저장합니다
   `location` INT NOT NULL, -- 자신이 일하는 헬스장을 저장합니다.
   `user_count` INT NOT NULL DEFAULT '0', -- 비정규화입니다. 본인이 담당하고 있는 회원의 수를 저장합니다. 효율성을 위함입니다.
   PRIMARY KEY (`id`),

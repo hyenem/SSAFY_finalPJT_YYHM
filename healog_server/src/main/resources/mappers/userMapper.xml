@@ -17,4 +17,5 @@
 		SELECT * FROM user
 		WHERE email = #{email}
 	</select>
+	
 </mapper>
