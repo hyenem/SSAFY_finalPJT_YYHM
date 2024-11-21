@@ -27,9 +27,17 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH");
 	}
 	
+<<<<<<< HEAD
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")
 		.excludePathPatterns("/trainer/**", "/user/**",  "/swagger-ui/**", "/v3/api-docs/**", "/check", "/trainer**");
 	}
+=======
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")
+//		.excludePathPatterns("/**/trainer/**", "/**/login/**", "/user/signup/","/**/signup/**",  "/swagger-ui/**", "/v3/api-docs/**", "/check");
+//	}
+>>>>>>> 95da38a (Feat : Add ExerciseList Category)
 }

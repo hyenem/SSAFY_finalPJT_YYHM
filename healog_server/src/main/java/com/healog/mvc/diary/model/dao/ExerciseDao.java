@@ -23,4 +23,6 @@ public interface ExerciseDao {
 
     // 운동 완료 여부 업데이트
     int markExerciseAsDone(Map<String, Object> params);
+    
+
 }

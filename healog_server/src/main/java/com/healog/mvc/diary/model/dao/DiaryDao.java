@@ -13,7 +13,10 @@ public interface DiaryDao {
     List<DiaryDto> getDiaryListByUserId(String userId);
 
     // 특정 날짜의 다이어리 조회
-    DiaryDto getDiaryByDate(Map<String, Object> params);
+    DiaryDto getDiaryByDate(@Param("userId") String userId, 
+            @Param("year") int year, 
+            @Param("month") int month, 
+            @Param("day") int day);
 
     // 다이어리 생성 또는 업데이트
     int insertOrUpdateDiary(DiaryDto diaryDto);

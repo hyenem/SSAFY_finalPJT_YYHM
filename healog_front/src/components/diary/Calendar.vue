@@ -2,6 +2,7 @@
   <div>
     <h3>Calendar</h3>
     <input type="date" @change="onDateChange" />
+    <button @click="clearDate">Reset</button>
   </div>
 </template>
 
@@ -9,7 +10,6 @@
 import { ref } from 'vue';
 
 const emit = defineEmits(['dateSelected']);
-
 const selectedDate = ref(null);
 
 const onDateChange = (event) => {
@@ -17,7 +17,11 @@ const onDateChange = (event) => {
   emitDate();
 };
 
-// Emit the selected date
+const clearDate = () => {
+  selectedDate.value = null;
+  emit('dateSelected', null); // 날짜 초기화 이벤트 발생
+};
+
 const emitDate = () => {
   if (selectedDate.value) {
     const dateParts = selectedDate.value.split('-');
@@ -32,5 +36,4 @@ const emitDate = () => {
 </script>
 
 <style scoped>
-
 </style>

@@ -1,61 +1,56 @@
-import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import { useUserStore } from './userStore'; // userStore 가져오기
+import { getDiariesByUserId, getDiaryByDate, saveDiary } from '@/api/diary';
 
-const REST_API_URL = 'http://localhost:8080/';
-
-export const useDiaryStore = defineStore('diary', () => {
-  const diaryEntries = ref([]);
-  const selectedDiary = ref(null);
-
-  const fetchDiaryByDate = async (date) => {
-    try {
-      const userId = '1';
-      const response = await axios.get(`${REST_API_URL}user/diary/condition`, {
-        params: {
-          userId,
-          year: date.year,
-          month: date.month,
-          day: date.day,
-        },
-      });
-      selectedDiary.value = response.data;
-    } catch (error) {
-      console.error('Failed to fetch diary:', error);
-      selectedDiary.value = null;
-    }
-  };
-
-  const updateDiaryCondition = async (diaryDto) => {
-    try {
-      await axios.put(`${REST_API_URL}user/diary/condition`, diaryDto);
-      // Update local state after success
-      if (selectedDiary.value && selectedDiary.value.id === diaryDto.id) {
-        selectedDiary.value.condition = diaryDto.condition;
+export const useDiaryStore = defineStore('diary', {
+  state: () => ({
+    diaryEntries: [],
+    selectedDiary: null,
+  }),
+  actions: {
+    async fetchDiaryList() {
+      try {
+        const userStore = useUserStore(); // userStore 인스턴스 가져오기
+        if (!userStore.loginUser.id) {
+          console.error('User ID is not available');
+          alert('로그인 상태를 확인해주세요.');
+          return;
+        }
+        this.diaryEntries = await getDiariesByUserId(userStore.loginUser.id);
+      } catch (error) {
+        console.error('Failed to fetch diary list:', error);
+        alert('다이어리 목록을 가져오는 중 문제가 발생했습니다.');
       }
-    } catch (error) {
-      console.error('Failed to update diary condition:', error);
-    }
-  };
-  
-
-  // 유저의 다이어리 목록 가져오기
-  const fetchDiaryList = async (userId) => {
-    try {
-      const response = await axios.get(`${REST_API_URL}diary/list`, {
-        params: { userId },
-      });
-      diaryEntries.value = response.data;
-    } catch (error) {
-      console.error('Failed to fetch diary list:', error);
-    }
-  };
-
-  return {
-    diaryEntries,
-    selectedDiary,
-    fetchDiaryByDate,
-    fetchDiaryList,
-    updateDiaryCondition,
-  };
+    },
+    async fetchDiaryByDate(date) {
+      try {
+        const userStore = useUserStore(); // userStore 인스턴스 가져오기
+        if (!userStore.loginUser.id) {
+          console.error('User ID is not available');
+          alert('로그인 상태를 확인해주세요.');
+          return;
+        }
+        this.selectedDiary = await getDiaryByDate(
+          userStore.loginUser.id,
+          date.year,
+          date.month,
+          date.day
+        );
+      } catch (error) {
+        console.error('Failed to fetch diary:', error);
+        this.selectedDiary = null;
+      }
+    },
+    async updateDiaryCondition(diaryDto) {
+      try {
+        await saveDiary(diaryDto);
+        if (this.selectedDiary?.id === diaryDto.id) {
+          this.selectedDiary.condition = diaryDto.condition;
+        }
+      } catch (error) {
+        console.error('Failed to update diary condition:', error);
+        alert('다이어리 저장 중 문제가 발생했습니다.');
+      }
+    },
+  },
 });
