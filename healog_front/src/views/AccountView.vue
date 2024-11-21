@@ -10,15 +10,17 @@ import { useRouter } from 'vue-router'
 import {onMounted} from 'vue'
 import { useUserStore } from '@/stores/userStore';
 
+localStorage.setItem('lastVisitedUrl', location.href)
+
 const router = useRouter()
 
 onMounted((to, from, next) => {
     const userStore = useUserStore()
-    if(userStore.login.id){
+    if(userStore.loginUser.id){
         alert("잘못된 접근입니다.")
-        next(from)
+    } else {
+        router.push({name: 'choose'})
     }
-    router.push({name: 'choose'})
 })
 
 </script>

@@ -2,6 +2,8 @@
   <div>
     <NavigationView/>
     <h1>Main View</h1>
+    <UserMain v-if="loginUserType==='user'"/>
+    <TrainerMain v-if="loginUserType==='trainer'"/>
     <!-- 날짜 선택 컴포넌트 -->
     <Calendar @dateSelected="onDateSelected" />
 
@@ -15,6 +17,15 @@ import { ref } from 'vue';
 import Calendar from '@/components/diary/Calendar.vue';
 import DiaryView from './DiaryView.vue';
 import NavigationView from './common/NavigationView.vue';
+import UserMain from '@/components/diary/UserMain.vue';
+import TrainerMain from '@/components/diary/TrainerMain.vue';
+import { useUserStore } from '@/stores/userStore';
+
+localStorage.setItem('lastVisitedUrl', location.href)
+
+const userStore = useUserStore()
+
+const loginUserType = userStore.loginUser.type
 
 const selectedDate = ref(null);
 
