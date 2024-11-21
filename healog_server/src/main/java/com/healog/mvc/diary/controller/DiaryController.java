@@ -15,7 +15,7 @@ import java.util.Map;
 @RequestMapping("/user/diary")
 public class DiaryController {
 
-	private final DiaryService diaryService;
+    private final DiaryService diaryService;
 
     @Autowired
     public DiaryController(DiaryService diaryService) {
@@ -24,8 +24,13 @@ public class DiaryController {
 
     @GetMapping
     public ResponseEntity<List<DiaryDto>> getDiaryList(@RequestParam String userId) {
-        List<DiaryDto> diaryList = diaryService.getDiaryList(userId);
-        return new ResponseEntity<>(diaryList, HttpStatus.OK);
+        try {
+            List<DiaryDto> diaryList = diaryService.getDiaryList(userId);
+            return ResponseEntity.ok(diaryList);
+        } catch (Exception e) {
+            e.printStackTrace(); // 구체적 예외 로그 추가
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/condition")
@@ -34,26 +39,27 @@ public class DiaryController {
             @RequestParam int year,
             @RequestParam int month,
             @RequestParam int day) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", userId);
-        params.put("year", year);
-        params.put("month", month);
-        params.put("day", day);
-        
-        DiaryDto diary = diaryService.getDiaryByDate(params);
-        if (diary == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            DiaryDto diary = diaryService.getDiaryByDate(userId, year, month, day);
+            if (diary == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+            return ResponseEntity.ok(diary);
+        } catch (Exception e) {
+            e.printStackTrace(); // 구체적 예외 로그 추가
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return new ResponseEntity<>(diary, HttpStatus.OK);
     }
 
     @PutMapping("/condition")
     public ResponseEntity<String> saveDiary(@RequestBody DiaryDto diaryDto) {
         try {
             diaryService.saveDiary(diaryDto);
-            return new ResponseEntity<>("Diary saved successfully.", HttpStatus.OK);
+            return ResponseEntity.ok("Diary saved successfully.");
         } catch (Exception e) {
-            return new ResponseEntity<>("Failed to save diary.", HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace(); // 구체적 예외 로그 추가
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save diary.");
         }
     }
 }
+

@@ -10,8 +10,9 @@ public interface DiaryService {
     List<DiaryDto> getDiaryList(String userId);
 
     // 특정 날짜의 다이어리 조회
-    DiaryDto getDiaryByDate(Map<String, Object> params);
+    DiaryDto getDiaryByDate(String userId, int year, int month, int day);
 
     // 다이어리 생성 또는 업데이트
     void saveDiary(DiaryDto diaryDto);
+
 }

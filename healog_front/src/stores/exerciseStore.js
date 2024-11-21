@@ -1,69 +1,92 @@
-import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import axios from 'axios';
-import { fetchExercisesByDiaryId } from '@/api/exercise';
-import { markExerciseAsDone } from '@/api/exercise';
+import {
+  fetchExercisesByDiaryId,
+  getExerciseById,
+  addExercise,
+  updateExercise,
+  markExerciseAsDone,
+  deleteExercise,
+} from '@/api/exercise';
+import { getExerciseAreas, getExercisesByArea } from '@/api/category';
 
-const REST_API_URL = 'http://localhost:8080/';
-
-export const useExerciseStore = defineStore('exercise', () => {
-  const exercises = ref([]);
-  const selectedExercise = ref(null);
-
-  // 다이어리 ID로 운동 목록 가져오기
-  const loadExercises = async (diaryId) => {
-    try {
-      exercises.value = await fetchExercisesByDiaryId(diaryId);
-    } catch (error) {
-      exercises.value = [];
-      console.error('Error loading exercises:', error);
-    }
-  };
-
-  const markAsDone = async (id, postureImgFile) => {
-    try {
-      await markExerciseAsDone(id, postureImgFile);
-      const exercise = exercises.value.find((e) => e.id === id);
-      if (exercise) {
-        exercise.done = 1;
-        exercise.postureImg = postureImgFile ? `/static/img/${postureImgFile.name}` : null;
+export const useExerciseStore = defineStore('exercise', {
+  state: () => ({
+    exercises: [],
+    selectedExercise: null,
+    exerciseAreas: [],
+    exercisesByArea: [],
+  }),
+  actions: {
+    async loadExerciseAreas() {
+      try {
+        this.exerciseAreas = await getExerciseAreas();
+      } catch (error) {
+        console.error('Error loading exercise areas:', error);
+        this.exerciseAreas = [];
       }
-    } catch (error) {
-      console.error('Error updating exercise status:', error);
-    }
-  };
-
-  const fetchExerciseById = async (exerciseId) => {
-    try {
-      const response = await axios.get(`${REST_API_URL}user/exercise/${exerciseId}`);
-      selectedExercise.value = response.data;
-    } catch (error) {
-      console.error('Error fetching exercise:', error);
-      selectedExercise.value = null;
-    }
-  };
-  
-
-  // 운동 수정
-  const updateExercise = async (exerciseDto) => {
-    try {
-      await axios.put(`${REST_API_URL}user/exercise`, exerciseDto);
-      const index = exercises.value.findIndex((e) => e.id === exerciseDto.id);
-      if (index !== -1) {
-        exercises.value[index] = exerciseDto;
+    },
+    async loadExercisesByArea(area) {
+      try {
+        this.exercisesByArea = await getExercisesByArea(area);
+      } catch (error) {
+        console.error('Error loading exercises by area:', error);
+        this.exercisesByArea = [];
       }
-    } catch (error) {
-      console.error('Error updating exercise:', error);
-    }
-  };
-
-  return {
-    exercises,
-    selectedExercise,
-    loadExercises,
-    fetchExerciseById,
-    updateExercise,
-    exercises,
-    markAsDone,
-  };
+    },
+    async loadExercises(diaryId) {
+      try {
+        this.exercises = await fetchExercisesByDiaryId(diaryId);
+      } catch (error) {
+        console.error('Error loading exercises:', error);
+        this.exercises = [];
+      }
+    },
+    async addExercise(exerciseDto) {
+      try {
+        await addExercise(exerciseDto);
+        await this.loadExercises(exerciseDto.diaryId);
+      } catch (error) {
+        console.error('Error adding exercise:', error);
+      }
+    },
+    async deleteExercise(exerciseId) {
+      try {
+        await deleteExercise(exerciseId); // 올바른 메서드 호출
+        this.exercises = this.exercises.filter(
+          (exercise) => exercise.id !== exerciseId
+        ); // 상태에서 삭제
+      } catch (error) {
+        console.error('Error deleting exercise:', error);
+        throw error;
+      }
+    },    
+    async fetchExerciseById(exerciseId) {
+      try {
+        this.selectedExercise = await getExerciseById(exerciseId);
+      } catch (error) {
+        console.error('Error fetching exercise by ID:', error);
+        this.selectedExercise = null;
+      }
+    },
+    async updateExercise(exerciseDto) {
+      try {
+        await updateExercise(exerciseDto);
+        await this.loadExercises(exerciseDto.diaryId);
+      } catch (error) {
+        console.error('Error updating exercise:', error);
+      }
+    },
+    async markAsDone(id, postureImgFile) {
+      try {
+        await markExerciseAsDone(id, postureImgFile);
+        const exercise = this.exercises.find((e) => e.id === id);
+        if (exercise) {
+          exercise.done = 1;
+          exercise.postureImg = postureImgFile ? `/static/img/${postureImgFile.name}` : null;
+        }
+      } catch (error) {
+        console.error('Error updating exercise status:', error);
+      }
+    },
+  },
 });

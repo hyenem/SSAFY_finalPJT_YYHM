@@ -19,8 +19,8 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public DiaryDto getDiaryByDate(Map<String, Object> params) {
-        return diaryDao.getDiaryByDate(params);
+    public DiaryDto getDiaryByDate(String userId, int year, int month, int day) {
+        return diaryDao.getDiaryByDate(userId, year, month, day);
     }
 
     @Override
@@ -28,3 +28,4 @@ public class DiaryServiceImpl implements DiaryService {
         diaryDao.insertOrUpdateDiary(diaryDto);
     }
 }
+
