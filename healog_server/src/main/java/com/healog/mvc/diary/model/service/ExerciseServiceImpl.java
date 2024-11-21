@@ -46,4 +46,6 @@ public class ExerciseServiceImpl implements ExerciseService {
         params.put("postureImg", postureImg);
         exerciseDao.markExerciseAsDone(params);
     }
+    
+
 }

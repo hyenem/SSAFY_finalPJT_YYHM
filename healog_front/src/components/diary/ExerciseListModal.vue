@@ -1,33 +1,59 @@
 <template>
-  <div v-if="isVisible" class="modal">
-    <h3>Plan</h3>
+  <div class="modal">
+    <h3>{{ isEditing ? "Edit" : "Add" }} Exercise Plan</h3>
     <form @submit.prevent="saveChanges">
-      <label>Weight</label>
-      <input type="number" v-model="exercise.weight" />
-      <label>Count</label>
-      <input type="number" v-model="exercise.count" />
-      <label>Set</label>
-      <input type="number" v-model="exercise.set" />
+      <!-- 운동 부위 선택 -->
       <div>
-        <label for="postureImg">Posture Image</label>
-        <p v-if="exercise.postureImg">{{ extractFileName(exercise.postureImg) }}</p>
+        <label for="exerciseArea">Exercise Area:</label>
+        <select id="exerciseArea" v-model="selectedArea" @change="fetchExercisesByArea">
+          <option v-for="area in exerciseStore.exerciseAreas" :key="area" :value="area">
+            {{ area }}
+          </option>
+        </select>
+      </div>
+
+      <!-- 운동 선택 -->
+      <div>
+        <label for="exercise">Exercise:</label>
+        <select id="exercise" v-model="exercise.exercise">
+          <option v-for="ex in exerciseStore.exercisesByArea" :key="ex.id" :value="ex.exercise">
+            {{ ex.exercise }}
+          </option>
+        </select>
+      </div>
+
+      <!-- 나머지 수정 필드 -->
+      <label>Weight:</label>
+      <input type="number" v-model="exercise.weight" />
+
+      <label>Count:</label>
+      <input type="number" v-model="exercise.count" />
+
+      <label>Set:</label>
+      <input type="number" v-model="exercise.set" />
+
+      <div>
+        <label for="postureImg">Posture Image:</label>
         <input type="file" id="postureImg" @change="handleFileChange" />
+        <img v-if="postureImgPreview" :src="postureImgPreview" alt="Preview" />
       </div>
-      <div class="button">
-        <button type="submit">저장</button>
-        <button type="button" @click="closeModal">취소</button>
-      </div>
+
+      <button type="submit">{{ isEditing ? "Save" : "Add" }}</button>
+      <button type="button" @click="closeModal">Cancel</button>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
-import axios from 'axios';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useExerciseStore } from '@/stores/exerciseStore';
 
 const props = defineProps({
   exerciseId: {
+    type: Number,
+    required: false,
+  },
+  diaryId: {
     type: Number,
     required: true,
   },
@@ -35,63 +61,87 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 const exerciseStore = useExerciseStore();
-const postureImgFile = ref(null);
-const isVisible = ref(true);
 const exercise = ref({});
+const isEditing = computed(() => !!props.exerciseId);
+const postureImgFile = ref(null);
+const postureImgPreview = computed(() =>
+  postureImgFile.value ? URL.createObjectURL(postureImgFile.value) : ''
+);
+const selectedArea = ref('');
+const isLoading = ref(false);
 
-// 파일 이름 추출 함수
-const extractFileName = (filePath) => {
-  return filePath.split('_').pop();
-};
-
-// 운동 데이터 가져오기
-const fetchExercise = async () => {
-  if (props.exerciseId) {
+const initializeExercise = async () => {
+  if (isEditing.value) {
     await exerciseStore.fetchExerciseById(props.exerciseId);
     exercise.value = { ...exerciseStore.selectedExercise };
+    selectedArea.value = exercise.value.exerciseArea;
+    await fetchExercisesByArea();
+  } else {
+    exercise.value = {
+      exercise: '',
+      weight: 0,
+      count: 0,
+      set: 0,
+      postureImg: null,
+      diaryId: props.diaryId,
+      categoryId: null,
+    };
+    selectedArea.value = '';
+    postureImgFile.value = null;
   }
 };
 
-// 파일 변경 핸들러
+const fetchExercisesByArea = async () => {
+  if (selectedArea.value) {
+    await exerciseStore.loadExercisesByArea(selectedArea.value);
+  }
+};
+
 const handleFileChange = (event) => {
   postureImgFile.value = event.target.files[0];
 };
 
-// 변경사항 저장
 const saveChanges = async () => {
   try {
-    const formData = new FormData();
-    formData.append('id', exercise.value.id);
-    formData.append('weight', exercise.value.weight);
-    formData.append('count', exercise.value.count);
-    formData.append('set', exercise.value.set);
+    isLoading.value = true;
 
-    if (postureImgFile.value) {
-      formData.append('postureImg', postureImgFile.value);
+    const matchedCategory = exerciseStore.exercisesByArea.find(
+      (ex) => ex.exercise === exercise.value.exercise
+    );
+
+    if (!matchedCategory) {
+      alert('Please select a valid exercise.');
+      return;
     }
 
-    await axios.post('http://localhost:8080/user/exercise/done', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    exercise.value.categoryId = matchedCategory.id;
 
-    // 운동 리스트 갱신
-    await exerciseStore.loadExercises(exercise.value.diaryId);
+    if (isEditing.value) {
+      await exerciseStore.updateExercise(exercise.value);
+      alert('Exercise updated successfully!');
+    } else {
+      await exerciseStore.addExercise(exercise.value);
+      alert('Exercise added successfully!');
+    }
 
-    alert('Exercise updated successfully!');
     emit('close');
   } catch (error) {
     console.error('Error saving changes:', error);
     alert('Failed to save exercise changes.');
+  } finally {
+    isLoading.value = false;
   }
 };
-
-
 
 const closeModal = () => {
   emit('close');
 };
 
-watch(() => props.exerciseId, fetchExercise, { immediate: true });
+onMounted(async () => {
+  await exerciseStore.loadExerciseAreas();
+  await initializeExercise();
+});
+watch(selectedArea, fetchExercisesByArea);
 </script>
 
 <style scoped>
@@ -105,9 +155,7 @@ form {
   flex-direction: column;
 }
 
-.button {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
+img {
+  width: 3rem;
 }
 </style>

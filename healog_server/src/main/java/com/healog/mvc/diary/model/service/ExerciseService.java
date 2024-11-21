@@ -21,5 +21,7 @@ public interface ExerciseService {
     void deleteExercise(int id);
 
     // 운동 완료 여부 업데이트
-    void markExerciseAsDone(int id, String postureImg);                        // 운동 삭제
+    void markExerciseAsDone(int id, String postureImg);
+    
+
 }
