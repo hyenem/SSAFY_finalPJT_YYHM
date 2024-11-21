@@ -18,4 +18,9 @@
 		WHERE email = #{email}
 	</select>
 	
+	<select id="selectAllById" parameterType="String" resultType="User">
+		SELECT * FROM user
+		WHERE id = #{id}
+	</select>
+	
 </mapper>

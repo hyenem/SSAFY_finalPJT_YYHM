@@ -60,4 +60,15 @@ public class UserServiceImpl implements UserService{
 		return id;
 	}
 
+	@Override
+	public User getUserById(String id) {
+		User user = userDao.selectAllById(id);
+		if(user!=null) {
+			user.setPassword(null);
+			user.setSalt(null);
+			user.setCreatedAtDatetime(null);
+		}
+		return user;
+	}
+
 }

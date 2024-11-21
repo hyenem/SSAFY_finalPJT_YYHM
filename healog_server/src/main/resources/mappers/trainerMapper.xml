@@ -13,7 +13,30 @@
 	</select>
 	
 	<insert id="insertTrainer" parameterType="Trainer">
-		INSERT INTO user (id, email, name, password, salt, gender, birthday, phonenumber, location)
+		INSERT INTO trainer (id, email, name, password, salt, gender, birthday, phonenumber, location)
 		VALUES (#{id}, #{email}, #{name}, #{password}, #{salt}, #{gender}, #{birthday}, #{phonenumber}, #{location});
 	</insert>
+	
+	<select id="selectByEmail" parameterType="String" resultType="Trainer">
+		SELECT * FROM trainer
+		WHERE email = #{email}
+	</select>
+	
+	<select id="selectAllById" parameterType="String" resultType="Trainer">
+		SELECT * FROM trainer
+		WHERE id = #{id}
+	</select>
+	
+	<select id="selectAllTrainers" resultType="Trainer">
+		SELECT id, name, bio, img, user_count, location
+		FROM trainer ORDER BY user_count DESC;
+	</select>
+	
+	<select id="selectTrainersByName" parameterType="String" resultType="Trainer">
+		SELECT id, name, bio, img, user_count, location
+		FROM trainer
+		WHERE name LIKE "%${name}%"
+		ORDER BY user_count DESC;
+	</select>
+	
 </mapper>

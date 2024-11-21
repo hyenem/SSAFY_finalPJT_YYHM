@@ -5,9 +5,11 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healog.mvc.account.model.dto.User;
@@ -57,6 +59,17 @@ public class UserController {
 		Map<String, Object> result = new HashMap<>();
 		result.put("access-token", jwtUtil.createToken(map.get("email"), map.get("type")));
 		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+	}
+	
+	@GetMapping
+	public ResponseEntity<?> getUser(@RequestParam String id){
+		System.out.println("here");
+		User user = userService.getUserById(id);
+		if(user != null) {
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 	}
 	
 }
