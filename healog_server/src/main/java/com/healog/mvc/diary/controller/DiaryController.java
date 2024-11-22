@@ -28,7 +28,7 @@ public class DiaryController {
             List<DiaryDto> diaryList = diaryService.getDiaryList(userId);
             return ResponseEntity.ok(diaryList);
         } catch (Exception e) {
-            e.printStackTrace(); // 구체적 예외 로그 추가
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -46,7 +46,7 @@ public class DiaryController {
             }
             return ResponseEntity.ok(diary);
         } catch (Exception e) {
-            e.printStackTrace(); // 구체적 예외 로그 추가
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -57,7 +57,7 @@ public class DiaryController {
             diaryService.saveDiary(diaryDto);
             return ResponseEntity.ok("Diary saved successfully.");
         } catch (Exception e) {
-            e.printStackTrace(); // 구체적 예외 로그 추가
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save diary.");
         }
     }

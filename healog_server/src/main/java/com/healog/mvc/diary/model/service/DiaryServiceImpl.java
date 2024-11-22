@@ -20,6 +20,16 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public DiaryDto getDiaryByDate(String userId, int year, int month, int day) {
+    	DiaryDto diary = diaryDao.getDiaryByDate(userId, year, month, day);
+    	if(diary == null) {
+    		diary = new DiaryDto();
+    		diary.setUserId(userId);
+    		diary.setYear(year);
+    		diary.setMonth(month);
+    		diary.setDay(day);
+    		diary.setCondition(null);
+    		diaryDao.insertOrUpdateDiary(diary);
+    	}
         return diaryDao.getDiaryByDate(userId, year, month, day);
     }
 

@@ -1,12 +1,13 @@
 <template>
   <div>
     <NavigationView/>
-    <h1>Main View</h1>
-    <!-- 날짜 선택 컴포넌트 -->
-    <Calendar @dateSelected="onDateSelected" />
+    <div class="main">
+      <!-- 날짜 선택 컴포넌트 -->
+      <Calendar @dateSelected="onDateSelected" />
 
-    <!-- 선택된 날짜가 있을 경우 다이어리 컴포넌트 표시 -->
-    <DiaryView v-if="selectedDate" :date="selectedDate" />
+      <!-- 선택된 날짜가 있을 경우 다이어리 컴포넌트 표시 -->
+      <DiaryView v-if="selectedDate" :date="selectedDate" />
+    </div>
   </div>
 </template>
 
@@ -24,5 +25,10 @@ const onDateSelected = (date) => {
 </script>
 
 <style scoped>
-
+.main {
+  display : flex;
+  justify-content: space-around;
+  padding: 2rem;
+  background-color: #E0F1E2
+}
 </style>

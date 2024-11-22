@@ -68,14 +68,14 @@ export const useExerciseStore = defineStore('exercise', {
         this.selectedExercise = null;
       }
     },
-    async updateExercise(exerciseDto) {
+    async updateExercise(exerciseDto, postureImgFile) {
       try {
-        await updateExercise(exerciseDto);
-        await this.loadExercises(exerciseDto.diaryId);
+          await updateExercise(exerciseDto, postureImgFile);
+          await this.loadExercises(exerciseDto.diaryId);
       } catch (error) {
-        console.error('Error updating exercise:', error);
+          console.error('Error updating exercise:', error);
       }
-    },
+  },  
     async markAsDone(id, postureImgFile) {
       try {
         await markExerciseAsDone(id, postureImgFile);

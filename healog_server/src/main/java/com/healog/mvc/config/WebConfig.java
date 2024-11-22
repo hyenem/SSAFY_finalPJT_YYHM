@@ -4,6 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.healog.mvc.interceptor.JwtInterceptor;
@@ -26,6 +27,13 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH");
 	}
+	
+	@Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // /uploads/profile/** 요청을 실제 파일 경로로 매핑
+        registry.addResourceHandler("/img/**")
+                .addResourceLocations("file:src/main/resources/static/img/");
+    }
 	
 //	@Override
 //	public void addInterceptors(InterceptorRegistry registry) {

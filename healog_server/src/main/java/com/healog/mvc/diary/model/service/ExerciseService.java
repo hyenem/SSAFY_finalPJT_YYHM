@@ -2,6 +2,8 @@ package com.healog.mvc.diary.model.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.healog.mvc.diary.model.dto.ExerciseDto;
 
 public interface ExerciseService {
