@@ -86,5 +86,14 @@ public class TrainerServiceImpl implements TrainerService{
 	public List<Trainer> searchTrainerByName(String name) {
 		return trainerDao.selectTrainersByName(name);
 	}
+
+	@Override
+	public void addUserCount(String trainerId) {
+		trainerDao.updateUserCount(trainerId, 1);
+	}
+	
+	public void substractUserCount(String trainerId) {
+		trainerDao.updateUserCount(trainerId, -1);
+	}
 	
 }

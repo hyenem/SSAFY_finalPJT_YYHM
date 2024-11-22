@@ -14,4 +14,6 @@ public interface UserService {
 
 	User getUserById(String id);
 
+	void changeTrainerExist(String userId, int exist);
+
 }

@@ -39,4 +39,10 @@
 		ORDER BY user_count DESC;
 	</select>
 	
+	<update id="updateUserCount">
+		UPDATE trainer
+		SET user_count = #{count}
+		WHERE id=#{id}
+	</update>
+	
 </mapper>
