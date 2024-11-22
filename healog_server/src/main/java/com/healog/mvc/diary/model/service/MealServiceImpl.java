@@ -2,6 +2,9 @@ package com.healog.mvc.diary.model.service;
 
 import com.healog.mvc.diary.model.dao.MealDao;
 import com.healog.mvc.diary.model.dto.MealDto;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +15,7 @@ public class MealServiceImpl implements MealService {
     private MealDao mealDao;
 
     @Override
-    public MealDto getMealsByDiaryId(int diaryId) {
+    public List<MealDto> getMealsByDiaryId(int diaryId) {
         return mealDao.getMealsByDiaryId(diaryId);
     }
 

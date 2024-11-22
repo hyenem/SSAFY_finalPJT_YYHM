@@ -1,11 +1,13 @@
 package com.healog.mvc.diary.model.service;
 
+import java.util.List;
+
 import com.healog.mvc.diary.model.dto.MealDto;
 
 public interface MealService {
 
     // 특정 다이어리의 식단 조회
-    MealDto getMealsByDiaryId(int diaryId);
+    List<MealDto> getMealsByDiaryId(int diaryId);
 
     // 식단 등록
     void saveMeal(MealDto mealDto);
