@@ -1,13 +1,14 @@
 <template>
-  <div>
-    <p v-if="!diary">Loading diary data...</p>
-    <div v-else>
-      <input v-model="condition" placeholder="Enter condition here" />
-      <button @click="saveCondition">등록</button>
+  <div class="condition">
+    <h3>Plan</h3>
+      <p v-if="!diary">Loading diary data...</p>
+      <div v-else>
+        <input v-model="condition" placeholder="Enter condition here" />
+        <button @click="saveCondition">등록</button>
 
-      <!-- Exercise List -->
-      <ExerciseList v-if="diary.id" :diaryId="diary.id" />
-    </div>
+        <!-- Exercise List -->
+        <ExerciseList v-if="diary.id" :diaryId="diary.id" />
+      </div>
   </div>
 </template>
 
@@ -56,6 +57,7 @@ const saveCondition = async () => {
       day: diary.value.day,
     };
     await diaryStore.updateDiaryCondition(diaryDto);
+    alert('Condition updated successfully!');
   }
 };
 
@@ -63,5 +65,9 @@ watch(() => props.date, fetchDiary, { immediate: true });
 </script>
 
 <style scoped>
-
+.condition {
+  border: 1px solid;
+  background-color: white;
+  padding: 1rem;
+}
 </style>

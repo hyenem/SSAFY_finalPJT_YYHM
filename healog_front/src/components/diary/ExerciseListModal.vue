@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useExerciseStore } from '@/stores/exerciseStore';
 
 const props = defineProps({
@@ -117,7 +117,7 @@ const saveChanges = async () => {
     exercise.value.categoryId = matchedCategory.id;
 
     if (isEditing.value) {
-      await exerciseStore.updateExercise(exercise.value);
+      await exerciseStore.updateExercise(exercise.value, postureImgFile.value);
       alert('Exercise updated successfully!');
     } else {
       await exerciseStore.addExercise(exercise.value);
@@ -141,8 +141,8 @@ onMounted(async () => {
   await exerciseStore.loadExerciseAreas();
   await initializeExercise();
 });
-watch(selectedArea, fetchExercisesByArea);
 </script>
+
 
 <style scoped>
 .modal {

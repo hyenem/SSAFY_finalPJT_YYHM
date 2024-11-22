@@ -1,8 +1,10 @@
 <template>
-  <div>
+  <div class="calendar">
     <h3>Calendar</h3>
-    <input type="date" @change="onDateChange" />
-    <button @click="clearDate">Reset</button>
+    <div>
+      <input type="date" @change="onDateChange" />
+      <button @click="clearDate">Reset</button>
+    </div>
   </div>
 </template>
 
@@ -33,7 +35,15 @@ const emitDate = () => {
     emit('dateSelected', dateObject);
   }
 };
+
 </script>
 
 <style scoped>
+.calendar {
+  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 1rem;
+}
 </style>

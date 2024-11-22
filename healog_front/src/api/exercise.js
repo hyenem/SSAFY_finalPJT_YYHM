@@ -55,15 +55,25 @@ export const fetchExercisesByDiaryId = async (diaryId) => {
   }
 };
 
-export const updateExercise = async (exercise) => {
+export const updateExercise = async (exerciseDto, postureImgFile) => {
+  const formData = new FormData();
+  formData.append(
+      "exerciseDto",
+      new Blob([JSON.stringify(exerciseDto)], { type: "application/json" })
+  );
+
+  if (postureImgFile) {
+      formData.append("postureImg", postureImgFile);
+  }
+
   try {
-    const response = await api.put('/user/exercise', exercise, {
-      headers: { 'Content-Type': 'application/json' },
-    });
-    return response.data;
+      const response = await api.put('/user/exercise', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return response.data;
   } catch (error) {
-    console.error('Failed to update exercise:', error);
-    throw error;
+      console.error('Failed to update exercise:', error);
+      throw error;
   }
 };
 
