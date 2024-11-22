@@ -71,4 +71,9 @@ public class UserServiceImpl implements UserService{
 		return user;
 	}
 
+	@Override
+	public void changeTrainerExist(String id, int exist) {
+		userDao.updateTrainerExist(id, exist);
+	}
+
 }

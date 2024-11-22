@@ -24,4 +24,7 @@ public interface TrainerService {
 
 	List<Trainer> searchTrainerByName(String name);
 
+	void addUserCount(String trainerId);
+
+	void substractUserCount(String trainerId);
 }

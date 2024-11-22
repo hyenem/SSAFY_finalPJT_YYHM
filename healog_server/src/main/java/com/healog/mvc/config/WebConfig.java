@@ -28,6 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH");
 	}
 	
+
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // /uploads/profile/** 요청을 실제 파일 경로로 매핑
@@ -38,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
 //	@Override
 //	public void addInterceptors(InterceptorRegistry registry) {
 //		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")
-//		.excludePathPatterns("/**/trainer/**", "/**/login/**", "/user/signup/","/**/signup/**",  "/swagger-ui/**", "/v3/api-docs/**", "/check");
+//		.excludePathPatterns("/trainer/**", "/user/**",  "/swagger-ui/**", "/v3/api-docs/**", "/check", "/trainer**");
 //	}
 
 }

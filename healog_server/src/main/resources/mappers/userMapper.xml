@@ -23,4 +23,10 @@
 		WHERE id = #{id}
 	</select>
 	
+	<update id="updateTrainerExist">
+		UPDATE user
+		SET trainer_exist = #{exist}
+		WHERE id = #{id}
+	</update>
+	
 </mapper>
