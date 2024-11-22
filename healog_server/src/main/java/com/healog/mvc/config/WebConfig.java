@@ -40,4 +40,5 @@ public class WebConfig implements WebMvcConfigurer {
 //		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")
 //		.excludePathPatterns("/**/trainer/**", "/**/login/**", "/user/signup/","/**/signup/**",  "/swagger-ui/**", "/v3/api-docs/**", "/check");
 //	}
+
 }

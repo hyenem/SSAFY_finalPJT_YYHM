@@ -17,6 +17,9 @@ import { ref, computed, watch } from 'vue';
 import { useDiaryStore } from '@/stores/diaryStore';
 import ExerciseList from '@/components/diary/ExerciseList.vue';
 
+localStorage.setItem('lastVisitedUrl', location.href)
+
+
 const props = defineProps({
   date: {
     type: Object,

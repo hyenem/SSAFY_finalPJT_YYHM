@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.healog.mvc.account.model.dto.Gym;
 import com.healog.mvc.account.model.dto.Trainer;
+import com.healog.mvc.account.model.dto.User;
 
 public interface TrainerService {
 
@@ -12,5 +13,15 @@ public interface TrainerService {
 	boolean isValidId(String email);
 
 	boolean signUp(Trainer trainer);
+
+	Trainer checkLogin(String string, String string2);
+
+	String getIdByEmail(String email);
+
+	Trainer getTrainerById(String id);
+
+	List<Trainer> getAllTrainer();
+
+	List<Trainer> searchTrainerByName(String name);
 
 }

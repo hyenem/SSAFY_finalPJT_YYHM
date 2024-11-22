@@ -117,7 +117,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `healog`.`trainer` (
   `id` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(100) NOT NULL,
   `salt` VARCHAR(20) NOT NULL,
   `created_at_datetime` DATETIME NOT NULL DEFAULT NOW(),
   `name` VARCHAR(45) NOT NULL,
@@ -127,6 +127,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`trainer` (
   `img` VARCHAR(45) NULL, -- 자신의 사진을 저장합니다
   `location` INT NOT NULL, -- 자신이 일하는 헬스장을 저장합니다.
   `user_count` INT NOT NULL DEFAULT '0', -- 비정규화입니다. 본인이 담당하고 있는 회원의 수를 저장합니다. 효율성을 위함입니다.
+  `gender` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email` (`email` ASC) VISIBLE,
   INDEX `gym_id` (`location` ASC) VISIBLE,
