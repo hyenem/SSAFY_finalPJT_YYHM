@@ -1,7 +1,9 @@
 <template>
-    <div>
-        <h4>nav</h4>
+    <div class="nav">
+        <img class="logo" @click="gotoHome" src="@/assets/logo.png"/>
+        <!--
         <button @click="gotoHome">home</button>
+        -->
         <div v-if="userStore.loginUser.type==='trainer'">
             <hr>
             <h5>팔로워 선택</h5>
@@ -13,11 +15,20 @@
             </div>
             지금 보고있는 사람의 id : {{ userStore.follower.id }}
         </div>
-        <div>{{ userStore.loginUser.type }}</div>
-        <div>{{ userStore.loginUser.name }}</div>
-        <div @click="gotoMyPage">마이페이지</div>
-        <button @click="userStore.logout" v-if="userStore.loginUser.id">로그아웃</button>
-        <hr>
+        <div class="mypage">
+            <div class="name">
+                Hello, {{ loginUserInfo.name }}
+            </div>
+            <font-awesome-icon
+                class="user"
+                @click="toggleLogoutModal"
+                :icon="['fas', 'circle-user']"
+            />
+            <div v-if="showLogoutModal" class="logout-modal">
+                <button @click="userStore.logout">로그아웃</button>
+                <button @click="gotoMyPage">마이페이지</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -31,6 +42,7 @@ const userStore = useUserStore()
 const router = useRouter()
 
 const followerList = ref([])
+const showLogoutModal = ref(false); // 모달 표시 상태 관리
 const REST_API_SUBSCRIBE_URL = "http://localhost:8080/subscribe"
 
 const setFollower = function(id, name){
@@ -50,7 +62,12 @@ const gotoMyPage = function(){
     router.push({name: 'mypage'})
 }
 
-onBeforeMount(()=>{
+// 로그아웃 모달 토글
+const toggleLogoutModal = function () {
+  showLogoutModal.value = !showLogoutModal.value;
+};
+
+onMounted(()=>{
     userStore.getUser((userData)=>{
         if(userData){
             loginUserInfo.value = userData
@@ -71,5 +88,76 @@ onBeforeMount(()=>{
 </script>
 
 <style scoped>
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
 
+.logo {
+  width: 5rem;
+  cursor: pointer;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.mypage {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  position: relative; /* 부모 컨테이너를 기준으로 위치 설정 */
+}
+
+.mypage .name {
+  font-weight: 500;
+  color: #333;
+}
+
+.mypage div {
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.user {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.logout-modal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 8px;
+  z-index: 1000;
+}
+
+.logout-modal button {
+  border: none;
+  background-color: #7FC678;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-modal button:hover {
+  background: #65A45B;
+}
+
+.mypage div:hover {
+  color: #0056b3;
+}
 </style>
+

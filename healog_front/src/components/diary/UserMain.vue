@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h4>UserMain</h4>
     <div class="userMain">
       <div class="leftPanel">
         <div class="calendarWrapper">
@@ -45,6 +44,7 @@ const onDateSelected = (date) => {
   align-items: flex-start;
   padding: 2rem;
   background-color: #e0f1e2;
+  gap: 1rem;
 }
 
 .leftPanel {
@@ -68,12 +68,11 @@ const onDateSelected = (date) => {
 }
 
 .rightPanel {
-  width: 65%; /* 우측 패널 폭 설정 */
+  width: 70%; /* 우측 패널 폭 설정 */
   height: 100%; /* 우측 패널 높이 설정 */
   overflow-y: auto; /* 내용이 길 경우 스크롤 활성화 */
   background-color: white; /* 배경 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
   border-radius: 3px; /* 둥근 모서리 */
-  padding: 1rem;
 }
 </style>
