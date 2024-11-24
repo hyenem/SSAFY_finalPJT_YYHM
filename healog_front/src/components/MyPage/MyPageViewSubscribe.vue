@@ -47,13 +47,14 @@
 </template>
 
 <script setup>
-import router from '@/router';
 import { useSubscribeStore } from '@/stores/subscribeStore';
 import { useUserStore } from '@/stores/userStore';
 import axios from 'axios';
-import { onBeforeMount, onMounted, ref, unref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const userStore = useUserStore()
+const router = useRouter()
 
 const REST_API_TRAINER_URL = "http://localhost:8080/trainer"
 const REST_API_SUBSCRIBE_URL = "http://localhost:8080/subscribe"
@@ -84,7 +85,7 @@ const subscribe = function(id){
             subscribeMonth : subscribeMonth.value
         }).then((res)=>{
             alert("구독되었습니다.")
-            router.replace({name: 'mypage'})
+            router.push({name: 'info'})
         }).catch((error)=>{
             alert("구독에 실패했습니다.")
         })
@@ -116,7 +117,17 @@ const findGymName = function(number){
 }
 
 const cancelSubscription = function(){
-    
+    let confirmResult = false
+    confirmResult = confirm("진짜로 구독 취소하실건가요?")
+    if(confirmResult){
+        axios.patch(REST_API_SUBSCRIBE_URL+"/cancel", {
+            userId : userStore.loginUser.id,
+            trainerId : loginUserInfo.value.trainer.id
+        }).then(()=>{
+            alert("구독 취소되었습니다.")
+            router.push({name : 'info'})
+        })
+    }
 }
 
 onMounted(()=>{
