@@ -38,7 +38,8 @@ onMounted(()=>{
   if(userStore.loginUser.type==='trainer'){
       axios.get(REST_API_SUBSCRIBE_URL+"/follow?id="+userStore.loginUser.id)
       .then((res)=>{
-        userStore.follower=res.data[0].id
+        userStore.follower.id=res.data[0].id
+        userStore.follower.name=res.data[0].name
       })
     }
 })

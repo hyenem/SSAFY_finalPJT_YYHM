@@ -20,7 +20,7 @@ export const useDiaryStore = defineStore('diary', {
           this.diaryEntries = await getDiariesByUserId(userStore.loginUser.id)
         } else {
           console.log('trainer')
-          this.diaryEntries = await getDiariesByUserId(userStore.follower)
+          this.diaryEntries = await getDiariesByUserId(userStore.follower.id)
         }
       } catch (error) {
         console.error('Failed to fetch diary list:', error);
@@ -44,7 +44,7 @@ export const useDiaryStore = defineStore('diary', {
           );
         } else {
           this.selectedDiary = await getDiaryByDate(
-            userStore.follower,
+            userStore.follower.id,
             date.year,
             date.month,
             date.day

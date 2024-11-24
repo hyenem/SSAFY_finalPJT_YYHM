@@ -23,13 +23,8 @@ import { ref } from 'vue';
 import Calendar from './Calendar.vue';
 import Feedback from './Feedback.vue';
 import DiaryView from '@/views/DiaryView.vue';
-import { useUserStore } from '@/stores/userStore';
 
 localStorage.setItem('lastVisitedUrl', location.href);
-
-const userStore = useUserStore();
-
-const loginUserType = userStore.loginUser.type;
 
 const today = new Date();
 const selectedDate = ref({
