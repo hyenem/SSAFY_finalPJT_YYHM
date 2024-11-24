@@ -16,7 +16,12 @@ export const useDiaryStore = defineStore('diary', {
           alert('로그인 상태를 확인해주세요.');
           return;
         }
-        this.diaryEntries = await getDiariesByUserId(userStore.loginUser.id);
+        if(userStore.loginUser.type==='user'){
+          this.diaryEntries = await getDiariesByUserId(userStore.loginUser.id)
+        } else {
+          console.log('trainer')
+          this.diaryEntries = await getDiariesByUserId(userStore.follower)
+        }
       } catch (error) {
         console.error('Failed to fetch diary list:', error);
         alert('다이어리 목록을 가져오는 중 문제가 발생했습니다.');
@@ -30,12 +35,21 @@ export const useDiaryStore = defineStore('diary', {
           alert('로그인 상태를 확인해주세요.');
           return;
         }
-        this.selectedDiary = await getDiaryByDate(
-          userStore.loginUser.id,
-          date.year,
-          date.month,
-          date.day
-        );
+        if(userStore.loginUser.type==='user'){
+          this.selectedDiary = await getDiaryByDate(
+            userStore.loginUser.id,
+            date.year,
+            date.month,
+            date.day
+          );
+        } else {
+          this.selectedDiary = await getDiaryByDate(
+            userStore.follower,
+            date.year,
+            date.month,
+            date.day
+          );
+        }
       } catch (error) {
         console.error('Failed to fetch diary:', error);
         this.selectedDiary = null;

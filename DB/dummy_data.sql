@@ -96,9 +96,6 @@ INSERT INTO exercise (category_id, diary_id, weight, count, `set`, done) VALUES
 (8, 14, 40, 10, 3, 1), -- 트라이셉스
 (10, 14, 0, 80, 3, 1); -- 플랭크
 
--- 동일한 날짜에는 사용자의 컨디션이 하나만 등록되도록 고유키 추가
-ALTER TABLE diary
-ADD CONSTRAINT unique_diary_date UNIQUE (year, month, day, user_id);
 
 INSERT INTO `healog`.`gym` (`name`, `address`, `phonenumber`) VALUES
 ('Fit Nation Gym', '123 Main St, New York, NY', '212-555-1234'),

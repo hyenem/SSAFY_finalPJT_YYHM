@@ -32,7 +32,6 @@ public class MealController {
     private static final String IMG_DIRECTORY = "src/main/resources/static/img/";
     private static final String IMG_URL_PREFIX = "/img/";
     
-    @Autowired
     public MealController(MealService mealService) {
         this.mealService = mealService;
     }

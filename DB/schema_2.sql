@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`diary` (
   `day` INT NOT NULL,
   `user_id` VARCHAR(45) NOT NULL,
   `condition` TEXT NULL DEFAULT NULL, -- 해당 일에 컨디션을 트레이너에게 전달하기 위해서 text타입의 컨디션을 저장합니다.
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`year`, `month`, `day`, `user_id`),
   INDEX `fk_diary_user1_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_diary_user1`
     FOREIGN KEY (`user_id`)
