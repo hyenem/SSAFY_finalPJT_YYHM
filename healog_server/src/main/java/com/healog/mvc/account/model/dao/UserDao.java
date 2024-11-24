@@ -9,5 +9,7 @@ public interface UserDao {
 	String selectIdByEmail(String email);
 	int insertUser(User user);
 	User selectByEmail(String email);
+	User selectAllById(String id);
+	void updateTrainerExist(String id, int exist);
 
 }

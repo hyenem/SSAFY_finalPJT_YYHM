@@ -40,10 +40,13 @@ public class CheckController {
 			Map<String, String> map = new HashMap<>();
 			String type = (String)claims.getPayload().get("type");
 			String email = (String)claims.getPayload().get("email");
-			String id = userService.getUserInfo(email);
+			String id = "";
+			if(type.equals("user"))	id = userService.getUserInfo(email);
+			else id = trainerService.getIdByEmail(email);
 			map.put("id", id);
 			map.put("type", type);
-			return new ResponseEntity<Map>(map, HttpStatus.OK);
+			System.out.println(map);
+			return new ResponseEntity<Map<String, String>>(map, HttpStatus.OK);
         } catch (Exception e) {
             // 서명 검증 실패 또는 유효하지 않은 토큰
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();

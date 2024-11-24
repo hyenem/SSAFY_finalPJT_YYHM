@@ -32,7 +32,7 @@
         <br>
         <label for="location">location(*): </label>
         <select name="location" id="location" v-model="location">
-            <option v-for="gym in gyms" value="{{gym.id}}">{{ gym.name }}</option>
+            <option v-for="gym in gyms" :value="gym.id">{{ gym.name }}</option>
         </select>
         <br>
         <button @click="signup">회원가입</button>
@@ -110,7 +110,7 @@ const signup = function(){
                 location : location.value
             }).then((res)=>{
                 alert("회원가입 되었습니다. 로그인창으로 이동합니다.")
-                router.replace({name: "userLogin"})
+                router.replace({name: "trainerLogin"})
             }).catch((error)=>{
                 alert("회원 가입 실패")
             })
@@ -124,7 +124,7 @@ const signup = function(){
 
 const gyms = ref(null)
 onMounted(()=>{
-    axios.get(REST_API_TRAINER_URL+'/signup/gym')
+    axios.get(REST_API_TRAINER_URL+'/gym')
     .then((res)=>{
         gyms.value=res.data
     })

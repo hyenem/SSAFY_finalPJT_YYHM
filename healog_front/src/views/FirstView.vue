@@ -20,7 +20,12 @@
       
       onMounted(() => {
         if(userStore.loginUser.id){
-          router.push({name : 'main'})
+          let beforeRouter = localStorage.getItem('lastVisitedUrl')
+          if(!beforeRouter){
+            router.push({name: 'main'})
+          } else {
+            router.push({name: beforeRouter.split('/')[3]})
+          }
         } else {
           router.push({name : 'account'})
         }

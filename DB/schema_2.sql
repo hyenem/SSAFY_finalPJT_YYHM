@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`exercise` (
   `weight` INT NULL DEFAULT NULL,
   `count` INT NULL DEFAULT NULL,
   `set` INT NULL DEFAULT NULL,
-  `posture_img` VARCHAR(45) NULL DEFAULT NULL, -- 운동을 완료했을 때 자세를 기록할 수 있도록 합니다.
+  `posture_img` VARCHAR(255) NULL DEFAULT NULL, -- 운동을 완료했을 때 자세를 기록할 수 있도록 합니다.
   `done` INT NOT NULL DEFAULT 0,  -- 운동의 완료 여부를 기록하기 위함입니다. 미완료 0, 완료 1입니다.
   PRIMARY KEY (`id`),
   INDEX `fk_exercise_category1_idx` (`category_id` ASC) VISIBLE,
@@ -117,7 +117,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `healog`.`trainer` (
   `id` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(100) NOT NULL,
   `salt` VARCHAR(20) NOT NULL,
   `created_at_datetime` DATETIME NOT NULL DEFAULT NOW(),
   `name` VARCHAR(45) NOT NULL,
@@ -127,6 +127,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`trainer` (
   `img` VARCHAR(45) NULL, -- 자신의 사진을 저장합니다
   `location` INT NOT NULL, -- 자신이 일하는 헬스장을 저장합니다.
   `user_count` INT NOT NULL DEFAULT '0', -- 비정규화입니다. 본인이 담당하고 있는 회원의 수를 저장합니다. 효율성을 위함입니다.
+  `gender` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email` (`email` ASC) VISIBLE,
   INDEX `gym_id` (`location` ASC) VISIBLE,
@@ -205,12 +206,13 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- 회원과 트레이너의 연결을 저장하기 위함입니다.
 CREATE TABLE IF NOT EXISTS `healog`.`subscription` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` VARCHAR(45) NOT NULL,
   `trainer_id` VARCHAR(45) NOT NULL,
   `category` INT NOT NULL,-- 온라인 구독(0), 오프라인 구독(1)이 저장됩니다.
   `start_date` VARCHAR(45) NOT NULL, -- 구독을 하기 시작한 날짜와
   `end_date` VARCHAR(45) NOT NULL,  -- 구독이 끝나는 날짜가 저장됩니다.
+  `valid` INT NOT NULL DEFAULT 1, -- 1이면 기간 안지난, 0이면 기간 지난
   PRIMARY KEY (`id`),
   INDEX `fk_onlinesubscription_user1_idx` (`user_id` ASC) VISIBLE,
   INDEX `fk_onlinesubscription_trainer1_idx` (`trainer_id` ASC) VISIBLE,

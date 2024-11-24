@@ -29,7 +29,7 @@ public class JwtInterceptor implements HandlerInterceptor{
 				jwtUtil.vaildate(token);
 				return true;				
 			} catch(Exception e){
-				
+
 			}
 		}
 		throw new Exception("유효하지 않은 접근입니다.");

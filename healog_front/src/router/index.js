@@ -11,6 +11,9 @@ import axios from 'axios';
 import AccountViewTrainer from '@/components/account/trainer/AccountViewTrainer.vue';
 import AccountViewTrainerLogin from '@/components/account/trainer/AccountViewTrainerLogin.vue';
 import AccountViewTrainerSignup from '@/components/account/trainer/AccountViewTrainerSignup.vue';
+import MyPageView from '@/views/MyPageView.vue';
+import MyPageViewInfo from '@/components/MyPage/MyPageViewInfo.vue';
+import MyPageViewSubscribe from '@/components/MyPage/MyPageViewSubscribe.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +27,23 @@ const router = createRouter({
       path: '/main',
       name: 'main',
       component: MainView
+    },
+    {
+      path:'/mypage',
+      name: 'mypage',
+      component : MyPageView,
+      children : [
+        {
+          path: 'info',
+          name: 'info',
+          component: MyPageViewInfo
+        },
+        {
+          path: 'subscribe',
+          name: 'subscribe',
+          component: MyPageViewSubscribe
+        }
+      ]
     },
     {
       path: '/account',
@@ -82,15 +102,20 @@ router.beforeEach((to, from, next)=>{
       userStore.loginUser.type = res.data.type
       next()
     }).catch(()=>{
-      console.log('catch')
       sessionStorage.removeItem('access-token')
       userStore.loginUser.id = null
       userStore.loginUser.type = null
       alert("유효하지 않은 접근입니다. 다시 로그인해주세요.")
-      next(from)
+      next({name : 'main'})
     })
   } else {
-    next()
+    if(to.fullPath.split('/')[1]!=='account'){
+      userStore.loginUser.id=null
+      userStore.loginUser.type=null
+      next({name : 'account'})
+    } else{
+      next()
+    }
   }
 })
 
