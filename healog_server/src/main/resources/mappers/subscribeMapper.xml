@@ -41,4 +41,5 @@
 			WHERE trainer_id = #{trainerId} AND valid = 1
 		)
 	</select>
+
 </mapper>

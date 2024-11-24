@@ -1,45 +1,50 @@
 import { defineStore } from 'pinia';
-import { getMeals, saveMeal, deleteMeal } from '@/api/meal';
+import { getMealsByDiaryId, uploadMealImage, deleteMealImage } from '@/api/meal';
 
 export const useMealStore = defineStore('meal', {
-    state: () => ({
-        meals: [], // 특정 다이어리의 식단 데이터
-    }),
-    actions: {
-        // 특정 다이어리의 식단 조회
-        async fetchMeals(diaryId) {
-            try {
-                const data = await getMeals(diaryId);
-                console.log('Fetched Meals:', data); // 서버에서 반환된 데이터를 확인
-                this.meals = data.map(meal => ({
-                    ...meal,
-                    breakfastImg: meal.breakfastImg ? meal.breakfastImg : null,
-                    lunchImg: meal.lunchImg ? meal.lunchImg : null,
-                    dinnerImg: meal.dinnerImg ? meal.dinnerImg : null,
-                }));
-            } catch (error) {
-                console.error('Failed to fetch meals:', error);
-            }
-        },
-        
-        // 식단 저장
-        async saveMeal(diaryId, formData) {
-            try {
-                formData.append('diaryId', diaryId); // diaryId를 FormData에 추가
-                await saveMeal(formData); // saveMeal 호출
-                await this.fetchMeals(diaryId); // 저장 후 다시 조회
-            } catch (error) {
-                console.error('Failed to save meal:', error);
-            }
-        },
-        // 식단 삭제
-        async deleteMeal(mealId, diaryId) {
-            try {
-                await deleteMeal(mealId);
-                await this.fetchMeals(diaryId); // 삭제 후 다시 조회
-            } catch (error) {
-                console.error('Failed to delete meal:', error);
-            }
-        },
+  state: () => ({
+    meals: {}, // 현재 다이어리의 식단 정보
+    diaryId: null, // 현재 선택된 다이어리 ID
+  }),
+
+  actions: {
+    // 특정 다이어리의 식단 조회
+    async fetchMeals(diaryId) {
+      try {
+        const data = await getMealsByDiaryId(diaryId);
+        console.log('Fetched Meals:', data[0]); // 첫 번째 데이터 확인
+        this.meals = data[0] || {}; // 첫 번째 데이터만 저장, 없으면 빈 객체
+        this.diaryId = diaryId;
+      } catch (error) {
+        console.error('Failed to fetch meals:', error);
+        throw error;
+      }
     },
+
+    // 식단 이미지 업로드
+    async uploadMealImage(diaryId, mealType, file) {
+      try {
+        const response = await uploadMealImage(diaryId, mealType, file);
+        console.log('Meal image uploaded:', response);
+        await this.fetchMeals(diaryId); // 업로드 후 최신 데이터 다시 로드
+      } catch (error) {
+        console.error('Failed to upload meal image:', error);
+        throw error;
+      }
+    },
+
+    // 식단 이미지 삭제
+    async deleteMealImage(mealId, mealType) {
+      try {
+        await deleteMealImage(mealId, mealType);
+        console.log(`Meal image of type "${mealType}" deleted.`);
+        if (this.diaryId) {
+          await this.fetchMeals(this.diaryId); // 삭제 후 최신 데이터 다시 로드
+        }
+      } catch (error) {
+        console.error('Failed to delete meal image:', error);
+        throw error;
+      }
+    },
+  },
 });

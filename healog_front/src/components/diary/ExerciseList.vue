@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h3>Exercise List</h3>
-    {{ diaryId }}
-    <button @click="openModal(null)" class="add-exercise">+ Add Exercise</button>
+    <div class="header">
+      <h3>Exercise List</h3>
+    </div>
     <p v-if="isLoading">Loading exercises...</p>
     <div v-else-if="exercises.length">
       <div class="exerciseList" v-for="exercise in exercises" :key="exercise.id">
-        <div>
+        <!-- Exercise Card -->
+        <div class="exerciseCard" @click="openModal(exercise.id)">
           <div>
             {{ exercise.exercise }} | {{ exercise.exerciseArea }}
           </div>
@@ -14,11 +15,13 @@
             {{ exercise.set || 'N/A' }}세트 X {{ exercise.weight || 'N/A' }} kg X {{ exercise.count || 'N/A' }}회
           </div>
         </div>
+        <!-- Done Checkbox -->
         <input
           type="checkbox"
           :checked="exercise.done"
           @change="toggleDone(exercise)"
         />
+        <!-- Image Preview -->
         <div class="image-preview">
           <img
             v-if="exercise.postureImg"
@@ -28,11 +31,10 @@
           />
           <p v-else>No Image</p>
         </div>
-        <button @click="openModal(exercise.id)">Edit</button>
-        <button @click="deleteExercise(exercise.id)" class="delete-exercise">Delete</button>
       </div>
     </div>
     <p v-else>Plan을 추가해주세요.</p>
+    <button @click="openModal(null)" class="add-exercise">+</button>
     
     <ExerciseListModal
       v-if="isModalOpen"
@@ -41,8 +43,7 @@
       @close="closeModal"
     />
 
-    <MealList />
-
+    <MealList :diaryId="diaryId" />
   </div>
 </template>
 
@@ -120,25 +121,47 @@ watch(
 );
 </script>
 
-
 <style scoped>
+.header {
+  display: flex;
+  gap: 1rem;
+}
+
 .exerciseList {
   display: flex;
-  border: 1px solid;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
   padding: 1rem;
-  margin: 1rem 0;
-}
-
-.image-preview {
-  display: inline-block;
-  margin-right: 10px;
-}
-
-.posture-img {
-  width: 5rem;
-  height: 5rem;
-  object-fit: cover;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  position: relative; /* Delete 버튼 위치 조정 */
 }
+
+
+.exerciseCard {
+  cursor: pointer;
+  flex: 2;
+}
+
+.image-preview img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 1rem;
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  color: black;
+  cursor: pointer;
+}
+
 </style>

@@ -1,11 +1,12 @@
 <template>
   <div class="calendar">
     <h3>Calendar</h3>
-    <div>
-      <div @click="lastMonth"> < </div>
-      <div>{{ year }} 년</div>
-      <div>{{ month }} 월</div>
-      <div @click="nextMonth"> > </div>
+    <div class="calendarDiary">
+      <div class="calendarHeader">
+        <div @click="lastMonth"> < </div>
+        <div>{{ year }} 년 {{ month }} 월</div>
+        <div @click="nextMonth"> > </div>
+      </div>
       <table>
         <thead>
           <tr>
@@ -18,7 +19,7 @@
             <th>SAT</th>
           </tr>
         </thead>
-        <tbody>
+        <!-- <tbody>
           <tr v-for="week in dateOfThisMonth">
             <td @click="onDateChange(week[0])">{{ week[0].split("-")[2] }}</td>
             <td @click="onDateChange(week[1])">{{ week[1].split("-")[2] }}</td>
@@ -28,7 +29,20 @@
             <td @click="onDateChange(week[5])">{{ week[5].split("-")[2] }}</td>
             <td @click="onDateChange(week[6])">{{ week[6].split("-")[2] }}</td>
           </tr>
+        </tbody> -->
+        <tbody>
+          <tr v-for="week in dateOfThisMonth" :key="week">
+            <td
+              v-for="date in week"
+              :key="date"
+              :class="{ today: isToday(date) }"
+              @click="onDateChange(date)"
+            >
+              {{ date.split("-")[2] }}
+            </td>
+          </tr>
         </tbody>
+
       </table>
       <button @click="goToday">today</button>
     </div>
@@ -128,14 +142,103 @@ const emitDate = () => {
   }
 };
 
+const isToday = (date) => {
+  const [y, m, d] = date.split("-").map(Number);
+  return (
+    y === today.getFullYear() &&
+    m === today.getMonth() + 1 &&
+    d === today.getDate()
+  );
+};
+
+
 </script>
 
 <style scoped>
 .calendar {
-  border: 1px solid;
   display: flex;
   flex-direction: column;
-  background-color: white;
-  padding: 1rem;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: auto;
+}
+
+.calendar td.today {
+  background-color: #B7E0B2;
+  color: black; /* 가독성을 위해 텍스트 색상을 검정으로 변경 */
+  font-weight: bold;
+}
+
+.calendarDiary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-weight: bold;
+  color: #333;
+  font-size: 1rem;
+  gap: 10px; /* 버튼과 텍스트 간 간격 조정 */
+}
+
+.calendarHeader div:nth-child(2) {
+  flex-grow: 1; /* 년과 월을 가운데 정렬 */
+  text-align: center;
+}
+
+.calendarHeader div {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.calendar table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar td {
+  text-align: center;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+}
+
+.calendar th {
+  text-align: center;
+  padding: 0.5rem;
+  color: black;
+  font-weight: bold;
+}
+
+.calendar td:hover {
+  background-color: #7FC678;
+  color: white;
+}
+
+.calendar button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #7FC678;
+  color: white;
+  cursor: pointer;
+}
+
+.calendar button:hover {
+  background-color: #65A45B;
 }
 </style>
+
+
