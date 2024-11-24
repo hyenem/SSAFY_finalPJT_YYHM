@@ -13,11 +13,15 @@ const REST_API_SUBSCRIBE_URL = 'http://localhost:8080/subscribe'
 
 export const useUserStore = defineStore('user', () => {
   const loginUser = {
+    name : null,
     id : null,
     type : null
   }
 
-  const follower = ref(null)
+  const follower = {
+    id : null,
+    name : null
+  }
 
   const logout = function(){
     loginUser.id=null
@@ -80,7 +84,6 @@ export const useUserStore = defineStore('user', () => {
 
     axios.get(`${API_URL}?id=${loginUser.id}`)
     .then((res)=>{
-      console.log(res.data)
       callback(res.data)
     }).catch((error)=>{
       console.log(error)

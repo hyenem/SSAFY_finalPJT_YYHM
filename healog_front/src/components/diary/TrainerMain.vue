@@ -27,7 +27,7 @@ const userStore = useUserStore()
 
 const today = new Date()
 const selectedDate = ref({
-    id : userStore.follower,
+    id : userStore.follower.id,
     year : today.getFullYear(),
     month : today.getMonth()+1,
     day : today.getDate()
@@ -40,10 +40,11 @@ const onDateSelected = (date) => {
 
 onMounted(()=>{
     if(userStore.loginUser.type==='trainer'){
-        if(!userStore.follower){
+        if(!userStore.follower.id){
             axios.get(REST_API_SUBSCRIBE_URL+"/follow?id="+userStore.loginUser.id)
             .then((res)=>{
-              userStore.follower=res.data[0].id
+              userStore.follower.id=res.data[0].id
+              userStore.follower.name = res.data[0].name
             })
         }
     }

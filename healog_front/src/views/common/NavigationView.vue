@@ -9,11 +9,11 @@
             <h5>팔로워 선택</h5>
             <div v-if="followerList.length===0">팔로워가 없습니다.</div>
             <div v-else>
-                <div v-for="follower in followerList" @click = "setFollower(follower.id)">
+                <div v-for="follower in followerList" @click = "setFollower(follower.id, follower.name)">
                     {{ follower.name }}
                 </div>
             </div>
-            지금 보고있는 사람의 id : {{ userStore.follower }}
+            지금 보고있는 사람의 id : {{ userStore.follower.id }}
         </div>
         <div class="mypage">
             <div class="name">
@@ -45,8 +45,9 @@ const followerList = ref([])
 const showLogoutModal = ref(false); // 모달 표시 상태 관리
 const REST_API_SUBSCRIBE_URL = "http://localhost:8080/subscribe"
 
-const setFollower = function(id){
-    userStore.follower = id
+const setFollower = function(id, name){
+    userStore.follower.id = id
+    userStore.follower.name = name
 }
 
 const gotoHome = function(){
@@ -77,8 +78,9 @@ onMounted(()=>{
         axios.get(REST_API_SUBSCRIBE_URL+"/follow?id="+userStore.loginUser.id)
         .then((res)=>{
             followerList.value=res.data
-            if(!userStore.follower){
-              userStore.follower=res.data[0].id
+            if(!userStore.follower.id){
+              userStore.follower.id=res.data[0].id
+              userStore.follower.name = res.data[0].name
             }
         })
     }

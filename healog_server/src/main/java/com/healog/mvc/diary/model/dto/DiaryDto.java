@@ -61,6 +61,13 @@ public class DiaryDto {
 	public void setCondition(String condition) {
 		this.condition = condition;
 	}
+
+
+	@Override
+	public String toString() {
+		return "DiaryDto [id=" + id + ", year=" + year + ", month=" + month + ", day=" + day + ", userId=" + userId
+				+ ", condition=" + condition + "]";
+	}
 	
 	
 
