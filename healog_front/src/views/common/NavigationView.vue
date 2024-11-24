@@ -35,7 +35,7 @@
 <script setup>
 import { useUserStore } from '@/stores/userStore';
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const userStore = useUserStore()
@@ -74,10 +74,13 @@ onMounted(()=>{
     })
 
     if(userStore.loginUser.type==='trainer'){
-      axios.get(REST_API_SUBSCRIBE_URL+"/follow?id="+userStore.loginUser.id)
-      .then((res)=>{
-        followerList.value=res.data
-      })
+        axios.get(REST_API_SUBSCRIBE_URL+"/follow?id="+userStore.loginUser.id)
+        .then((res)=>{
+            followerList.value=res.data
+            if(!userStore.follower){
+              userStore.follower=res.data[0].id
+            }
+        })
     }
 })
 </script>
