@@ -1,8 +1,6 @@
 <template>
   <div>
     <NavigationView/>
-
-    <h1>Main View</h1>
     <UserMain v-if="loginUserType==='user'"/>
     <TrainerMain v-if="loginUserType==='trainer'"/>
   </div>
@@ -34,10 +32,19 @@ const onDateSelected = (date) => {
 </script>
 
 <style scoped>
-.main {
-  display : flex;
-  justify-content: space-around;
-  padding: 2rem;
-  background-color: #E0F1E2
+
+
+.calendar-container {
+  flex: 1; /* Calendar 컴포넌트 영역 조정 */
+  max-width: 25%;
+}
+
+.diary-container {
+  flex: 3; /* Diary 컴포넌트가 더 넓은 공간 차지 */
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 </style>
+

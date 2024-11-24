@@ -66,8 +66,29 @@ watch(() => props.date, fetchDiary, { immediate: true });
 
 <style scoped>
 .condition {
-  border: 1px solid;
-  background-color: white;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.condition input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.condition button {
+  padding: 0.5rem 1rem;
+  background-color: #7FC678;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.condition button:hover {
+  background-color: #65A45B;
 }
 </style>
+

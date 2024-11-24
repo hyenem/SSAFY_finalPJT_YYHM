@@ -69,7 +69,12 @@ public class SubscribeController {
 	@PatchMapping("/check")
 	public ResponseEntity<?> checkValid(@RequestParam String id){
 		int num = subscribeService.checkValid(id);
-		return ResponseEntity.status(HttpStatus.OK).build();
+
+		if(num==0) {
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
 	}
 	
 	@PatchMapping("/cancel")
@@ -87,5 +92,6 @@ public class SubscribeController {
 		List<Map<String, String>> followerList = subscribeService.getFollowerById(id);
 		System.out.println(followerList);
 		return new ResponseEntity<List<Map<String, String>>>(followerList, HttpStatus.OK);
+
 	}
 }

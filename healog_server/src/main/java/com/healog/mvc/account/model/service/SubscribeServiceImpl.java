@@ -19,6 +19,7 @@ public class SubscribeServiceImpl implements SubscribeService {
 
 	@Override
 	public boolean subscribe(String trainerId, String userId, int subscribeMonth) {
+
 		subscribeDao.updateValid(userId);
 		int result = subscribeDao.insertSubscribe(trainerId, userId, subscribeMonth);
 		if(result>0) return true;

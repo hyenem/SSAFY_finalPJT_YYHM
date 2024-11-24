@@ -2,7 +2,7 @@ package com.healog.mvc.diary.model.dto;
 
 public class MealDto {
 
-    private int id; // Meal ID
+    private int id;
     private String breakfastImg; // Breakfast image
     private String lunchImg; // Lunch image
     private String dinnerImg; // Dinner image
