@@ -32,14 +32,7 @@ const onDateSelected = (date) => {
 </script>
 
 <style scoped>
-.main {
-  display: flex;
-  justify-content: space-between; /* 좌우로 요소 분배 */
-  gap: 2rem;
-  padding: 2rem;
-  background-color: #E0F1E2;
-  height: calc(100vh - 4rem); /* 화면 크기 기준으로 영역 설정 */
-}
+
 
 .calendar-container {
   flex: 1; /* Calendar 컴포넌트 영역 조정 */

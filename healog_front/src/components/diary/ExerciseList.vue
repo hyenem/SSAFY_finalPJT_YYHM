@@ -2,7 +2,6 @@
   <div>
     <div class="header">
       <h3>Exercise List</h3>
-      <button @click="openModal(null)" class="add-exercise">+</button>
     </div>
     <p v-if="isLoading">Loading exercises...</p>
     <div v-else-if="exercises.length">
@@ -35,6 +34,7 @@
       </div>
     </div>
     <p v-else>Plan을 추가해주세요.</p>
+    <button @click="openModal(null)" class="add-exercise">+</button>
     
     <ExerciseListModal
       v-if="isModalOpen"
@@ -155,11 +155,12 @@ watch(
 }
 
 button {
+  width: 100%;
+  padding: 1rem;
   background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid #ccc;
   color: black;
-  font-size: 1.5rem;
-  color: #ff4d4f;
-  border: none;
   cursor: pointer;
 }
 

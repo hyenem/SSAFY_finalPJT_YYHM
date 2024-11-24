@@ -4,12 +4,14 @@
     <div class="overlay" @click="closeModal"></div>
     <!-- 모달 -->
     <div class="modal">
-      <h3>{{ isEditing ? "Edit" : "Add" }} Exercise Plan</h3>
-      <button class="close-btn" type="button" @click="closeModal">X</button>
-      <form @submit.prevent="saveChanges">
-        <!-- 운동 부위 선택 -->
-        <div class="category">
-          <div>
+      <div class="modal-header">
+        <h3>Plan</h3>
+        <button class="close-btn" @click="closeModal">×</button>
+      </div>
+      <form @submit.prevent="saveChanges" class="modal-form">
+        <div class="form-row-first">
+          <!-- 부위 -->
+          <div class="form-group">
             <label>부위</label>
             <select id="exerciseArea" v-model="selectedArea" @change="fetchExercisesByArea">
               <option v-for="area in exerciseStore.exerciseAreas" :key="area" :value="area">
@@ -17,9 +19,8 @@
               </option>
             </select>
           </div>
-
-          <!-- 운동 선택 -->
-          <div>
+          <!-- 기구 -->
+          <div class="form-group">
             <label>기구</label>
             <select id="exercise" v-model="exercise.exercise">
               <option v-for="ex in exerciseStore.exercisesByArea" :key="ex.id" :value="ex.exercise">
@@ -28,26 +29,35 @@
             </select>
           </div>
         </div>
-
-        <!-- 나머지 수정 필드 -->
-        <label>세트</label>
-        <input type="number" v-model="exercise.set" />
-
-        <label>무게</label>
-        <input type="number" v-model="exercise.weight" />
-
-        <label>횟수</label>
-        <input type="number" v-model="exercise.count" />
-
-
-        <div>
-          <label for="postureImg">Posture Image:</label>
-          <input type="file" id="postureImg" @change="handleFileChange" />
-          <img v-if="postureImgPreview" :src="postureImgPreview" alt="Preview" />
+        <div class="form-row">
+          <!-- 세트, 무게, 횟수 -->
+          <div class="form-group">
+            <label>세트</label>
+            <input type="number" v-model="exercise.set" />
+          </div>
+          <div class="form-group">
+            <label>무게</label>
+            <input type="number" v-model="exercise.weight" />
+          </div>
+          <div class="form-group">
+            <label>횟수</label>
+            <input type="number" v-model="exercise.count" />
+          </div>
         </div>
-
-        <button type="submit">{{ isEditing ? "Save" : "Add" }}</button>
-        <button @click.stop="deleteExercise(exercise.id)">delete</button>
+        <!-- 이미지 업로드 -->
+        <div class="form-group">
+          <label>Posture Image</label>
+          <div class="image-upload">
+            <img v-if="postureImgPreview" :src="postureImgPreview" alt="Preview" class="preview-img" />
+            <input type="file" @change="handleFileChange" />
+          </div>
+          <p class="helper-text">Please upload square image, size less than 100KB</p>
+        </div>
+        <!-- 버튼 -->
+        <div class="button-group">
+          <button type="button" class="delete-btn" @click="deleteExercise(exercise.id)">Delete</button>
+          <button type="submit" class="save-btn">{{ isEditing ? "Save" : "Create" }}</button>
+        </div>
       </form>
     </div>
   </div>
@@ -168,57 +178,151 @@ onMounted(async () => {
 
 
 <style scoped>
-/* 오버레이 스타일 */
+/* 오버레이 */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
-  z-index: 999; /* 모달보다 아래에 표시 */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }
 
+/* 모달 */
 .modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1000; /* 오버레이 위에 표시 */
+  z-index: 1000;
   background-color: white;
-  padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 400px; /* 적절한 너비 설정 */
-  max-width: 90%; /* 화면 크기에 따라 유동적으로 조정 */
+  padding: 1.5rem;
+  width: 420px;
+  max-width: 90%;
 }
 
-form {
+/* 헤더 */
+.modal-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.category {
-  display: flex;
+.modal-header h3 {
+  font-size: 1.2rem;
+  margin: 0;
 }
 
 .close-btn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
   background-color: transparent;
   border: none;
   font-size: 1.5rem;
-  color: grey;
   cursor: pointer;
+  color: #555;
 }
 
-img {
-  width: 100px;
-  height: auto;
-  margin-top: 1rem;
+/* 폼 */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 행 */
+.form-row-first {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 필드 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+label {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  color: #555;
+}
+
+input,
+select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* 이미지 업로드 */
+.image-upload {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.preview-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
   border-radius: 4px;
   border: 1px solid #ddd;
 }
+
+.helper-text {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 0.3rem;
+}
+
+/* 버튼 그룹 */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.delete-btn {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  border: 1px solid #ff4d4f;
+  color: #ff4d4f;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.delete-btn:hover {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.save-btn {
+  padding: 0.5rem 1rem;
+  background-color: #7fc678;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.save-btn:hover {
+  background-color: #65a45b;
+}
 </style>
+
 

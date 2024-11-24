@@ -3,36 +3,33 @@
     <h3>Meal</h3>
     <div class="meal">
     <!-- Breakfast -->
-    <div>
+    <div class="mealImg">
+      <img
+        :src="resolveImagePath(meals.breakfastImg)"
+        alt="Breakfast Image"
+        @click="openModal('breakfast')"
+      />
       <h4>Breakfast</h4>
-        <img
-          :src="resolveImagePath(meals.breakfastImg)"
-          alt="Breakfast Image"
-          @click="openModal('breakfast')"
-        />
-        <button @click="deleteImage('breakfast')">Delete Breakfast</button>
     </div>
 
     <!-- Lunch -->
-    <div>
+    <div class="mealImg">
+      <img
+        :src="resolveImagePath(meals.lunchImg)"
+        alt="Lunch Image"
+        @click="openModal('lunch')"
+      />
       <h4>Lunch</h4>
-        <img
-          :src="resolveImagePath(meals.lunchImg)"
-          alt="Lunch Image"
-          @click="openModal('lunch')"
-        />
-        <button @click="deleteImage('lunch')">Delete Lunch</button>
     </div>
 
     <!-- Dinner -->
-    <div>
+    <div class="mealImg">
+      <img
+        :src="resolveImagePath(meals.dinnerImg)"
+        alt="Dinner Image"
+        @click="openModal('dinner')"
+      />
       <h4>Dinner</h4>
-        <img
-          :src="resolveImagePath(meals.dinnerImg)"
-          alt="Dinner Image"
-          @click="openModal('dinner')"
-        />
-        <button @click="deleteImage('dinner')">Delete Dinner</button>
     </div>
     </div>
 
@@ -72,21 +69,6 @@ const resolveImagePath = (path) => {
 };
 
 
-// 이미지 삭제
-const deleteImage = async (mealType) => {
-  const mealId = meals.value.id; // 현재 다이어리의 mealId
-  try {
-    const confirmed = confirm(`Are you sure you want to delete ${mealType}?`);
-    if (!confirmed) return;
-
-    await mealStore.deleteMealImage(mealId, mealType);
-    alert(`${mealType} image deleted successfully.`);
-  } catch (error) {
-    console.error('Error deleting image:', error);
-    alert(`Failed to delete ${mealType} image.`);
-  }
-};
-
 // 모달 열기
 const openModal = (mealType) => {
   selectedMealType.value = mealType;
@@ -118,22 +100,22 @@ watch(
 <style scoped>
 .meal {
   display: flex;
+  justify-content: space-between;
 }
 
-h3 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #333;
+.mealImg {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 
 img {
-  width: 100px;
-  height: 100px;
+  width: 15rem;
+  height: 15rem;
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid #ddd;
   cursor: pointer;
-  margin-bottom: 0.5rem;
 }
 
 button {
