@@ -55,8 +55,6 @@ onMounted(()=>{
 .diary-container {
   flex: 3; /* Diary 컴포넌트가 더 넓은 공간 차지 */
   background-color: #fff;
-  padding: 1.5rem;
-  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 </style>

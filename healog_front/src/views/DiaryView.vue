@@ -1,13 +1,15 @@
 <template>
   <div class="condition">
     <h3>Plan</h3>
-      <p v-if="!diary">Loading diary data...</p>
-      <div v-else>
-        <input v-model="condition" placeholder="Enter condition here" />
-        <button @click="saveCondition">등록</button>
+      <div>
+        <p v-if="!diary">Loading diary data...</p>
+        <div v-else>
+          <input v-model="condition" placeholder="Enter condition here" />
+          <button @click="saveCondition">등록</button>
 
-        <!-- Exercise List -->
-        <ExerciseList v-if="diary.id" :diaryId="diary.id" />
+          <!-- Exercise List -->
+          <ExerciseList v-if="diary.id" :diaryId="diary.id" />
+        </div>
       </div>
   </div>
 </template>
@@ -71,7 +73,9 @@ watch(() => props.date, fetchDiary, { immediate: true });
 .condition {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   padding: 1.5rem;
+  margin: auto;
 }
 
 .condition input {

@@ -160,9 +160,6 @@ const isToday = (date) => {
   flex-direction: column;
   gap: 1rem;
   padding: 1.5rem;
-  border-radius: 12px;
-  max-width: 400px;
-  margin: auto;
 }
 
 .calendar td.today {
@@ -184,8 +181,6 @@ const isToday = (date) => {
   align-items: center;
   width: 100%;
   font-weight: bold;
-  color: #333;
-  font-size: 1rem;
   gap: 10px; /* 버튼과 텍스트 간 간격 조정 */
 }
 
