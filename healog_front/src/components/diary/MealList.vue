@@ -4,31 +4,34 @@
     <div class="meal">
     <!-- Breakfast -->
     <div class="mealImg">
-      <img
+      <img v-if="meals.breakfastImg"
         :src="resolveImagePath(meals.breakfastImg)"
         alt="Breakfast Image"
         @click="openModal('breakfast')"
       />
+      <img v-else src="@/assets/default-image.png"/>
       <h4>Breakfast</h4>
     </div>
 
     <!-- Lunch -->
     <div class="mealImg">
-      <img
+      <img v-if="meals.lunchImg"
         :src="resolveImagePath(meals.lunchImg)"
         alt="Lunch Image"
         @click="openModal('lunch')"
       />
+      <img v-else src="@/assets/default-image.png"/>
       <h4>Lunch</h4>
     </div>
 
     <!-- Dinner -->
     <div class="mealImg">
-      <img
+      <img v-if="meals.dinnerImg"
         :src="resolveImagePath(meals.dinnerImg)"
         alt="Dinner Image"
         @click="openModal('dinner')"
       />
+      <img v-else src="@/assets/default-image.png"/>
       <h4>Dinner</h4>
     </div>
     </div>
@@ -138,4 +141,3 @@ button:hover {
   text-align: center;
 }
 </style>
-

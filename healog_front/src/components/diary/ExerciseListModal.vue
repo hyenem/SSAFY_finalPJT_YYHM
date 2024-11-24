@@ -49,6 +49,7 @@
           <label>Posture Image</label>
           <div class="image-upload">
             <img v-if="postureImgPreview" :src="postureImgPreview" alt="Preview" class="preview-img" />
+            <img v-else src="@/assets/default-placeholder.png">
             <input type="file" @change="handleFileChange" />
           </div>
           <p class="helper-text">Please upload square image, size less than 100KB</p>
@@ -197,7 +198,7 @@ onMounted(async () => {
   transform: translate(-50%, -50%);
   z-index: 1000;
   background-color: white;
-  border-radius: 8px;
+  border-radius: 3px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 1.5rem;
   width: 420px;
@@ -263,7 +264,7 @@ input,
 select {
   padding: 0.5rem;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 3px;
   font-size: 0.9rem;
 }
 
@@ -278,7 +279,7 @@ select {
   width: 80px;
   height: 80px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 3px;
   border: 1px solid #ddd;
 }
 
@@ -291,8 +292,8 @@ select {
 /* 버튼 그룹 */
 .button-group {
   display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
+  justify-content: flex-end;
+  gap: 1rem;
 }
 
 .delete-btn {
@@ -300,7 +301,7 @@ select {
   background-color: transparent;
   border: 1px solid #ff4d4f;
   color: #ff4d4f;
-  border-radius: 4px;
+  border-radius: 3px;
   cursor: pointer;
   font-size: 0.9rem;
 }
@@ -315,7 +316,7 @@ select {
   background-color: #7fc678;
   border: none;
   color: white;
-  border-radius: 4px;
+  border-radius: 3px;
   cursor: pointer;
   font-size: 0.9rem;
 }
