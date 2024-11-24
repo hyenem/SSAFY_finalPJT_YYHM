@@ -138,7 +138,7 @@ img {
 
 button {
   padding: 0.5rem 1rem;
-  background-color: #f44336;
+  background-color: #7FC678;
   color: white;
   border: none;
   border-radius: 4px;
@@ -147,7 +147,7 @@ button {
 }
 
 button:hover {
-  background-color: #d32f2f;
+  background-color: #65A45B;
 }
 
 .no-image-placeholder {

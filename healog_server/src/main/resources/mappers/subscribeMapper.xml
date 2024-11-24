@@ -24,7 +24,22 @@
 	<update id="updateValid">
 		UPDATE subscription
 		SET valid = CASE
-		WHEN NOW() > end_date THEN 0 END
+		WHEN NOW() > end_date THEN 0 ELSE valid END
 		WHERE user_id = #{id} AND valid = 1;
 	</update>
+	
+	<update id="updateValidToZero">
+		UPDATE subscription
+		SET valid = 0
+		WHERE user_id= #{userId} AND valid = 1;
+	</update>
+	
+	<select id="selectUserByTrainerId">
+		SELECT id, name FROM user
+		WHERE id IN (
+			SELECT user_id FROM subscription
+			WHERE trainer_id = #{trainerId} AND valid = 1
+		)
+	</select>
+
 </mapper>

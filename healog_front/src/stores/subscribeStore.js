@@ -9,7 +9,6 @@ export const useSubscribeStore = defineStore('subscribe', () => {
 
     const checkValid = axios.patch(REST_API_SUBSCRIBE_URL+"/check?id="+userStore.loginUser.id)
 
-
     const getTrainerInfoByUserId = function(userid, callback){
         axios.get(REST_API_SUBSCRIBE_URL+'/trainer?id='+userid)
         .then((res)=>{

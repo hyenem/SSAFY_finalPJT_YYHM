@@ -1,27 +1,125 @@
 <template>
   <div class="calendar">
     <h3>Calendar</h3>
-    <div>
-      <input type="date" @change="onDateChange" />
-      <button @click="clearDate">Reset</button>
+    <div class="calendarDiary">
+      <div class="calendarHeader">
+        <div @click="lastMonth"> < </div>
+        <div>{{ year }} 년 {{ month }} 월</div>
+        <div @click="nextMonth"> > </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>SUN</th>
+            <th>MON</th>
+            <th>TUE</th>
+            <th>WED</th>
+            <th>THU</th>
+            <th>FRI</th>
+            <th>SAT</th>
+          </tr>
+        </thead>
+        <!-- <tbody>
+          <tr v-for="week in dateOfThisMonth">
+            <td @click="onDateChange(week[0])">{{ week[0].split("-")[2] }}</td>
+            <td @click="onDateChange(week[1])">{{ week[1].split("-")[2] }}</td>
+            <td @click="onDateChange(week[2])">{{ week[2].split("-")[2] }}</td>
+            <td @click="onDateChange(week[3])">{{ week[3].split("-")[2] }}</td>
+            <td @click="onDateChange(week[4])">{{ week[4].split("-")[2] }}</td>
+            <td @click="onDateChange(week[5])">{{ week[5].split("-")[2] }}</td>
+            <td @click="onDateChange(week[6])">{{ week[6].split("-")[2] }}</td>
+          </tr>
+        </tbody> -->
+        <tbody>
+          <tr v-for="week in dateOfThisMonth" :key="week">
+            <td
+              v-for="date in week"
+              :key="date"
+              :class="{ today: isToday(date) }"
+              @click="onDateChange(date)"
+            >
+              {{ date.split("-")[2] }}
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+      <button @click="goToday">today</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+
+const today = new Date()
+const year = ref(today.getFullYear())
+const month = ref(today.getMonth()+1)
+const day = ref(today.getDate())
+
+const dateOfThisMonth = computed(()=>{
+  const diaryList = []
+  let end = 0;
+  let date = new Date(year.value+"-"+month.value +"-01")
+  while(true && end<10){
+    let dayOfWeek = date.getDay();
+    
+    let startDate = new Date(date);
+    startDate.setDate(date.getDate() - dayOfWeek);
+
+    let endDate = new Date(date);
+    endDate.setDate(date.getDate() + (6 - dayOfWeek));
+    console.log(startDate)
+    let weekDates = [];
+    let count = 0;
+    for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+        weekDates.push(d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate());
+    }
+
+    date.setDate(date.getDate()+7)
+    end++
+    if(count===1) continue
+    if((endDate.getMonth()+2)%12===month.value%12) continue
+    if((startDate.getMonth())%12===month.value%12) break
+    diaryList.push(weekDates)
+  }
+  return diaryList;
+})
 
 const emit = defineEmits(['dateSelected']);
-const selectedDate = ref(null);
+const selectedDate = ref({
+  year : year,
+  month : month,
+  day : day
+});
 
-const onDateChange = (event) => {
-  selectedDate.value = event.target.value;
+const lastMonth = function(){
+  if( month.value-1 ==0){
+    month.value = 12
+    year.value = year.value -1
+  } else {
+    month.value = month.value-1
+  }
+}
+const nextMonth = function(){
+  if(month.value+1==13){
+    year.value = year.value+1
+    month.value = 1
+  } else {
+    month.value = month.value+1
+  }
+}
+
+const onDateChange = (date) => {
+  selectedDate.value = date;
   emitDate();
 };
 
-const clearDate = () => {
-  selectedDate.value = null;
-  emit('dateSelected', null); // 날짜 초기화 이벤트 발생
+const goToday = () => {
+  year.value = today.getFullYear()
+  month.value = today.getMonth()+1
+  day.value = today.getDate()
+  onDateChange(year.value+"-"+month.value+"-"+day.value)
 };
 
 const emitDate = () => {
@@ -36,43 +134,103 @@ const emitDate = () => {
   }
 };
 
+const isToday = (date) => {
+  const [y, m, d] = date.split("-").map(Number);
+  return (
+    y === today.getFullYear() &&
+    m === today.getMonth() + 1 &&
+    d === today.getDate()
+  );
+};
+
+
 </script>
 
 <style scoped>
 .calendar {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: auto;
+}
+
+.calendar td.today {
+  background-color: #B7E0B2;
+  color: black; /* 가독성을 위해 텍스트 색상을 검정으로 변경 */
+  font-weight: bold;
+}
+
+.calendarDiary {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 1rem;
-  background-color: #fff;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.calendar h3 {
-  font-size: 1.2rem;
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-weight: bold;
   color: #333;
+  font-size: 1rem;
+  gap: 10px; /* 버튼과 텍스트 간 간격 조정 */
 }
 
-.calendar input[type='date'] {
+.calendarHeader div:nth-child(2) {
+  flex-grow: 1; /* 년과 월을 가운데 정렬 */
+  text-align: center;
+}
+
+.calendarHeader div {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.calendar table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar td {
+  text-align: center;
   padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+}
+
+.calendar th {
+  text-align: center;
+  padding: 0.5rem;
+  color: black;
+  font-weight: bold;
+}
+
+.calendar td:hover {
+  background-color: #7FC678;
+  color: white;
 }
 
 .calendar button {
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 4px;
-  background-color: #4CAF50;
+  border-radius: 8px;
+  background-color: #7FC678;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .calendar button:hover {
-  background-color: #45a049;
+  background-color: #65A45B;
 }
 </style>
+
 
