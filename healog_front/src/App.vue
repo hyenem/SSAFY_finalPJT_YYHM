@@ -9,6 +9,7 @@
 <script>
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useUserStore } from './stores/userStore';
 
 export default {
   name: "App",

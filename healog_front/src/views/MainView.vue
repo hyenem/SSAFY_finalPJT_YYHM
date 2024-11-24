@@ -12,6 +12,10 @@ import NavigationView from './common/NavigationView.vue';
 import UserMain from '@/components/diary/UserMain.vue';
 import TrainerMain from '@/components/diary/TrainerMain.vue';
 import { useUserStore } from '@/stores/userStore';
+import { onMounted } from 'vue';
+import axios from 'axios';
+
+const REST_API_SUBSCRIBE_URL = "http://localhost:8080/subscribe"
 
 localStorage.setItem('lastVisitedUrl', location.href)
 
@@ -29,6 +33,15 @@ const selectedDate = ref({
 const onDateSelected = (date) => {
   selectedDate.value = date;
 };
+
+onMounted(()=>{
+  if(userStore.loginUser.type==='trainer'){
+      axios.get(REST_API_SUBSCRIBE_URL+"/follow?id="+userStore.loginUser.id)
+      .then((res)=>{
+        userStore.follower=res.data[0].id
+      })
+    }
+})
 </script>
 
 <style scoped>
