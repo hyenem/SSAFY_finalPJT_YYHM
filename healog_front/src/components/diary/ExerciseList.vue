@@ -40,7 +40,7 @@
       @close="closeModal"
     />
 
-    <MealList />
+    <MealList :diaryId="diaryId" />
 
   </div>
 </template>
@@ -123,21 +123,41 @@ watch(
 <style scoped>
 .exerciseList {
   display: flex;
-  border: 1px solid;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
   padding: 1rem;
-  margin: 1rem 0;
-}
-
-.image-preview {
-  display: inline-block;
-  margin-right: 10px;
-}
-
-.posture-img {
-  width: 5rem;
-  height: 5rem;
-  object-fit: cover;
+  background-color: #fff;
   border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.exerciseList div {
+  flex: 1;
+}
+
+.image-preview img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #f44336;
+  color: white;
+  border: none;
   border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #d32f2f;
 }
 </style>
+

@@ -28,6 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH");
 	}
 	
+	
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // /uploads/profile/** 요청을 실제 파일 경로로 매핑
