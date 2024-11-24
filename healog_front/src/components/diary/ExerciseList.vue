@@ -1,6 +1,7 @@
 <template>
   <div>
     <h3>Exercise List</h3>
+    {{ diaryId }}
     <button @click="openModal(null)" class="add-exercise">+ Add Exercise</button>
     <p v-if="isLoading">Loading exercises...</p>
     <div v-else-if="exercises.length">
