@@ -2,25 +2,32 @@
   <div>
     <div class="header">
       <h3>Exercise List</h3>
+      <p class="helper-text">Please upload square image, size less than 100KB</p>
     </div>
     <p v-if="isLoading">Loading exercises...</p>
     <div v-else-if="exercises.length">
       <div class="exerciseList" v-for="exercise in exercises" :key="exercise.id">
         <!-- Exercise Card -->
+        <!-- Done Checkbox -->
+        <input
+          type="checkbox"
+          class="large-checkbox"
+          :checked="exercise.done"
+          @change="toggleDone(exercise)"
+        />
         <div class="exerciseCard" @click="openModal(exercise.id)">
-          <div>
-            {{ exercise.exercise }} | {{ exercise.exerciseArea }}
+          <div class="category">
+            <div class="exercise">
+              {{ exercise.exercise }}
+            </div>
+            <div class="exerciseArea">
+              {{ exercise.exerciseArea }}
+            </div>
           </div>
           <div>
             {{ exercise.set || 'N/A' }}세트 X {{ exercise.weight || 'N/A' }} kg X {{ exercise.count || 'N/A' }}회
           </div>
         </div>
-        <!-- Done Checkbox -->
-        <input
-          type="checkbox"
-          :checked="exercise.done"
-          @change="toggleDone(exercise)"
-        />
         <!-- Image Preview -->
         <div class="image-preview">
           <img
@@ -124,7 +131,19 @@ watch(
 <style scoped>
 .header {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1rem;
+}
+
+.header h3 {
+  margin-bottom: 0.1rem;
+}
+
+.helper-text {
+  font-size: 0.8rem;
+  color: #888;
 }
 
 .exerciseList {
@@ -142,6 +161,9 @@ watch(
 
 
 .exerciseCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   cursor: pointer;
   flex: 2;
 }
@@ -163,5 +185,47 @@ button {
   color: black;
   cursor: pointer;
 }
+
+/* Scoped CSS */
+.large-checkbox {
+  width: 24px;
+  height: 24px;
+  appearance: none; /* 기본 브라우저 스타일 제거 */
+  border: 2px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  background-color: #fff;
+}
+
+.large-checkbox:checked {
+  background-color: #4caf50; /* 체크된 상태 색상 */
+  border-color: #4caf50;
+}
+
+.large-checkbox:checked::after {
+  content: '✔'; /* 체크 표시 */
+  font-size: 18px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.category {
+  display: flex;
+  gap: 1rem;
+}
+
+.exercise {
+  font-weight: bold;
+}
+
+.exerciseArea {
+  color: grey;
+}
+
 
 </style>

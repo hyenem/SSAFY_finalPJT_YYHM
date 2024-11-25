@@ -1,10 +1,11 @@
 <template>
   <div class="condition">
-    <h3>Plan</h3>
-
-      <p v-if="!diary">Loading diary data...</p>
-      <div v-else>
-        <div v-if="userStore.loginUser.type==='user'">
+    <div class="header">
+      <h3>Plan</h3>
+    </div>
+      <div>
+        <p v-if="!diary">Loading diary data...</p>
+        <div v-else>
           <input v-model="condition" placeholder="Enter condition here" />
           <button @click="saveCondition">등록</button>
         </div>
@@ -234,9 +235,25 @@ onMounted(()=>{
 .condition {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   padding: 1.5rem;
   margin: auto;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1rem;
+}
+
+.header h3 {
+  margin-bottom: 0.1rem;
+}
+
+.helper-text {
+  font-size: 0.8rem;
+  color: #888;
 }
 
 .condition input {

@@ -1,6 +1,8 @@
 <template>
   <div class="calendar">
-    <h3>Calendar</h3>
+    <div class="header">
+      <h3>Calendar</h3>
+    </div>
     <div class="calendarDiary">
       <div class="calendarHeader">
         <div @click="lastMonth"> < </div>
@@ -155,6 +157,23 @@ const isToday = (date) => {
 </script>
 
 <style scoped>
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1rem;
+}
+
+.header h3 {
+  margin-bottom: 0.1rem;
+}
+
+.helper-text {
+  font-size: 0.8rem;
+  color: #888;
+}
+
 .calendar {
   display: flex;
   flex-direction: column;
@@ -205,9 +224,10 @@ const isToday = (date) => {
 
 .calendar td {
   text-align: center;
-  padding: 0.5rem;
+  padding: 1rem;
   border: 1px solid #e0e0e0;
   cursor: pointer;
+  font-size: 0.8rem;
 }
 
 .calendar th {

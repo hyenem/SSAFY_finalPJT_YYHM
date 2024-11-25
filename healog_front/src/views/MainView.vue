@@ -3,12 +3,14 @@
     <NavigationView/>
     <UserMain v-if="loginUserType==='user'"/>
     <TrainerMain v-if="loginUserType==='trainer'"/>
+    <FooterView />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import NavigationView from './common/NavigationView.vue';
+import FooterView from './common/FooterView.vue';
 import UserMain from '@/components/diary/UserMain.vue';
 import TrainerMain from '@/components/diary/TrainerMain.vue';
 import { useUserStore } from '@/stores/userStore';
