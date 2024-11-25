@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h2>account</h2>
         <RouterView />
     </div>
 </template>

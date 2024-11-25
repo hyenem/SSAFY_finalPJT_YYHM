@@ -95,8 +95,7 @@ onMounted(()=>{
 .settings {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 2rem;
+  padding: 1rem 2rem;
 }
 
 .title {

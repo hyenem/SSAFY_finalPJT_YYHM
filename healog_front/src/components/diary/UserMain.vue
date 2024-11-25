@@ -38,6 +38,7 @@ const onDateSelected = (date) => {
 </script>
 
 <style scoped>
+
 .userMain {
   display: flex;
   justify-content: space-between;
