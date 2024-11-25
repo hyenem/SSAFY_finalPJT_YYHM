@@ -100,6 +100,14 @@ router.beforeEach((to, from, next)=>{
     }).then((res)=>{
       userStore.loginUser.id = res.data.id
       userStore.loginUser.type = res.data.type
+      if(userStore.loginUser.type==='trainer'){
+        if(!userStore.follower){
+          axios.get("http://localhost:8080/subscribe/follow?id="+res.data.id)
+          .then((res)=>{
+            userStore.follower=res.data[0].id
+          })
+        }
+      }
       next()
     }).catch(()=>{
       sessionStorage.removeItem('access-token')
@@ -112,6 +120,7 @@ router.beforeEach((to, from, next)=>{
     if(to.fullPath.split('/')[1]!=='account'){
       userStore.loginUser.id=null
       userStore.loginUser.type=null
+      userStore.follower = null
       next({name : 'account'})
     } else{
       next()

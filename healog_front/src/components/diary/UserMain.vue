@@ -33,7 +33,7 @@ const loginUserType = userStore.loginUser.type;
 const today = new Date();
 const selectedDate = ref({
   year: today.getFullYear(),
-  month: today.getMonth(),
+  month: today.getMonth()+1,
   day: today.getDate(),
 });
 

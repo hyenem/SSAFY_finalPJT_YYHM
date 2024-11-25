@@ -20,6 +20,7 @@
 import { ref, computed, watch } from 'vue';
 import { useDiaryStore } from '@/stores/diaryStore';
 import ExerciseList from '@/components/diary/ExerciseList.vue';
+import { useUserStore } from '@/stores/userStore';
 
 localStorage.setItem('lastVisitedUrl', location.href)
 
@@ -31,6 +32,7 @@ const props = defineProps({
   },
 });
 
+const userStore = useUserStore()
 const diaryStore = useDiaryStore();
 const diary = ref(null);
 const condition = ref('');
@@ -48,7 +50,8 @@ const fetchDiary = async () => {
     diary.value = diaryStore.selectedDiary;
     condition.value = diary?.value?.condition || '';
   }
-};
+}
+
 
 const saveCondition = async () => {
   if (diary.value) {

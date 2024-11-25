@@ -15,7 +15,9 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public List<MealDto> getMealsByDiaryId(int diaryId) {
-        return mealDao.getMealsByDiaryId(diaryId);
+    	System.out.println(mealDao.getMealsByDiaryId(diaryId));
+    	System.out.println("*******");
+        return null;
     }
 
     @Override

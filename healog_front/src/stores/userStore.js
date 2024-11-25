@@ -22,9 +22,11 @@ export const useUserStore = defineStore('user', () => {
   const logout = function(){
     loginUser.id=null
     loginUser.type=null
+    follower.value = null
     sessionStorage.removeItem('access-token')
     router.push({name : "account"})
   }
+
 
   const login = function(email, password, type){
     if(type==='user'){

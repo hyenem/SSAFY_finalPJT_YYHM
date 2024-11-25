@@ -52,7 +52,10 @@
 </template>
 
 <script setup>
+import { useUserStore } from '@/stores/userStore';
 import { computed, ref, watch } from 'vue';
+
+const userStore = useUserStore()
 
 const today = new Date()
 const year = ref(today.getFullYear())
@@ -111,6 +114,11 @@ const nextMonth = function(){
     month.value = month.value+1
   }
 }
+
+watch(()=>userStore.follower,()=>{
+    selectedDate.value = null
+    onDateChange(year.value+"-"+month.value+"-"+day.value)
+})
 
 const onDateChange = (date) => {
   selectedDate.value = date;
