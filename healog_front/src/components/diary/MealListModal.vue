@@ -8,7 +8,6 @@
     <div class="modal-body">
       <p class="helper-text">Please upload square image, size less than 100KB</p>
       <div class="file-upload">
-        <img src="@/assets/default-placeholder.png" />
         <input type="file" @change="uploadImage" />
       </div>
     </div>
@@ -105,6 +104,19 @@ const closeModal = () => {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.modal-header h3 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
 }
 
 .helper-text {

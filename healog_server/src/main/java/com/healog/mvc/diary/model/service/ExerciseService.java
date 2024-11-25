@@ -23,7 +23,8 @@ public interface ExerciseService {
     void deleteExercise(int id);
 
     // 운동 완료 여부 업데이트
-    void markExerciseAsDone(int id, String postureImg);
+    void markExerciseAsDone(int id, String postureImg, int done);
+
     
 
 }
