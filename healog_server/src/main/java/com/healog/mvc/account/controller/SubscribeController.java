@@ -50,10 +50,8 @@ public class SubscribeController {
 	@GetMapping("/trainer")
 	public ResponseEntity<?> getTrainerInfo(@RequestParam("id") String userid){
 		Trainer trainer = subscribeService.getTrainerInfo(userid);
-		if(trainer!=null && trainer.getId()!=null) {
-			return new ResponseEntity<Trainer>(trainer, HttpStatus.OK);
-		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		return new ResponseEntity<Trainer>(trainer, HttpStatus.OK);
+
 	}
 	
 	@GetMapping("/gym")

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import router from '@/router'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const REST_API_TRAINER_URL = 'http://localhost:8080/trainer'
 const REST_API_USER_URL = 'http://localhost:8080/user'
@@ -24,10 +24,11 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const logout = function(){
-    loginUser.id=null
-    loginUser.type=null
-    follower.value = null
     sessionStorage.removeItem('access-token')
+    loginUser.id = null
+    loginUser.type= null
+    follower.id = null
+    follower.name = null
     router.push({name : "account"})
   }
 

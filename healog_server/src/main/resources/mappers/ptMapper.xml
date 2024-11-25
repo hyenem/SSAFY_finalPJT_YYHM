@@ -12,4 +12,20 @@
 		INSERT INTO personaltraining (trainer_id, diary_id, time)
 		VALUES (#{trainerId}, #{diaryId}, #{time})
 	</insert>
+	
+	<select id="selectPtByDiaryId" parameterType="int" resultType="Pt">
+		SELECT * FROM personaltraining
+		WHERE diary_id=#{id}
+	</select>
+	
+	<update id="updateTime">
+		UPDATE personaltraining
+		SET time = #{time}
+		WHERE diary_id = #{id}
+	</update>
+	
+	<delete id="deletePt">
+		DELETE FROM personaltraining
+		WHERE diary_id=#{id}
+	</delete>
 </mapper>

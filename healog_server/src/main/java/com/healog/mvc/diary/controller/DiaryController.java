@@ -40,6 +40,8 @@ public class DiaryController {
             @RequestParam int day) {
         try {
             DiaryDto diary = diaryService.getDiaryByDate(userId, year, month, day);
+            
+            System.out.println("*********");
             System.out.println(diary);
             if (diary == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
