@@ -14,6 +14,7 @@ public class User {
 	private String birthday;
 	private String phonenumber;
 	private int trainerExist;
+	private String type = "user";
 	
 	public User(){}
 	
@@ -31,6 +32,16 @@ public class User {
 		this.birthday = birthday;
 		this.phonenumber = phonenumber;
 		this.trainerExist = trainerExist;
+	}
+
+
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 

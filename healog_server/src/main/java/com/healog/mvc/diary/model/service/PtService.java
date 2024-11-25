@@ -4,7 +4,7 @@ import com.healog.mvc.diary.model.dto.Pt;
 
 public interface PtService {
 
-	boolean getPt(String userId, int year, int month, int day);
+	int getPt(String userId, int year, int month, int day);
 
 	void setPt(String trainerId, int diaryId, int time);
 
@@ -13,5 +13,8 @@ public interface PtService {
 	void updateTime(int id, int time);
 
 	void deletePt(int id);
+
+	void requestInsert(int id, int time, int i);
+
 
 }

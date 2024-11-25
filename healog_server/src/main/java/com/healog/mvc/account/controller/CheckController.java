@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.healog.mvc.account.model.dto.Trainer;
+import com.healog.mvc.account.model.dto.User;
 import com.healog.mvc.account.model.service.TrainerService;
 import com.healog.mvc.account.model.service.UserService;
 import com.healog.mvc.util.JwtUtil;
@@ -41,12 +43,15 @@ public class CheckController {
 			String type = (String)claims.getPayload().get("type");
 			String email = (String)claims.getPayload().get("email");
 			String id = "";
-			if(type.equals("user"))	id = userService.getUserInfo(email);
-			else id = trainerService.getIdByEmail(email);
-			map.put("id", id);
-			map.put("type", type);
-			System.out.println(map);
-			return new ResponseEntity<Map<String, String>>(map, HttpStatus.OK);
+			if(type.equals("user"))	{
+				id = userService.getUserInfo(email);
+				User user = userService.getUserById(id);
+				return new ResponseEntity<User>(user, HttpStatus.OK);
+			}else {
+				id = trainerService.getIdByEmail(email);
+				Trainer trainer = trainerService.getTrainerById(id);
+				return new ResponseEntity<Trainer>(trainer, HttpStatus.OK);
+			}
         } catch (Exception e) {
             // 서명 검증 실패 또는 유효하지 않은 토큰
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();

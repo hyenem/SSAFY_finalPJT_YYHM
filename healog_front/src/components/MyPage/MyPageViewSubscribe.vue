@@ -90,7 +90,6 @@ const subscribeMonth= ref(1)
 const showGymInfo = ref(false)
 
 const openSubscribeModal = function(id){
-    subscribeMonth.value = 1
     subscribeModalId.value=id
 }
 

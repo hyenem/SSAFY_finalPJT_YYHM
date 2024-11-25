@@ -13,5 +13,7 @@ public interface PtDao {
 	void updateTime(int id, int time);
 
 	void deletePt(int id);
+
+	void insertOrUpdatePt(String trainerId, int id, int time, int requestDiary, int requestState, int requestTime);
 	
 }

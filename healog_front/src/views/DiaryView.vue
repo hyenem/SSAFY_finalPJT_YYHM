@@ -6,41 +6,65 @@
       <div>
         <p v-if="!diary">Loading diary data...</p>
         <div v-else>
-          <input v-model="condition" placeholder="Enter condition here" />
-          <button @click="saveCondition">등록</button>
-        </div>
-        <div v-else>
-          <div v-if="!isPt">
-            <button @click="openPtModal = !openPtModal"> pt일정 등록 </button>
-            <div v-if="openPtModal">
-              <hr>
-              <h4>PT 일정 등록 폼</h4>
-              <label for ="time">PT 시간</label>
-              <select id="time" v-model="selectedTime">
-                <option v-for="i in time">{{ i }}</option>
-              </select>
-              <button @click="setPt">등록하기</button>
-              <hr>
+          <div v-if="userStore.loginUser.type==='trainer'">
+            <div v-if="isPt===0">
+              <button @click="openPtModal = !openPtModal"> pt일정 등록 </button>
+              <div v-if="openPtModal">
+                <hr>
+                <h4>PT 일정 등록 폼</h4>
+                <label for ="time">PT 시간</label>
+                <select id="time" v-model="selectedTime">
+                  <option v-for="i in time">{{ i }}</option>
+                </select>
+                <button @click="setPt">등록하기</button>
+                <hr>
+              </div>
+            </div>
+            <div v-else>
+              <div>pt 시간 : {{ ptInfo.time }}시</div>
+              <button @click="openPtModal=!openPtModal">pt 일정 수정하기</button>
+              <div v-if="openPtModal">
+                <hr>
+                <label for ="time">PT 시간</label>
+                <select id="time" v-model="selectedTime">
+                  <option v-for="i in time">{{ i }}</option>
+                </select>
+                <button @click="updatePt">수정하기</button>
+                <button @click="deletePt">삭제하기</button>
+                <hr>
+              </div>
             </div>
           </div>
+          <div v-else-if="userStore.loginUser.trainerExist===1">
+            <div v-if="isPt===0">
+              <div>pt가 없는 날입니다.</div>
+              <button @click="openPtModal=!openPtModal">pt 생성 요청하기</button>
+              <div v-if="openPtModal">
+                <hr>
+                  <label for ="time">희망 PT 시간</label>
+                  <select id="time" v-model="selectedTime">
+                    <option v-for="i in time">{{ i }}</option>
+                  </select>
+                  <button @click="requestInsertPt">요청</button>
+                <hr>
+              </div>
+            </div>
+            <div v-else-if="isPt===3">
+              <div> PT 생성 요청 승인 대기중입니다.</div>
+              <button @click="cancelRequestInsert">요청 취소하기</button>
+            </div>
+            <div v-else-if="isPt===1">
+
+            </div>
+          </div>
+          <div v-if="userStore.loginUser.type==='trainer'"> 오늘의 컨디션 : {{ condition ? condition : "등록된 컨디션이 없습니다."  }}</div>
           <div v-else>
-            <div>pt 시간 : {{ ptInfo.time }}시</div>
-            <button @click="openPtModal=!openPtModal">pt 일정 수정하기</button>
-            <div v-if="openPtModal">
-              <hr>
-              <label for ="time">PT 시간</label>
-              <select id="time" v-model="selectedTime">
-                <option v-for="i in time">{{ i }}</option>
-              </select>
-              <button @click="updatePt">수정하기</button>
-              <button @click="deletePt">삭제하기</button>
-              <hr>
-            </div>
+            <input v-model="condition" placeholder="Enter condition here" />
+            <button @click="saveCondition">{{ condition? "수정" : "등록" }}</button>
           </div>
-          <div > 오늘의 컨디션 : {{ condition ? condition : "등록된 컨디션이 없습니다."  }}</div>
+          <!-- Exercise List -->
+          <ExerciseList v-if="diary" :diaryId="diary.id" />
         </div>
-        <!-- Exercise List -->
-        <ExerciseList v-if="diary.id" :diaryId="diary.id" />
       </div>
   </div>
 </template>
@@ -70,6 +94,21 @@ const openPtModal = ref(false)
 const selectedTime = ref(-1)
 const time = [0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
 const ptInfo = ref({})
+
+const requestInsertPt = function(){
+  const check = confirm(diary.value.year+"년 "+diary.value.month+"월 "+diary.value.day+"일 "+selectedTime.value+"시에 pt를 요청하시겠습니까?")
+  if(check){
+    axios.post("http://localhost:8080/pt/request/insert",{
+      id : diary.value.id,
+      time : selectedTime.value,
+    }).then(()=>{
+      alert("요청이 전송되었습니다.")
+      router.push({name : 'main'})
+    }).catch((error)=>{
+      console.log(error)
+    })
+  }
+}
 
 const updatePt = function(){
   let check = confirm(diary.value.year+"년 "+diary.value.month+"월 "+diary.value.day+"일 "+userStore.follower.name+"의 pt 일정을 "+selectedTime.value+"시에로 수정하시겠습니까?")
@@ -133,42 +172,46 @@ const fetchDiary = async () => {
     await diaryStore.fetchDiaryByDate(props.date);
     diary.value = diaryStore.selectedDiary;
     condition.value = diary?.value?.condition || '';
-  }
+    axios.get("http://localhost:8080/pt",{
+      params : {
+        userId : userStore.loginUser.type==='user' ? userStore.loginUser.id : userStore.follower.id,
+        year : diary.value.year,
+        month : diary.value.month,
+        day : diary.value.day
+      }
+    }).then((res)=>{
+      isPt.value = res.data
+      if(isPt.value!==0){
+        axios.get("http://localhost:8080/pt/info",{
+          params : {
+            userId : userStore.loginUser.type==='user' ? userStore.loginUser.id : userStore.follower.id,
+            year : diary.value.year,
+            month : diary.value.month,
+            day : diary.value.day
+        }
+      }).then((res)=>{
+        console.log(res.data)
+        ptInfo.value = res.data
+        selectedTime.value = ptInfo.value.time
+      })
+    }else{
+      ptInfo.value=null
+    }
+  })
+}
 }
 
 const followerChange = computed(()=>{
   return userStore.follower.id
 })
 
-const isPt = ref(false)
+const isPt = ref(0)
+
 watch([props.date, followerChange], ()=>{
   openPtModal.value = false
   selectedTime.value = -1
 
-  axios.get("http://localhost:8080/pt", {
-    params : {
-      userId : userStore.loginUser.type==='user'? userStore.loginUser.id : userStore.follower.id,
-      year : props.date.year,
-      month : props.date.month,
-      day : props.date.day
-    }
-  }).then((res)=>{
-    isPt.value = res.data
-    if(isPt.value){
-      axios.get("http://localhost:8080/pt/info",{
-        params : {
-          userId : userStore.loginUser.type==='user'? userStore.loginUser.id : userStore.follower.id,
-          year : props.date.year,
-          month : props.date.month,
-          day : props.date.day
-        }
-      })
-      .then((res)=>{
-        ptInfo.value = res.data
-        selectedTime.value = ptInfo.value.time
-      })
-    }
-  })
+  return fetchDiary
 })
 
 const saveCondition = async () => {
@@ -209,9 +252,8 @@ onMounted(()=>{
           day : today.getDate()
         }
       }).then((res)=>{
-        console.log(res)
         isPt.value = res.data
-        if(isPt.value){
+        if(isPt.value!==0){
           axios.get("http://localhost:8080/pt/info",{
             params : {
               userId : userStore.loginUser.type==='user'? userStore.loginUser.id : userStore.follower.id,

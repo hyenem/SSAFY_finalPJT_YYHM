@@ -17,6 +17,7 @@ public class Trainer {
 	private int userCount;
 	private String img;
 	private String bio;
+	private String type="trainer";
 	
 	public Trainer() {}
 	
@@ -37,6 +38,27 @@ public class Trainer {
 		this.userCount = userCount;
 		this.img = img;
 		this.bio = bio;
+	}
+
+
+	
+	public int getUserCount() {
+		return userCount;
+	}
+
+
+	public void setUserCount(int userCount) {
+		this.userCount = userCount;
+	}
+
+
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 

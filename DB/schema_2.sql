@@ -234,9 +234,10 @@ COLLATE = utf8mbpersonaltraining4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `healog`.`personaltraining` (
   `trainer_id` VARCHAR(45) NOT NULL,
   `diary_id` INT NOT NULL, -- diary의 id를 통해서 pt 날짜를 알 수 있습니다.
-  `requestDate` VARCHAR(45) NULL, -- 회원이 수정 날짜를 전송할 수 있습니다.
+  `requestDiary` INT NULL, -- 회원이 수정 날짜를 전송할 수 있습니다.
   `requestState` INT NULL, -- 트레이너의 수정 요청에 대한 처리여부를 표시합니다. 미확인(0), 승인(1), 거절(2)
   `time` INT NOT NULL,
+	`requestTime` INT NULL,
   PRIMARY KEY (`diary_id`),
   INDEX `fk_personaltraining_trainer1_idx` (`trainer_id` ASC) VISIBLE,
   INDEX `fk_personaltraining_diary1_idx` (`diary_id` ASC) VISIBLE,

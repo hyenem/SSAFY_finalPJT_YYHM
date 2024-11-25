@@ -111,6 +111,8 @@ router.beforeEach((to, from, next)=>{
             }
           })
         }
+      } else {
+        userStore.loginUser.trainerExist = res.data.trainerExist
       }
       next()
     }).catch(()=>{
@@ -120,6 +122,7 @@ router.beforeEach((to, from, next)=>{
       userStore.loginUser.type = null
       userStore.follower.name = null
       userStore.follower.id = null
+      userStore.loginUser.trainerExist = null
       alert("유효하지 않은 접근입니다. 다시 로그인해주세요.")
       next({name : 'main'})
     })
@@ -130,6 +133,7 @@ router.beforeEach((to, from, next)=>{
       userStore.loginUser.type=null
       userStore.follower.id = null
       userStore.follower.name=null
+      userStore.loginUser.trainerExist = null
       next({name : 'account'})
     } else{
       next()
