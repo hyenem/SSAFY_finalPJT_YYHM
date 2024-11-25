@@ -1,9 +1,14 @@
 <template>
     <div>
-        <h1>MyPage</h1>
         <NavigationView />
-        <MyPageViewSidebar />
-        <RouterView />
+        <div class="mypage">
+            <div class="leftPanel">
+                <MyPageViewSidebar />
+            </div>
+            <div class="rightPanel">
+                <RouterView />
+            </div>
+        </div>
     </div>
 </template>
 
@@ -31,5 +36,30 @@ onMounted((to, from, next)=>{
 </script>
 
 <style scoped>
+
+.mypage {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch; /* 자식 요소 높이를 동일하게 설정 */
+  padding: 2rem;
+  background-color: #e0f1e2;
+  gap: 1rem;
+}
+
+.leftPanel {
+  width: 25%; /* 좌측 패널 폭 설정 */
+  background-color: white; /* 배경 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
+  border-radius: 3px; /* 둥근 모서리 */
+}
+
+.rightPanel {
+  width: 75%; /* 우측 패널 폭 설정 */
+  overflow-y: auto; /* 내용이 길 경우 스크롤 활성화 */
+  background-color: white; /* 배경 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
+  border-radius: 3px; /* 둥근 모서리 */
+}
+
 
 </style>

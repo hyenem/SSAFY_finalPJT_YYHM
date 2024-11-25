@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h3>Meal</h3>
+    <div class="header">
+      <h3>Meal</h3>
+      <p class="helper-text">Please upload square image, size less than 100KB</p>
+    </div>
     <div class="meal">
     <!-- Breakfast -->
     <div class="mealImg">
@@ -9,7 +12,11 @@
         alt="Breakfast Image"
         @click="openModal('breakfast')"
       />
-      <img v-else src="@/assets/default-image.png"/>
+      <img v-else 
+        src="@/assets/default-image.png"
+        alt="Breakfast Image"
+        @click="openModal('breakfast')"
+      />
       <h4>Breakfast</h4>
     </div>
 
@@ -20,7 +27,11 @@
         alt="Lunch Image"
         @click="openModal('lunch')"
       />
-      <img v-else src="@/assets/default-image.png"/>
+      <img v-else 
+        src="@/assets/default-image.png"
+        alt="Lunch Image"
+        @click="openModal('lunch')"
+      />
       <h4>Lunch</h4>
     </div>
 
@@ -31,7 +42,11 @@
         alt="Dinner Image"
         @click="openModal('dinner')"
       />
-      <img v-else src="@/assets/default-image.png"/>
+      <img v-else 
+        src="@/assets/default-image.png"
+        alt="Dinner Image"
+        @click="openModal('dinner')"
+      />
       <h4>Dinner</h4>
     </div>
     </div>
@@ -104,6 +119,23 @@ watch(
 .meal {
   display: flex;
   justify-content: space-between;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1rem;
+}
+
+.header h3 {
+  margin-bottom: 0.1rem;
+}
+
+.helper-text {
+  font-size: 0.8rem;
+  color: #888;
 }
 
 .mealImg {
