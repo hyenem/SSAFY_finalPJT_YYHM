@@ -13,7 +13,6 @@
                     {{ follower.name }}
                 </div>
             </div>
-            지금 보고있는 사람의 id : {{ userStore.follower.id }}
         </div>
         <div class="mypage">
             <div class="name">
@@ -78,7 +77,7 @@ onMounted(()=>{
         axios.get(REST_API_SUBSCRIBE_URL+"/follow?id="+userStore.loginUser.id)
         .then((res)=>{
             followerList.value=res.data
-            if(!userStore.follower.id){
+            if(!userStore.follower.id && res.data.length!==0){
               userStore.follower.id=res.data[0].id
               userStore.follower.name = res.data[0].name
             }

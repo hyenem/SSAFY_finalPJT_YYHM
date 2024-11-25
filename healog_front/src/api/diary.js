@@ -14,10 +14,12 @@ export const getDiariesByUserId = async (userId) => {
 // 특정 날짜의 다이어리 가져오기
 export const getDiaryByDate = async (userId, year, month, day) => {
   try {
-    const response = await api.get('/user/diary/condition', {
-      params: { userId, year, month, day },
-    });
-    return response.data;
+    if(userId){
+      const response = await api.get('/user/diary/condition', {
+        params: { userId, year, month, day },
+      });
+      return response.data;
+    }
   } catch (error) {
     console.error('Error fetching diary by date:', error);
     throw error;

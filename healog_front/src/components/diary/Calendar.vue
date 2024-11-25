@@ -24,7 +24,7 @@
             <td
               v-for="date in week"
               :key="date.day"
-              :class="{ today: isToday(date.day) }"
+              :class="{ today : isToday(date.day)}"
               @click="onDateChange(date.day)"
             >
               {{ date.day.split("-")[2] }}
@@ -119,6 +119,7 @@ watch([checkFollow],()=>{
 
 const onDateChange = (date) => {
   selectedDate.value = date;
+  [year.value, month.value, day.value] = date.split('-')
   emitDate();
 };
 
