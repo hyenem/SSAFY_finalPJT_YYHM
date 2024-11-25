@@ -15,7 +15,8 @@ export const useUserStore = defineStore('user', () => {
   const loginUser = {
     name : null,
     id : null,
-    type : null
+    type : null,
+    trainerExist : null
   }
 
   const follower = {

@@ -32,8 +32,8 @@ public class PtController {
 			@RequestParam("month") int month,
 			@RequestParam("day") int day){
 		try {
-			boolean isPt = ptService.getPt(userId, year, month, day);
-			return new ResponseEntity<>(isPt, HttpStatus.OK);
+			int isPt = ptService.getPt(userId, year, month, day);
+			return new ResponseEntity<Integer>(isPt, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
@@ -52,6 +52,7 @@ public class PtController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
+	
 
 	@GetMapping("/info")
 	public ResponseEntity getPtInfo(@RequestParam("userId") String userId,
@@ -83,6 +84,18 @@ public class PtController {
 	public ResponseEntity<?> deletPt(@RequestParam("id") int id){
 		try {
 			ptService.deletePt(id);
+			return ResponseEntity.status(HttpStatus.OK).build();
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
+	
+	@PostMapping("/request/insert")
+	public ResponseEntity<?> requestInsert(@RequestBody Map<String, String> map){
+		int id = Integer.parseInt(map.get("id"));
+		int time = Integer.parseInt(map.get("time"));
+		try {
+			ptService.requestInsert(id, time, 3);
 			return ResponseEntity.status(HttpStatus.OK).build();
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

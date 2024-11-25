@@ -83,6 +83,21 @@ const selectedTime = ref(-1)
 const time = [0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
 const ptInfo = ref({})
 
+const requestInsertPt = function(){
+  const check = confirm(diary.value.year+"년 "+diary.value.month+"월 "+diary.value.day+"일 "+selectedTime.value+"시에 pt를 요청하시겠습니까?")
+  if(check){
+    axios.post("http://localhost:8080/pt/request/insert",{
+      id : diary.value.id,
+      time : selectedTime.value,
+    }).then(()=>{
+      alert("요청이 전송되었습니다.")
+      router.push({name : 'main'})
+    }).catch((error)=>{
+      console.log(error)
+    })
+  }
+}
+
 const updatePt = function(){
   let check = confirm(diary.value.year+"년 "+diary.value.month+"월 "+diary.value.day+"일 "+userStore.follower.name+"의 pt 일정을 "+selectedTime.value+"시에로 수정하시겠습니까?")
   if(check){
@@ -145,42 +160,46 @@ const fetchDiary = async () => {
     await diaryStore.fetchDiaryByDate(props.date);
     diary.value = diaryStore.selectedDiary;
     condition.value = diary?.value?.condition || '';
-  }
+    axios.get("http://localhost:8080/pt",{
+      params : {
+        userId : userStore.loginUser.type==='user' ? userStore.loginUser.id : userStore.follower.id,
+        year : diary.value.year,
+        month : diary.value.month,
+        day : diary.value.day
+      }
+    }).then((res)=>{
+      isPt.value = res.data
+      if(isPt.value!==0){
+        axios.get("http://localhost:8080/pt/info",{
+          params : {
+            userId : userStore.loginUser.type==='user' ? userStore.loginUser.id : userStore.follower.id,
+            year : diary.value.year,
+            month : diary.value.month,
+            day : diary.value.day
+        }
+      }).then((res)=>{
+        console.log(res.data)
+        ptInfo.value = res.data
+        selectedTime.value = ptInfo.value.time
+      })
+    }else{
+      ptInfo.value=null
+    }
+  })
+}
 }
 
 const followerChange = computed(()=>{
   return userStore.follower.id
 })
 
-const isPt = ref(false)
+const isPt = ref(0)
+
 watch([props.date, followerChange], ()=>{
   openPtModal.value = false
   selectedTime.value = -1
 
-  axios.get("http://localhost:8080/pt", {
-    params : {
-      userId : userStore.loginUser.type==='user'? userStore.loginUser.id : userStore.follower.id,
-      year : props.date.year,
-      month : props.date.month,
-      day : props.date.day
-    }
-  }).then((res)=>{
-    isPt.value = res.data
-    if(isPt.value){
-      axios.get("http://localhost:8080/pt/info",{
-        params : {
-          userId : userStore.loginUser.type==='user'? userStore.loginUser.id : userStore.follower.id,
-          year : props.date.year,
-          month : props.date.month,
-          day : props.date.day
-        }
-      })
-      .then((res)=>{
-        ptInfo.value = res.data
-        selectedTime.value = ptInfo.value.time
-      })
-    }
-  })
+  return fetchDiary
 })
 
 const saveCondition = async () => {
@@ -221,9 +240,8 @@ onMounted(()=>{
           day : today.getDate()
         }
       }).then((res)=>{
-        console.log(res)
         isPt.value = res.data
-        if(isPt.value){
+        if(isPt.value!==0){
           axios.get("http://localhost:8080/pt/info",{
             params : {
               userId : userStore.loginUser.type==='user'? userStore.loginUser.id : userStore.follower.id,

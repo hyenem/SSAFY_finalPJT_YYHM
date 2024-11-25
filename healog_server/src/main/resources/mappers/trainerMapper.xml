@@ -45,4 +45,12 @@
 		WHERE id=#{id}
 	</update>
 	
+	<select id="selectTrainerByDiary">
+		SELECT trainer_id FROM subscription
+		WHERE user_id IN(
+			SELECT user_id FROM diary
+			WHERE id = #{id}
+		) AND valid = 1;
+	</select>
+	
 </mapper>

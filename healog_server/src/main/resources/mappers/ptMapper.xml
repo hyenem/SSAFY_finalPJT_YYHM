@@ -4,8 +4,8 @@
     
 <mapper namespace="com.healog.mvc.diary.model.dao.PtDao">
 	<select id="selectPt" parameterType="int" resultType="int">
-		SELECT COUNT(*) FROM personaltraining
-		WHERE diary_id = #{id} AND IFNULL(requestState,0) != 1;
+		SELECT requestState FROM personaltraining
+		WHERE diary_id = #{id};
 	</select>
 	
 	<insert id="insertPt">
@@ -28,4 +28,14 @@
 		DELETE FROM personaltraining
 		WHERE diary_id=#{id}
 	</delete>
+	
+	<insert id = "insertOrUpdatePt">
+	    INSERT INTO personaltraining (trainer_id, diary_id, time, requestDiary, requestState, requestTime)
+		VALUES (#{trainerId}, #{id}, #{time}, #{requestDiary}, #{requestState}, #{requestTime})
+		ON DUPLICATE KEY UPDATE 
+		    time = VALUES(time),
+		    requestDiary = VALUES(requestDiary),
+		    requestState = VALUES(requestState),
+		    requestTime = VALUES(requestTime);
+	</insert>
 </mapper>
