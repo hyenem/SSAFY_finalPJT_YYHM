@@ -38,9 +38,13 @@ const onDateSelected = (date) => {
 
 onMounted(()=>{
   if(userStore.loginUser.type==='trainer'){
+    console.log(userStore.follower.id)
       axios.get(REST_API_SUBSCRIBE_URL+"/follow?id="+userStore.loginUser.id)
       .then((res)=>{
-        userStore.follower=res.data[0].id
+        if(res.data.length!==0){
+          userStore.follower.id=res.data[0].id
+          userStore.follower.name=res.data[0].name
+        }
       })
     }
 })

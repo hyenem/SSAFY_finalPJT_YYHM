@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.healog.mvc.diary.model.dao.PtDao">
+	<select id="selectPt" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM personaltraining
+		WHERE diary_id = #{id} AND IFNULL(requestState,0) != 1;
+	</select>
+	
+	<insert id="insertPt">
+		INSERT INTO personaltraining (trainer_id, diary_id, time)
+		VALUES (#{trainerId}, #{diaryId}, #{time})
+	</insert>
+	
+	<select id="selectPtByDiaryId" parameterType="int" resultType="Pt">
+		SELECT * FROM personaltraining
+		WHERE diary_id=#{id}
+	</select>
+	
+	<update id="updateTime">
+		UPDATE personaltraining
+		SET time = #{time}
+		WHERE diary_id = #{id}
+	</update>
+	
+	<delete id="deletePt">
+		DELETE FROM personaltraining
+		WHERE diary_id=#{id}
+	</delete>
+</mapper>

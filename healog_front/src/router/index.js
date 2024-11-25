@@ -98,29 +98,38 @@ router.beforeEach((to, from, next)=>{
         'access-token' : sessionStorage.getItem('access-token')
       }
     }).then((res)=>{
+      userStore.loginUser.name = res.data.name
       userStore.loginUser.id = res.data.id
       userStore.loginUser.type = res.data.type
       if(userStore.loginUser.type==='trainer'){
-        if(!userStore.follower){
-          axios.get("http://localhost:8080/subscribe/follow?id="+res.data.id)
+        if(!userStore.follower.id){
+          axios.get("http://localhost:8080/subscribe/follow?id="+userStore.loginUser.id)
           .then((res)=>{
-            userStore.follower=res.data[0].id
+            if(res.data.length!==0){
+              userStore.follower.id = res.data[0].id
+              userStore.follower.name = res.data[0].name
+            }
           })
         }
       }
       next()
     }).catch(()=>{
       sessionStorage.removeItem('access-token')
+      userStore.loginUser.name = null
       userStore.loginUser.id = null
       userStore.loginUser.type = null
+      userStore.follower.name = null
+      userStore.follower.id = null
       alert("유효하지 않은 접근입니다. 다시 로그인해주세요.")
       next({name : 'main'})
     })
   } else {
     if(to.fullPath.split('/')[1]!=='account'){
+      userStore.loginUser.name=null
       userStore.loginUser.id=null
       userStore.loginUser.type=null
-      userStore.follower = null
+      userStore.follower.id = null
+      userStore.follower.name=null
       next({name : 'account'})
     } else{
       next()

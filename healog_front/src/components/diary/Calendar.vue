@@ -21,30 +21,18 @@
             <th>SAT</th>
           </tr>
         </thead>
-        <!-- <tbody>
-          <tr v-for="week in dateOfThisMonth">
-            <td @click="onDateChange(week[0])">{{ week[0].split("-")[2] }}</td>
-            <td @click="onDateChange(week[1])">{{ week[1].split("-")[2] }}</td>
-            <td @click="onDateChange(week[2])">{{ week[2].split("-")[2] }}</td>
-            <td @click="onDateChange(week[3])">{{ week[3].split("-")[2] }}</td>
-            <td @click="onDateChange(week[4])">{{ week[4].split("-")[2] }}</td>
-            <td @click="onDateChange(week[5])">{{ week[5].split("-")[2] }}</td>
-            <td @click="onDateChange(week[6])">{{ week[6].split("-")[2] }}</td>
-          </tr>
-        </tbody> -->
         <tbody>
           <tr v-for="week in dateOfThisMonth" :key="week">
             <td
               v-for="date in week"
-              :key="date"
-              :class="{ today: isToday(date) }"
-              @click="onDateChange(date)"
+              :key="date.day"
+              :class="{ today : isToday(date.day)}"
+              @click="onDateChange(date.day)"
             >
-              {{ date.split("-")[2] }}
+              {{ date.day.split("-")[2] }}
             </td>
           </tr>
         </tbody>
-
       </table>
       <button @click="goToday">today</button>
     </div>
@@ -52,10 +40,13 @@
 </template>
 
 <script setup>
+import { getDiariesByUserId } from '@/api/diary';
 import { useUserStore } from '@/stores/userStore';
+import axios from 'axios';
 import { computed, ref, watch } from 'vue';
 
 const userStore = useUserStore()
+let ptList = []
 
 const today = new Date()
 const year = ref(today.getFullYear())
@@ -78,9 +69,11 @@ const dateOfThisMonth = computed(()=>{
     let weekDates = [];
     let count = 0;
     for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-        weekDates.push(d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate());
+      weekDates.push({
+        day : d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()
+      })
     }
-
+    
     date.setDate(date.getDate()+7)
     end++
     if(count===1) continue
@@ -88,8 +81,11 @@ const dateOfThisMonth = computed(()=>{
     if((startDate.getMonth())%12===month.value%12) break
     diaryList.push(weekDates)
   }
+
   return diaryList;
 })
+
+
 
 const emit = defineEmits(['dateSelected']);
 const selectedDate = ref({
@@ -115,13 +111,17 @@ const nextMonth = function(){
   }
 }
 
-watch(()=>userStore.follower,()=>{
+const checkFollow = computed(()=>{
+  return userStore.follower.id
+})
+watch([checkFollow],()=>{
     selectedDate.value = null
     onDateChange(year.value+"-"+month.value+"-"+day.value)
 })
 
 const onDateChange = (date) => {
   selectedDate.value = date;
+  [year.value, month.value, day.value] = date.split('-')
   emitDate();
 };
 

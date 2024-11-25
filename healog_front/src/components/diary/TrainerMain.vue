@@ -1,9 +1,10 @@
 <template>
     <div>
         <h4>Trainer</h4>
-        <Calendar @dateSelected="onDateSelected" />  
+        <Calendar v-if="userStore.follower.id" @dateSelected="onDateSelected" />  
         <!-- 선택된 날짜가 있을 경우 다이어리 컴포넌트 표시 -->
-        <DiaryView v-if="selectedDate" :date="selectedDate" /> 
+        <DiaryView v-if="userStore.follower.id && selectedDate" :date="selectedDate" />
+        <div v-else>팔로워가 없습니다.</div>
     </div>
 </template>
   
@@ -27,7 +28,7 @@ const userStore = useUserStore()
 
 const today = new Date()
 const selectedDate = ref({
-    id : userStore.follower,
+    id : userStore.follower.id,
     year : today.getFullYear(),
     month : today.getMonth()+1,
     day : today.getDate()
@@ -40,12 +41,14 @@ const onDateSelected = (date) => {
 
 onMounted(()=>{
     if(userStore.loginUser.type==='trainer'){
-        if(!userStore.follower){
-            axios.get(REST_API_SUBSCRIBE_URL+"/follow?id="+userStore.loginUser.id)
-            .then((res)=>{
-              userStore.follower=res.data[0].id
-            })
-        }
+        axios.get(REST_API_SUBSCRIBE_URL+"/follow?id="+userStore.loginUser.id)
+        .then((res)=>{
+            if(!userStore.follower.id && res.data.length!==0){
+              userStore.follower.id=res.data[0].id
+              userStore.follower.name = res.data[0].name
+            console.log(userStore.follower)
+            }
+        })
     }
 })
 </script>
