@@ -1,8 +1,5 @@
 <template>
   <div class="calendar">
-    <div class="header">
-      <h3>Calendar</h3>
-    </div>
     <div class="calendarDiary">
       <div class="calendarHeader">
         <div @click="lastMonth"> < </div>

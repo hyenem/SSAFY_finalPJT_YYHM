@@ -47,12 +47,12 @@
         <!-- 이미지 업로드 -->
         <div class="form-group">
           <label>Posture Image</label>
+          <p class="helper-text">Please upload square image, size less than 100KB</p>
           <div class="image-upload">
             <img v-if="postureImgPreview" :src="postureImgPreview" alt="Preview" class="preview-img" />
             <img v-else src="@/assets/default-placeholder.png">
             <input type="file" @change="handleFileChange" />
           </div>
-          <p class="helper-text">Please upload square image, size less than 100KB</p>
         </div>
         <!-- 버튼 -->
         <div class="button-group">

@@ -5,15 +5,18 @@
         <button @click="gotoHome">home</button>
         -->
         <div v-if="userStore.loginUser.type==='trainer'">
-            <hr>
-            <h5>팔로워 선택</h5>
             <div v-if="followerList.length===0">팔로워가 없습니다.</div>
             <div v-else>
-                <div v-for="follower in followerList" @click = "setFollower(follower.id, follower.name)">
-                    {{ follower.name }}
+                <div v-for="follower in followerList" @click = "setFollower(follower.id, follower.name)" class="subscribeUser" >
+                    <div>
+                      <font-awesome-icon :icon="['fas', 'circle-user']" />
+                    </div>
+                    <div class="subscribeUserName">
+                      {{ follower.name }}
+                    </div>
                 </div>
             </div>
-        </div>
+      </div>
         <div class="mypage">
             <div class="name">
                 Hello, {{ loginUserInfo.name }}
@@ -24,8 +27,14 @@
                 :icon="['fas', 'circle-user']"
             />
             <div v-if="showLogoutModal" class="logout-modal">
-                <button @click="userStore.logout">로그아웃</button>
-                <button @click="gotoMyPage">마이페이지</button>
+                <button @click="userStore.logout" class="setting">
+                  <font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" />
+                  로그아웃
+                </button>
+                <button @click="gotoMyPage" class="setting">
+                  <font-awesome-icon :icon="['fas', 'user']" />
+                  마이페이지
+                </button>
             </div>
         </div>
     </div>
@@ -122,6 +131,17 @@ onMounted(()=>{
   transition: background-color 0.2s ease-in-out;
 }
 
+.subscribeUser {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.subscribeUserName {
+  font-size: 0.5rem;
+}
+
 .user {
   font-size: 2rem;
   cursor: pointer;
@@ -143,16 +163,22 @@ onMounted(()=>{
   z-index: 1000;
 }
 
+.setting {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
 .logout-modal button {
   border: none;
-  background-color: #7FC678;
-  border-radius: 6px;
+  border-radius: 3px;
   cursor: pointer;
   font-size: 14px;
+  width: 8rem;
 }
 
 .logout-modal button:hover {
-  background: #65A45B;
+  background-color: #7FC678;
 }
 
 .mypage div:hover {

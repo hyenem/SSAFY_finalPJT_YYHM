@@ -1,8 +1,8 @@
 <template>
+    <div v-if="subscribeModalId" class="overlay" @click="closeSubscribeModal"></div>
     <div class="Subscription">
         <h3 class="title">Subscription</h3>
         <div v-if="loginUserInfo.trainer">
-            <h4>Trainer Info</h4>
             <div class="trainer-card">
                 <div class="trainer-info">
                     <label>Name</label>
@@ -33,9 +33,11 @@
             </div>
         </div>
         <div v-else>
-            <div>
+            <div class="search">
                 <input type="text" placeholder="트레이너 찾기" id="searchTrainer" v-model="searchName">
-                <button @click="searchTrainer(searchName)">검색</button>
+                <button @click="searchTrainer(searchName)">
+                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
+                </button>
             </div>
             <div v-for="trainer in trainerList" @click="openSubscribeModal(trainer.id)" class="trainer-list">
                 <div class="trainer-list-info">
@@ -58,12 +60,28 @@
                         <div v-if="trainer.img">사진 : {{ trainer.img }}</div>
                     </div>
                 </div>
-                <div class="subscribeModal" v-if="subscribeModalId===trainer.id">
-                        <button @click="closeSubscribeModal">x</button>
-                        <div>몇 개월 구독할까요?</div>
-                        <input type="number" v-model="subscribeMonth">
-                        <div>지불 가격: {{ subscribeMonth * 100000 }}만원</div>
-                        <button @click="subscribe(trainer.id)">결제</button>
+                <div class="subscribeModal" v-if="subscribeModalId === trainer.id">
+                    <div class="modal-header">
+                        <h5>Subscription</h5>
+                        <button @click="closeSubscribeModal" class="close-btn">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="subscribe-months">구독 기간 : {{ subscribeMonth }} 개월</label>
+                        <input
+                        type="number"
+                        id="subscribe-months"
+                        v-model="subscribeMonth"
+                        placeholder="Enter months"
+                        />
+                        <p class="price-display">
+                            <font-awesome-icon :icon="['fas', 'won-sign']" />
+                            <span>{{ subscribeMonth * 100000 }}</span>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button @click="subscribe(trainer.id)" class="confirm-btn">Subscribe</button>
+                        <button @click="closeSubscribeModal" class="cancel-btn">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,7 +108,6 @@ const subscribeMonth= ref(1)
 const showGymInfo = ref(false)
 
 const openSubscribeModal = function(id){
-    subscribeMonth.value = 1
     subscribeModalId.value=id
 }
 
@@ -195,7 +212,7 @@ onMounted(()=>{
 .Subscription {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  padding: 1rem 2rem;
 }
 
 .title {
@@ -242,7 +259,6 @@ input {
   font-size: 1rem;
   border: 1px solid #ddd;
   border-radius: 3px;
-  margin-right: 0.5rem;
 }
 
 button {
@@ -251,13 +267,13 @@ button {
   background-color: #7fc678;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #65a45b;
+.search {
+    display: flex;
 }
 
 .trainer-list {
@@ -266,6 +282,8 @@ button:hover {
     margin-top: 1.5rem;
     padding: 1rem;
     border: 1px solid #ddd;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
 .trainer-name {
@@ -292,32 +310,168 @@ button:hover {
 
 /* 모달 스타일 */
 .subscribeModal {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 1.5rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  width: 300px;
   z-index: 1000;
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  width: 420px;
+  max-width: 90%;
 }
 
-.subscribeModal h5 {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #555;
+/* 모달 헤더 */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
   margin-bottom: 1rem;
 }
 
-.subscribeModal input {
-  width: 100%;
-  margin: 0.5rem 0;
+.modal-header h5 {
+  font-size: 1.2rem;
+  margin: 0;
 }
 
-.subscribeModal button {
-  margin-top: 1rem;
+.close-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #555;
 }
+
+.close-btn:hover {
+  color: #e74c3c;
+}
+
+/* 모달 본문 */
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-body label {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.modal-body input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 0.9rem;
+}
+
+.modal-body input:focus {
+  border-color: #7fc678;
+  box-shadow: 0 0 5px rgba(127, 198, 120, 0.5);
+  outline: none;
+}
+
+.modal-body input:invalid {
+  border-color: #e74c3c;
+  box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+}
+
+.price-display {
+  text-align: right;
+  font-weight: bold;
+  gap: 1rem;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  border-top: 1px solid;
+  padding: 1rem 0 0 0;
+  color: #555;
+}
+
+/* 모달 푸터 */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.confirm-btn,
+.cancel-btn {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.confirm-btn {
+  padding: 0.5rem 1rem;
+  background-color: #7fc678;
+  border: none;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.confirm-btn:hover {
+  background-color: #65a45b;
+}
+
+.cancel-btn {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  border: 1px solid #ff4d4f;
+  color: #ff4d4f;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.cancel-btn:hover {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+/* 반응형 스타일 */
+@media screen and (max-width: 480px) {
+  .subscribeModal {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .modal-body input {
+    font-size: 0.9rem;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .confirm-btn,
+  .cancel-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+
 </style>

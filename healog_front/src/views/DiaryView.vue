@@ -2,6 +2,9 @@
   <div class="condition">
     <div class="header">
       <h3>Plan</h3>
+      <div v-if="!isPt">
+        <button @click="openPtModal = !openPtModal"> PT 일정 등록 </button>
+      </div>
     </div>
       <div>
         <p v-if="!diary">Loading diary data...</p>
@@ -11,36 +14,45 @@
         </div>
         <div v-else>
           <div v-if="!isPt">
-            <button @click="openPtModal = !openPtModal"> pt일정 등록 </button>
-            <div v-if="openPtModal">
-              <hr>
-              <h4>PT 일정 등록 폼</h4>
-              <label for ="time">PT 시간</label>
-              <select id="time" v-model="selectedTime">
-                <option v-for="i in time">{{ i }}</option>
-              </select>
-              <button @click="setPt">등록하기</button>
-              <hr>
+            <div v-if="openPtModal" class="openPtModal">
+              <div class="modal-header">
+                <h3>PT Schedule</h3>
+                <button @click="openPtModal = false" class="close-btn">X</button>
+              </div>
+              <div>
+                <label for="time">Time</label>
+                <select id="time" v-model="selectedTime">
+                  <option v-for="i in time" :key="i" :value="i">{{ i }}:00</option>
+                </select>
+              </div>
+              <div class="modal-footer">
+                <button @click="updatePt" class="primary-btn">Create</button>
+                <button @click="deletePt" class="danger-btn">Delete</button>
+              </div>
             </div>
           </div>
           <div v-else>
             <div>pt 시간 : {{ ptInfo.time }}시</div>
             <button @click="openPtModal=!openPtModal">pt 일정 수정하기</button>
-            <div v-if="openPtModal">
-              <hr>
-              <label for ="time">PT 시간</label>
-              <select id="time" v-model="selectedTime">
-                <option v-for="i in time">{{ i }}</option>
-              </select>
-              <button @click="updatePt">수정하기</button>
-              <button @click="deletePt">삭제하기</button>
-              <hr>
+            <div v-if="openPtModal" class="openPtModal" >
+              <div class="modal-header">
+                <h3 for ="time">Personal Training Schedule</h3>
+              </div>
+              <div>
+                <select id="time" v-model="selectedTime">
+                  <option v-for="i in time">{{ i }}</option>
+                </select>
+              </div>
+              <div class="modal-footer">
+                <button @click="updatePt">Create</button>
+                <button @click="deletePt">Delete</button>
+              </div>
             </div>
           </div>
-          <div > 오늘의 컨디션 : {{ condition ? condition : "등록된 컨디션이 없습니다."  }}</div>
+          <div class="condition-input">{{ condition ? condition : "등록된 컨디션이 없습니다."  }}</div>
         </div>
         <!-- Exercise List -->
-        <ExerciseList v-if="diary.id" :diaryId="diary.id" />
+        <ExerciseList v-if="diary" :diaryId="diary.id" />
       </div>
   </div>
 </template>
@@ -232,6 +244,17 @@ onMounted(()=>{
 </script>
 
 <style scoped>
+/* 오버레이 */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
 .condition {
   display: flex;
   flex-direction: column;
@@ -241,14 +264,10 @@ onMounted(()=>{
 
 .header {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid #ddd;
   margin-bottom: 1rem;
-}
-
-.header h3 {
-  margin-bottom: 0.1rem;
 }
 
 .helper-text {
@@ -256,7 +275,82 @@ onMounted(()=>{
   color: #888;
 }
 
-.condition input {
+.openPtModal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  top: 25%;
+  right: 4%;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  padding: 10px;
+  z-index: 1000;
+  min-width: 15rem;
+  min-height: 10rem;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.openPtModal label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.openPtModal select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+.openPtModal select:focus {
+  border-color: #7fc678;
+  outline: none;
+}
+
+/* 모달 푸터 */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+button.close-btn {
+  background-color: transparent !important;
+  color: #555 !important;
+  border: none !important;
+}
+
+
+.modal-footer .danger-btn {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  border: 1px solid #ff4d4f;
+  color: #ff4d4f;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.modal-footer .danger-btn:hover {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.condition input, .condition-input {
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 3px;
