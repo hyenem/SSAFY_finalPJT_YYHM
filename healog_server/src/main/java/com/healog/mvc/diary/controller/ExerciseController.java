@@ -83,22 +83,24 @@ public class ExerciseController {
     @PostMapping("/done")
     public ResponseEntity<String> markExerciseAsDone(
         @RequestParam int id,
-        @RequestParam(required = false) MultipartFile postureImg) {
-    	
-    	String savedFilePath = null;
-    	
-    	try {
-    		if (postureImg != null && !postureImg.isEmpty()) {
-    			savedFilePath = saveFile(postureImg);
-    		}
+        @RequestParam(required = false) MultipartFile postureImg,
+        @RequestParam(required = false) Integer done) {
+        
+        String savedFilePath = null;
 
-    		exerciseService.markExerciseAsDone(id, savedFilePath);
-    		return ResponseEntity.ok("Exercise marked as done.");
-    	} catch (IOException e) {
-    		 return new ResponseEntity<>("Error processing file upload: " + e.getMessage(), 
-                     HttpStatus.INTERNAL_SERVER_ERROR);
-    	}
+        try {
+            if (postureImg != null && !postureImg.isEmpty()) {
+                savedFilePath = saveFile(postureImg);
+            }
+
+            exerciseService.markExerciseAsDone(id, savedFilePath, done != null ? done : 1);
+            return ResponseEntity.ok("Exercise updated successfully.");
+        } catch (IOException e) {
+            return new ResponseEntity<>("Error processing file upload: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     private String saveFile(MultipartFile file) throws IOException {
         // 유니크한 파일 이름 생성

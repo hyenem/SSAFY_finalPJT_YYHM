@@ -25,7 +25,11 @@
             </div>
           </div>
           <div>
-            {{ exercise.set || 'N/A' }}세트 X {{ exercise.weight || 'N/A' }} kg X {{ exercise.count || 'N/A' }}회
+            {{ exercise.set || 'N/A' }}세트 
+            <font-awesome-icon :icon="['fas', 'xmark']" />
+            {{ exercise.weight || 'N/A' }}kg
+            <font-awesome-icon :icon="['fas', 'xmark']" />
+            {{ exercise.count || 'N/A' }}회
           </div>
         </div>
         <!-- Image Preview -->
@@ -41,7 +45,9 @@
       </div>
     </div>
     <p v-else>Plan을 추가해주세요.</p>
-    <button @click="openModal(null)" class="add-exercise">+</button>
+    <button @click="openModal(null)" class="add-exercise">
+      <font-awesome-icon :icon="['fas', 'plus']" />
+    </button>
     
     <ExerciseListModal
       v-if="isModalOpen"
@@ -75,9 +81,8 @@ const isLoading = ref(false);
 
 const toggleDone = async (exercise) => {
   try {
-    const updatedExercise = { ...exercise, done: exercise.done ? 0 : 1 };
-    await exerciseStore.updateExercise(updatedExercise);
-    alert(`Exercise marked as ${updatedExercise.done ? 'Done' : 'Not Done'}`);
+    await exerciseStore.markAsDone(exercise.id, null, exercise.done ? 0 : 1);
+    alert(`Exercise marked as ${exercise.done ? 'Not Done' : 'Done'}`);
   } catch (error) {
     console.error('Error toggling done status:', error);
     alert('Failed to update exercise status.');

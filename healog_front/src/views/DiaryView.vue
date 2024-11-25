@@ -2,19 +2,20 @@
   <div class="condition">
     <div class="header">
       <h3>Plan</h3>
-      <div v-if="!isPt">
+      <div v-if="!isPt" class="header">
         <button @click="openPtModal = !openPtModal"> PT 일정 등록 </button>
       </div>
     </div>
+
       <div>
-        <p v-if="!diary">Loading diary data...</p>
-        <div v-else>
+        <div v-if="userStore.loginUser.type === 'user'">
           <input v-model="condition" placeholder="Enter condition here" />
           <button @click="saveCondition">등록</button>
         </div>
-        <div v-else>
+
+        <div>
           <div v-if="!isPt">
-            <div v-if="openPtModal" class="openPtModal">
+            <div v-if="openPtModal" ref="modalRef" class="openPtModal">
               <div class="modal-header">
                 <h3>PT Schedule</h3>
                 <button @click="openPtModal = false" class="close-btn">X</button>
@@ -49,7 +50,7 @@
               </div>
             </div>
           </div>
-          <div class="condition-input">{{ condition ? condition : "등록된 컨디션이 없습니다."  }}</div>
+          <div v-if="userStore.loginUser.type === 'trainer'" class="condition-input">{{ condition ? condition : "등록된 컨디션이 없습니다."  }}</div>
         </div>
         <!-- Exercise List -->
         <ExerciseList v-if="diary" :diaryId="diary.id" />
@@ -80,7 +81,7 @@ const diary = ref(null);
 const condition = ref('');
 const openPtModal = ref(false)
 const selectedTime = ref(-1)
-const time = [0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+const time = [8,9,10,11,12,13,14,15,16,17,18,19,20]
 const ptInfo = ref({})
 
 const requestInsertPt = function(){
@@ -97,6 +98,16 @@ const requestInsertPt = function(){
     })
   }
 }
+
+const adjustModalPosition = (buttonElement) => {
+  // 버튼의 위치 정보를 가져옴
+  const buttonRect = buttonElement.getBoundingClientRect();
+  const modal = modalRef.value;
+
+  // 기본 위치 설정: 버튼 바로 아래
+  modal.style.top = `${buttonRect.bottom + window.scrollY}px`;
+  modal.style.left = `${buttonRect.left}px`;
+};
 
 const updatePt = function(){
   let check = confirm(diary.value.year+"년 "+diary.value.month+"월 "+diary.value.day+"일 "+userStore.follower.name+"의 pt 일정을 "+selectedTime.value+"시에로 수정하시겠습니까?")
@@ -308,6 +319,7 @@ onMounted(()=>{
   z-index: 1000;
   min-width: 15rem;
   min-height: 10rem;
+  overflow: visible;
 }
 
 .modal-header {
@@ -387,5 +399,7 @@ button.close-btn {
 .condition button:hover {
   background-color: #65A45B;
 }
+
+
 </style>
 

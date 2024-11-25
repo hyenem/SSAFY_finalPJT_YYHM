@@ -119,6 +119,13 @@ watch(
 .meal {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.meal h4 {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #888;
 }
 
 .header {

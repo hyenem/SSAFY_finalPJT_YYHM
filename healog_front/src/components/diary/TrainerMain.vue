@@ -100,5 +100,22 @@ onMounted(()=>{
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
   border-radius: 3px; /* 둥근 모서리 */
 }
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .trainerMain {
+    flex-direction: column; /* 세로로 정렬 */
+  }
+
+  .leftPanel {
+    width: 100%; /* 좌측 패널이 전체 폭 차지 */
+    height: auto; /* 높이는 내용에 맞게 조정 */
+  }
+
+  .rightPanel {
+    width: 100%; /* 우측 패널도 전체 폭 차지 */
+    height: auto; /* 높이는 내용에 맞게 조정 */
+  }
+}
 </style>
   

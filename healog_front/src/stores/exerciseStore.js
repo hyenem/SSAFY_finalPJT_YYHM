@@ -76,17 +76,19 @@ export const useExerciseStore = defineStore('exercise', {
           console.error('Error updating exercise:', error);
       }
   },  
-    async markAsDone(id, postureImgFile) {
+    async markAsDone(id, postureImgFile, done = 1) {
       try {
-        await markExerciseAsDone(id, postureImgFile);
+        await markExerciseAsDone(id, postureImgFile, done);
         const exercise = this.exercises.find((e) => e.id === id);
         if (exercise) {
-          exercise.done = 1;
-          exercise.postureImg = postureImgFile ? `/static/img/${postureImgFile.name}` : null;
+          exercise.done = done;
+          if (postureImgFile) {
+            exercise.postureImg = `/static/img/${postureImgFile.name}`;
+          }
         }
       } catch (error) {
         console.error('Error updating exercise status:', error);
       }
-    },
+    },  
   },
 });
