@@ -4,7 +4,7 @@
       <h3>Plan</h3>
       <div v-if="userStore.loginUser.type==='trainer'">
         <div v-if="isPt===0" class="header">
-          <button @click="openPtModal = !openPtModal"> PT 일정 등록 </button>
+          <button @click="openPtModal = !openPtModal" class="pt-btn"> PT 일정 등록 </button>
           <div v-if="openPtModal" ref="modalRef" class="openPtModal">
             <div class="modal-header">
               <h3>PT Schedule</h3>
@@ -22,7 +22,7 @@
           </div>
         </div>
         <div v-else-if="isPt===1" class="header">
-          <button @click="openPtModal=!openPtModal">
+          <button @click="openPtModal=!openPtModal" class="pt-btn">
             <font-awesome-icon :icon="['fas', 'calendar-days']" />
             PT 일정
           </button>
@@ -50,7 +50,7 @@
             PT 일정
           </button>
           <div class="hover-content">
-            <div v-if="isPt!==3 && isPt!==6 && isPt!==9">pt 시간 : {{ ptInfo? ptInfo.time : "" }}시</div>
+            <div v-if="isPt!==3 && isPt!==6 && isPt!==9" class="helper-text">오늘 {{ ptInfo? ptInfo.time : "" }}시에 PT 일정이 있습니다.</div>
               <p>{{ isPt <= 4 ? "해당 일에 PT 요청이 있습니다." : "회원이 요청 처리를 확인 중입니다." }}</p>
               <button @click="gotoRequest">요청 보러가기</button>
             </div>
@@ -59,7 +59,7 @@
       </div>
       <div v-else>
         <div v-if="isPt===0" class="header">
-          <button @click="openPtModal=!openPtModal">PT 요청하기</button>
+          <button @click="openPtModal=!openPtModal" class="pt-btn">PT 요청하기</button>
           <div v-if="openPtModal" ref="modalRef" class="openPtModal">
             <div class="modal-header">
               <h3>PT Schedule</h3>
@@ -99,7 +99,8 @@
             </div>
           </div>
         </div>
-        <div v-else class="openPtModal">
+        <div v-else class="header">
+          <div class="icon-container">
           <button @click="openPtModal=!openPtModal" class="pt-btn">
             <font-awesome-icon :icon="['fas', 'calendar-days']" />
             PT 일정
@@ -107,7 +108,7 @@
           <div class="hover-content">
             <p>{{ isPt <= 4 ? "트레이너의 응답을 기다리는 중입니다." : "트레이너의 응답이 도착했습니다." }}</p>
             <button @click="gotoRequest">보러가기</button>
-
+          </div>
         </div>
       </div>
     </div>
@@ -537,9 +538,10 @@ button.close-btn {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 3px;
   padding: 10px;
-  max-width: 10rem;
+  max-width: 12rem;
+  min-width: 12rem;
   z-index: 1000;
-  transform: translateX(-60%); /* 중앙 정렬 */
+  transform: translateX(-70%); /* 중앙 정렬 */
   visibility: hidden; /* 초기에는 보이지 않음 */
   opacity: 0; /* 투명도 설정 */
   transition: visibility 0s, opacity 0.2s ease-in-out; /* 애니메이션 효과 */

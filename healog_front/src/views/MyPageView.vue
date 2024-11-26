@@ -60,8 +60,22 @@ onMounted(()=>{
   background-color: white; /* 배경 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
   border-radius: 3px; /* 둥근 모서리 */
+  overflow-y: auto;
 }
 
+/* 반응형 스타일 */
+@media (max-width: 1024px) {
+  .mypage {
+    height: auto; /* 높이를 자동으로 조정 */
+    flex-direction: column; /* 좌우 배치에서 위아래 배치로 변경 */
+    align-items: stretch; /* 요소를 동일한 폭으로 */
+  }
 
+  .leftPanel,
+  .rightPanel {
+    width: 100%; /* 모든 패널이 화면 너비를 채움 */
+    height: auto; /* 높이를 자동으로 조정 */
+  }
+}
 
 </style>
