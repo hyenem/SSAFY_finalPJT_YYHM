@@ -1,22 +1,27 @@
 <template>
-    <div class="feedback">
-        <h3>Feedback</h3>
-        <div v-if="userStore.loginUser.type==='user'">
-            <p>{{ feedback? feedback : "오늘의 피드백이 없습니다." }}</p>
-        </div>
-        <div v-else>
-            <div @click="openFeedbackModal=!openFeedbackModal">
-                {{ feedback? feedback : "+" }}
-            </div>
-            <div v-if="openFeedbackModal">
-                <hr>
-                <input type="text" v-model="newFeedback">
-                <button @click="insertOrUpdateFeedback(newFeedback)" >{{ feedback ? "수정" : "등록"  }}</button>
-                <hr>
-            </div>
-        </div>
+  <div class="feedback">
+    <div class="header">
+      <h3>Feedback</h3>
     </div>
+    <div class="feedback-content">
+      <!-- 사용자 피드백 출력 -->
+      <div v-if="userStore.loginUser.type === 'user'">
+        <p class="feedback-input">{{ feedback ? feedback : "오늘의 피드백이 없습니다." }}</p>
+      </div>
+
+      <!-- 트레이너 피드백 입력 -->
+      <div v-else>
+        <textarea v-model="newFeedback" class="feedback-input" placeholder="피드백을 입력하세요..."></textarea>
+        <div class="modal-footer">
+            <button @click="insertOrUpdateFeedback(newFeedback)" class="primary-btn">
+            {{ feedback ? "Edit" : "Create" }}
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
 
 <script setup>
 import { useUserStore } from '@/stores/userStore';
@@ -33,8 +38,6 @@ const props= defineProps({
 })
 
 const userStore = useUserStore()
-
-const openFeedbackModal = ref(false);
 const feedback = ref("")
 const newFeedback = ref(feedback.value)
 
@@ -91,8 +94,100 @@ onMounted(()=>{
 
 <style scoped>
 .feedback {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1rem;
+}
+
+.header h3 {
+    margin-bottom: 0.1rem;
+}
+
+.feedback-content p {
+  width: 90%;
+  height: 6rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  resize: none;
+  font-size: 1rem;
+  color: #555;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.feedback-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background-color: #7fc678;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.feedback-btn:hover {
+  background-color: #65a45b;
+}
+
+.feedback-input {
+  width: 90%;
+  height: 6rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  resize: none;
+  font-size: 1rem;
+  color: #555;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.feedback-input:focus {
+  border-color: #7fc678;
+  outline: none;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.primary-btn {
+  padding: 0.5rem 1rem;
+  background-color: #7fc678;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.primary-btn:hover {
+  background-color: #65a45b;
+}
+
+button.close-btn {
+  background-color: transparent;
+  border: none;
+  color: #555;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
 
 </style>

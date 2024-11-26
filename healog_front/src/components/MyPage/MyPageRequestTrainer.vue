@@ -31,9 +31,11 @@
                     <div>{{ pt.userName }}</div>
                 </div>
                 <div>
-                    <div v-if="pt.requestState===2 || pt.requestState===5 || pt.requestState===8">
-                        <div>수정 전 일정 : {{ pt.date }} {{ pt.time }}:00</div>
-                        <div>수정 후 일정 : {{ pt.requestDate }} {{ pt.requestTime }}:00</div>
+                    <div v-if="pt.requestState===2 || pt.requestState===5 || pt.requestState===8" class="alarm-info">
+                        <label>수정 전 일정</label>
+                        <div>{{ pt.date }} {{ pt.time }}:00</div>
+                        <label>수정 후 일정</label>
+                        <div>{{ pt.requestDate }} {{ pt.requestTime }}:00</div>
                     </div>
                     <div v-else class="alarm-info">
                         <label>요청 일정</label>
