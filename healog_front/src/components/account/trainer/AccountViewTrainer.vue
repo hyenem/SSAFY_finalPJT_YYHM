@@ -69,12 +69,11 @@ button {
 }
 
 .primary-btn {
-  background-color: #7fc678;
-  color: white;
+  background-color: #e0f1e2;
+  color: black;
 }
 
 .primary-btn:hover {
-  background-color: #65a45b;
   transform: scale(1.05);
 }
 
