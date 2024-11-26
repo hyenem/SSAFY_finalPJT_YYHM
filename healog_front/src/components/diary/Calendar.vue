@@ -2,7 +2,7 @@
   <div class="calendar">
     <div class="calendarDiary">
       <div class="calendarUpperHeader">
-        <select v-model="year">
+        <select v-model="year" class="year">
           <option v-for="year in years">{{ year }}</option>
         </select>
         <button @click="goToday">today</button>
@@ -313,10 +313,45 @@ onMounted(()=>{
 .calendar button {
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 3px;
   background-color: #7FC678;
   color: white;
   cursor: pointer;
+}
+
+.year {
+  position: relative;
+  display: inline-block;
+  width: 7rem;
+  height: 40px;
+  background-color: #ffffff;
+  border: 1px solid #7FC678;
+  border-radius: 3px;
+  font-size: 1rem;
+  color: #333;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.year:hover {
+  border-color: #65A45B;
+}
+
+.year:focus {
+  outline: none;
+  border-color: #65A45B;
+}
+
+.year option {
+  background-color: #ffffff;
+  color: #333;
+  font-size: 16px;
+  padding: 5px 10px;
+}
+
+.year option:hover {
+  background-color: #e6f5e6;
 }
 
 .calendar button:hover {
