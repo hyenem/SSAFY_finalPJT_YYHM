@@ -59,7 +59,7 @@
             :checked="exercise.done"
             @change="toggleDone(exercise)"
           />
-          <div class="exerciseCard" @click="openModal(exercise.id, exercise.done)">
+          <div class="exerciseCard" @click="openModal(exercise.id, false, exercise.done)">
             <div class="category">
               <div class="exercise">
                 {{ exercise.exercise }}
@@ -89,7 +89,7 @@
         </div>
       </div>
       <p v-else>Plan을 추가해주세요.</p>
-      <button @click="openModal(null)" class="add-exercise">
+      <button @click="openModal(null, true, false)" class="add-exercise">
         <font-awesome-icon :icon="['fas', 'plus']" />
       </button>
       
@@ -98,6 +98,7 @@
         :exerciseId="selectedExerciseId"
         :diaryId="diaryId"
         :done="isDone"
+        :isCreate="isCreate"
         @close="closeModal"
       />
 
@@ -128,12 +129,11 @@ const isModalOpen = ref(false);
 const exercises = computed(() => exerciseStore.exercises);
 const isLoading = ref(false);
 const isDone = ref(false)
+const isCreate = ref(false)
 
 const toggleDone = async (exercise) => {
   try {
-    console.log(exercise.done)
     await exerciseStore.markAsDone(exercise.id, null, exercise.done ? 0 : 1);
-    console.log(exercise.done)
 
     alert(`Exercise marked as ${exercise.done ? 'Done' : 'Not Done'}`);
   } catch (error) {
@@ -162,10 +162,11 @@ const deleteExercise = async (exerciseId) => {
   }
 };
 
-const openModal = (exerciseId, done) => {
+const openModal = (exerciseId, create, done) => {
   selectedExerciseId.value = exerciseId;
   isModalOpen.value = true;
   isDone.value = done
+  isCreate.value = create
 };
 
 const closeModal = async () => {

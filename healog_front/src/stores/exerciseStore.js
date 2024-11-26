@@ -76,7 +76,7 @@ export const useExerciseStore = defineStore('exercise', {
           console.error('Error updating exercise:', error);
       }
   },  
-    async markAsDone(id, postureImgFile, done = 1) {
+    async markAsDone(id, postureImgFile, done) {
       try {
         await markExerciseAsDone(id, postureImgFile, done);
         const exercise = this.exercises.find((e) => e.id === id);
