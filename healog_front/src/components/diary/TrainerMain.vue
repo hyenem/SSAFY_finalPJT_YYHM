@@ -74,17 +74,23 @@ onMounted(()=>{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 1rem;
   width: 30%; /* 좌측 패널 폭 설정 */
   height: 100%; /* 좌측 패널 높이 설정 */
 }
 
-.calendarWrapper,
-.feedbackWrapper {
+.calendarWrapper {
   height: 50%; /* 좌측 패널의 절반 높이를 각각 차지 */
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #fff; /* 시각적으로 분리 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
+  border-radius: 3px; /* 둥근 모서리 */
+}
+
+.feedbackWrapper {
+  height: 50%; /* 좌측 패널의 절반 높이를 각각 차지 */
   background-color: #fff; /* 시각적으로 분리 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
   border-radius: 3px; /* 둥근 모서리 */
