@@ -2,59 +2,127 @@
   <div class="condition">
     <div class="header">
       <h3>Plan</h3>
-      <div v-if="!isPt" class="header">
-        <button @click="openPtModal = !openPtModal"> PT 일정 등록 </button>
+      <div v-if="userStore.loginUser.type==='trainer'">
+        <div v-if="isPt===0" class="header">
+          <button @click="openPtModal = !openPtModal"> PT 일정 등록 </button>
+          <div v-if="openPtModal" ref="modalRef" class="openPtModal">
+            <div class="modal-header">
+              <h3>PT Schedule</h3>
+              <button @click="openPtModal = false" class="close-btn">X</button>
+            </div>
+            <div>
+              <label for="time">Time</label>
+              <select id="time" v-model="selectedTime">
+                <option v-for="i in time" :key="i" :value="i">{{ i }}:00</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button @click="setPt" class="primary-btn">Create</button>
+            </div>
+          </div>
+        </div>
+        <div v-else-if="isPt===1">
+          <div>pt 시간 : {{ ptInfo.time }}시</div>
+          <button @click="openPtModal=!openPtModal">pt 일정 수정하기</button>
+          <div v-if="openPtModal" class="openPtModal" >
+            <div class="modal-header">
+              <h3 for ="time">Personal Training Schedule</h3>
+              <button @click="openPtModal = false" class="close-btn">X</button>
+            </div>
+            <div>
+              <select id="time" v-model="selectedTime">
+                <option v-for="i in time">{{ i }}</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button @click="updatePt">Update</button>
+              <button @click="deletePt">Delete</button>
+            </div>
+          </div>
+        </div>
+        <div v-else-if="isPt>=2">
+          <div v-if="isPt!==3 && isPt!==6 && isPt!==9">pt 시간 : {{ ptInfo? ptInfo.time : "" }}시</div>
+          <div class="icon-container">
+            <font-awesome-icon 
+              :icon="['fas', 'bell']" 
+              class="icon" 
+            />
+                  
+            <div class="hover-content">
+              <p>{{ isPt <= 4 ? "해당 일에 PT 요청이 있습니다." : "회원이 요청 처리를 확인 중입니다." }}</p>
+              <button @click="gotoRequest">요청 보러가기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-else>
+        <div v-if="isPt===0">
+          <button @click="openPtModal=!openPtModal">PT 요청하기</button>
+          <div v-if="openPtModal" ref="modalRef" class="openPtModal">
+            <div class="modal-header">
+              <h3>PT Schedule</h3>
+              <button @click="openPtModal = false" class="close-btn">X</button>
+            </div>
+            <div>
+              <label for="time">Time</label>
+              <select id="time" v-model="selectedTime">
+                <option v-for="i in time" :key="i" :value="i">{{ i }}:00</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button @click="requestInsert" class="primary-btn">PT 생성 요청 보내기</button>
+            </div>
+          </div>
+        </div>
+        <div v-else-if="isPt===1">
+          <div>PT 시간 : {{ ptInfo.time }}</div>
+          <button @click="openPtModal=!openPtModal">PT 일정 수정 요청하기</button>
+          <div v-if="openPtModal">
+            <hr>
+            <div class="modal-header">
+              <h3 for ="time">Personal Training Schedule</h3>
+              <button @click="openPtModal = false" class="close-btn">X</button>
+            </div>
+            <div>
+              <select id="time" v-model="selectedTime">
+                <option v-for="i in time">{{ i }}</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button @click="requestUpdate">시간 수정 요청하기</button>
+              <button @click="requestDelete">삭제 요청하기</button>
+            </div>
+            <hr>
+          </div>
+        </div>
+        <div v-else>
+          <div v-if="isPt!==3 && isPt!==6 && isPt!==9">pt 시간 : {{ ptInfo? ptInfo.time : "" }}시</div>
+          <div class="icon-container">
+            <font-awesome-icon 
+              :icon="['fas', 'bell']" 
+              class="icon" 
+            />
+                  
+            <div class="hover-content">
+              <p>{{ isPt <= 4 ? "트레이너의 응답을 기다리는 중입니다." : "트레이너의 응답이 도착했습니다." }}</p>
+              <button @click="gotoRequest">보러가기</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
-      <div>
-        <div v-if="userStore.loginUser.type === 'user'">
+    <div>
+      <div v-if="userStore.loginUser.type === 'user'">
           <input v-model="condition" placeholder="Enter condition here" />
           <button @click="saveCondition">등록</button>
-        </div>
-
-        <div>
-          <div v-if="!isPt">
-            <div v-if="openPtModal" ref="modalRef" class="openPtModal">
-              <div class="modal-header">
-                <h3>PT Schedule</h3>
-                <button @click="openPtModal = false" class="close-btn">X</button>
-              </div>
-              <div>
-                <label for="time">Time</label>
-                <select id="time" v-model="selectedTime">
-                  <option v-for="i in time" :key="i" :value="i">{{ i }}:00</option>
-                </select>
-              </div>
-              <div class="modal-footer">
-                <button @click="updatePt" class="primary-btn">Create</button>
-                <button @click="deletePt" class="danger-btn">Delete</button>
-              </div>
-            </div>
-          </div>
-          <div v-else>
-            <div>pt 시간 : {{ ptInfo.time }}시</div>
-            <button @click="openPtModal=!openPtModal">pt 일정 수정하기</button>
-            <div v-if="openPtModal" class="openPtModal" >
-              <div class="modal-header">
-                <h3 for ="time">Personal Training Schedule</h3>
-              </div>
-              <div>
-                <select id="time" v-model="selectedTime">
-                  <option v-for="i in time">{{ i }}</option>
-                </select>
-              </div>
-              <div class="modal-footer">
-                <button @click="updatePt">Create</button>
-                <button @click="deletePt">Delete</button>
-              </div>
-            </div>
-          </div>
-          <div v-if="userStore.loginUser.type === 'trainer'" class="condition-input">{{ condition ? condition : "등록된 컨디션이 없습니다."  }}</div>
-        </div>
-        <!-- Exercise List -->
-        <ExerciseList v-if="diary" :diaryId="diary.id" />
       </div>
+      
+      <div>
+          <div v-if="userStore.loginUser.type === 'trainer'" class="condition-input">{{ condition ? condition : "등록된 컨디션이 없습니다."  }}</div>
+      </div>
+      <!-- Exercise List -->
+      <ExerciseList v-if="diary" :diaryId="diary.id" />
+    </div>
   </div>
 </template>
 
@@ -64,9 +132,9 @@ import { useDiaryStore } from '@/stores/diaryStore';
 import ExerciseList from '@/components/diary/ExerciseList.vue';
 import { useUserStore } from '@/stores/userStore';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 localStorage.setItem('lastVisitedUrl', location.href)
-
 
 const props = defineProps({
   date: {
@@ -77,6 +145,7 @@ const props = defineProps({
 
 const userStore = useUserStore()
 const diaryStore = useDiaryStore();
+const router = useRouter()
 const diary = ref(null);
 const condition = ref('');
 const openPtModal = ref(false)
@@ -84,7 +153,11 @@ const selectedTime = ref(-1)
 const time = [8,9,10,11,12,13,14,15,16,17,18,19,20]
 const ptInfo = ref({})
 
-const requestInsertPt = function(){
+const gotoRequest = function(){
+  router.push({name : 'request'})
+}
+
+const requestInsert = function(){
   const check = confirm(diary.value.year+"년 "+diary.value.month+"월 "+diary.value.day+"일 "+selectedTime.value+"시에 pt를 요청하시겠습니까?")
   if(check){
     axios.post("http://localhost:8080/pt/request/insert",{
@@ -92,7 +165,41 @@ const requestInsertPt = function(){
       time : selectedTime.value,
     }).then(()=>{
       alert("요청이 전송되었습니다.")
-      router.push({name : 'main'})
+      openPtModal.value=false
+      location.href="/"
+    }).catch((error)=>{
+      console.log(error)
+    })
+  }
+}
+
+const requestUpdate = function(){
+  const check = confirm(diary.value.year+"년 "+diary.value.month+"월 "+diary.value.day+"일의 PT를 "+selectedTime.value+"로 변경 요청하시겠습니까?")
+  if(check){
+    axios.patch("http://localhost:8080/pt/request/update",{
+      id : diary.value.id,
+      time : selectedTime.value,
+    }).then(()=>{
+      alert("요청이 전송되었습니다.")
+      openPtModal.value=false
+      location.href="/"
+    }).catch((error)=>{
+      console.log(error)
+    })
+  }
+}
+
+const requestDelete = function(){
+  const check = confirm(diary.value.year+"년 "+diary.value.month+"월 "+diary.value.day+"일의 PT를 삭제 요청하시겠습니까?")
+  if(check){
+    axios.delete("http://localhost:8080/pt/request/delete",{
+      params : {
+        id : diary.value.id,
+      }
+    }).then(()=>{
+      alert("요청이 전송되었습니다.")
+      openPtModal.value=false
+      location.href="/"
     }).catch((error)=>{
       console.log(error)
     })
@@ -117,9 +224,9 @@ const updatePt = function(){
       time : selectedTime.value
     }).then(()=>{
       alert("pt 일정을 수정하였습니다.")
-      const tmp = userStore.follower.id
+      openPtModal.value=false
+      location.href="/"
     }).catch(()=>{
-      alert("pt 일정 수정에 실패하였습니다.")
     })
   }
 }
@@ -133,8 +240,9 @@ const deletePt = function(){
       }
     }).then(()=>{
       alert("pt 일정을 삭제하였습니다.")
+      openPtModal.value=false
+      location.href="/"
     }).catch(()=>{
-      alert("pt 일정 삭제를 실패하였습니다.")
     })
   }
 }
@@ -153,8 +261,9 @@ const setPt = function(){
       time : selectedTime.value.toString()
     }).then(()=>{
       alert("pt 일정을 등록하였습니다.")
+      openPtModal.value=false
+      location.href="/"
     }).catch(()=>{
-      alert("pt 일정 등록에 실패하였습니다.")
     })
   }
 }
@@ -167,6 +276,7 @@ const formattedDate = computed(() => {
 });
 
 const fetchDiary = async () => {
+  openPtModal.value=false
   if (props.date) {
     await diaryStore.fetchDiaryByDate(props.date);
     diary.value = diaryStore.selectedDiary;
@@ -398,6 +508,32 @@ button.close-btn {
 
 .condition button:hover {
   background-color: #65A45B;
+}
+
+.icon-container {
+  position: relative; /* 참조 기준을 설정합니다. */
+  display: inline-block;
+}
+
+.hover-content {
+  position: absolute;
+  top: 100%; /* 아이콘 바로 아래에 위치 */
+  left: 50%;
+  transform: translateX(-50%); /* 중앙 정렬 */
+  background-color: #fff; /* 배경색 */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  visibility: hidden; /* 초기에는 보이지 않음 */
+  opacity: 0; /* 투명도 설정 */
+  transition: visibility 0s, opacity 0.2s ease-in-out; /* 애니메이션 효과 */
+  width: 300px;
+}
+
+.icon-container:hover .hover-content {
+  visibility: visible; /* 마우스 올렸을 때 보이게 설정 */
+  opacity: 1; /* 투명도 설정 */
 }
 
 

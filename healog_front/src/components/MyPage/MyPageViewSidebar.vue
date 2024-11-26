@@ -15,6 +15,13 @@
         <font-awesome-icon :icon="['fas', 'credit-card']" class="icon"/>
         Subscription
         </RouterLink>
+        <RouterLink 
+            :to="{name : 'request'}" 
+            class="link"
+        >
+        <font-awesome-icon :icon="['fas', 'hand']" class="icon"/>
+        Request
+        </RouterLink>
     </div>
 </template>
 

@@ -67,7 +67,8 @@ const dateOfThisMonth = computed(()=>{
     let count = 0;
     for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
       weekDates.push({
-        day : d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()
+        day : d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(),
+        pt : false
       })
     }
     
@@ -82,6 +83,22 @@ const dateOfThisMonth = computed(()=>{
   return diaryList;
 })
 
+
+watch(dateOfThisMonth, ()=>{
+  let ptList = []
+  axios.get("http://localhost:8080/pt/month", {
+    params : {
+      month : month.value
+    }
+  }).then((res)=>{
+    ptList = res.data
+    if(ptList!==null && ptList.length!==0){
+      dateOfThisMonth.forEach((date)=>{
+
+      })
+    }
+  })
+})
 
 
 const emit = defineEmits(['dateSelected']);

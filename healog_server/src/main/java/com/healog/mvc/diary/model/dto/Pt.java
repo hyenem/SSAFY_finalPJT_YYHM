@@ -4,66 +4,141 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Pt {
-	private String trainer_id;
-	private int diary_id;
-	private String requestDate;
+	private String trainerId;
+	private int diaryId;
+	private String requestDiary;
+	private String date;
+	private String RequestDate;
 	private int requestState;
 	private int time;
+	private int requestTime;
+	private String userName;
 	
 	public Pt(){}
 
-	public Pt(String trainer_id, int diary_id, String requestDate, int requestState, int time) {
+	public Pt(String trainerId, int diaryId, String requestDiary, String date, String requestDate, int requestState,
+			int time, int requestTime, String userName) {
 		super();
-		this.trainer_id = trainer_id;
-		this.diary_id = diary_id;
-		this.requestDate = requestDate;
+		this.trainerId = trainerId;
+		this.diaryId = diaryId;
+		this.requestDiary = requestDiary;
+		this.date = date;
+		RequestDate = requestDate;
 		this.requestState = requestState;
 		this.time = time;
+		this.requestTime = requestTime;
+		this.userName = userName;
 	}
 
-	public String getTrainer_id() {
-		return trainer_id;
+	
+
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setTrainer_id(String trainer_id) {
-		this.trainer_id = trainer_id;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public int getDiary_id() {
-		return diary_id;
+	public String getTrainerId() {
+		return trainerId;
 	}
 
-	public void setDiary_id(int diary_id) {
-		this.diary_id = diary_id;
+
+
+	public void setTrainerId(String trainerId) {
+		this.trainerId = trainerId;
 	}
+
+
+
+	public int getDiaryId() {
+		return diaryId;
+	}
+
+
+
+	public void setDiaryId(int diaryId) {
+		this.diaryId = diaryId;
+	}
+
+
+
+	public String getRequestDiary() {
+		return requestDiary;
+	}
+
+
+
+	public void setRequestDiary(String requestDiary) {
+		this.requestDiary = requestDiary;
+	}
+
+
+
+	public String getDate() {
+		return date;
+	}
+
+
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+
 
 	public String getRequestDate() {
-		return requestDate;
+		return RequestDate;
 	}
 
+
+
 	public void setRequestDate(String requestDate) {
-		this.requestDate = requestDate;
+		RequestDate = requestDate;
 	}
+
+
 
 	public int getRequestState() {
 		return requestState;
 	}
 
+
+
 	public void setRequestState(int requestState) {
 		this.requestState = requestState;
 	}
+
+
 
 	public int getTime() {
 		return time;
 	}
 
+
+
 	public void setTime(int time) {
 		this.time = time;
 	}
 
+
+
+	public int getRequestTime() {
+		return requestTime;
+	}
+
+
+
+	public void setRequestTime(int requestTime) {
+		this.requestTime = requestTime;
+	}
+
+
+
 	@Override
 	public String toString() {
-		return "Pt [trainer_id=" + trainer_id + ", diary_id=" + diary_id + ", requestDate=" + requestDate
+		return "Pt [trainerId=" + trainerId + ", diaryId=" + diaryId + ", requestDiary=" + requestDiary
 				+ ", requestState=" + requestState + "]";
 	}
 	

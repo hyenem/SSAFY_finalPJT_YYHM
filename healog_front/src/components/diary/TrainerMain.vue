@@ -24,8 +24,6 @@ import DiaryView from '@/views/DiaryView.vue';
 import { useUserStore } from '@/stores/userStore';
 import { onMounted } from 'vue';
 import axios from 'axios';
-import { watch } from 'vue';
-import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const REST_API_SUBSCRIBE_URL = "http://localhost:8080/subscribe"

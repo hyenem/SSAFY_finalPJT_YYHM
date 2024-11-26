@@ -1,5 +1,7 @@
 package com.healog.mvc.diary.model.dao;
 
+import java.util.List;
+
 import com.healog.mvc.diary.model.dto.Pt;
 
 public interface PtDao {
@@ -15,5 +17,13 @@ public interface PtDao {
 	void deletePt(int id);
 
 	void insertOrUpdatePt(String trainerId, int id, int time, int requestDiary, int requestState, int requestTime);
+
+	List<Pt> selectRequestPtByTrainer(String trainerId);
+
+	void updateRequestState(int diaryId, int num);
+	
+	void updateRequestStateDirect(int diaryId, int num);
+
+	List<Pt> selectRequestPyByUserId(String userId);
 	
 }
