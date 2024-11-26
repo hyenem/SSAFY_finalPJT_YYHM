@@ -4,7 +4,7 @@
     <div class="overlay" @click="closeModal"></div>
     <!-- 모달 -->
     <div class="modal">
-      <div class="modal-header">
+      <div class="modal-header"> 
         <h3>Plan</h3>
         <button class="close-btn" @click="closeModal">×</button>
       </div>
@@ -45,7 +45,7 @@
           </div>
         </div>
         <!-- 이미지 업로드 -->
-        <div class="form-group">
+        <div class="form-group" v-if="done">
           <label>Posture Image</label>
           <p class="helper-text">Please upload square image, size less than 100KB</p>
           <div class="image-upload">
@@ -78,6 +78,10 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  done : {
+    type : Boolean,
+    required : true
+  }
 });
 
 const emit = defineEmits(['close']);

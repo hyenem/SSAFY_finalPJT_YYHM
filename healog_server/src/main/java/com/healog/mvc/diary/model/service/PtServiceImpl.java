@@ -1,5 +1,7 @@
 package com.healog.mvc.diary.model.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.healog.mvc.account.model.dao.TrainerDao;
@@ -62,5 +64,52 @@ public class PtServiceImpl implements PtService {
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
+	}
+
+	@Override
+	public List<Pt> getRequestByTrainer(String trainerId) {
+		return ptDao.selectRequestPtByTrainer(trainerId);
+	}
+
+	@Override
+	public void acceptRequest(int diaryId) {
+		ptDao.updateRequestState(diaryId, 3);
+	}
+
+	@Override
+	public void denyRequest(int diaryId) {
+		ptDao.updateRequestState(diaryId, 6);
+		
+	}
+
+	@Override
+	public List<Pt> getRequestByUser(String userId) {
+		return ptDao.selectRequestPyByUserId(userId);
+	}
+
+	@Override
+	public void checkResponse(int diaryId) {
+		Pt pt = ptDao.selectPtByDiaryId(diaryId);
+		int state = pt.getRequestState();
+		if(state==6|| state==8 || state==10) {
+			ptDao.updateRequestStateDirect(diaryId, 1);
+		} else if(state==3 || state==4 || state==7 || state==9) {
+			ptDao.updateRequestStateDirect(diaryId, 0);
+		} else if (state == 5) {
+			String trainerId = trainerDao.selectTrainerByDiary(diaryId);
+			ptDao.insertOrUpdatePt(trainerId, diaryId, pt.getRequestTime(), 0, 1, 0);
+		}
+	}
+
+	@Override
+	public void requestUpdate(int diaryId, int time) {
+		Pt pt = ptDao.selectPtByDiaryId(diaryId);
+		String trainerId = trainerDao.selectTrainerByDiary(diaryId);
+		ptDao.insertOrUpdatePt(trainerId, diaryId, pt.getTime(), 0, 2, time);
+	}
+
+	@Override
+	public void requestDelete(int diaryId) {
+		ptDao.updateRequestStateDirect(diaryId, 4);
 	}
 }

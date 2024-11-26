@@ -1,5 +1,7 @@
 package com.healog.mvc.diary.model.service;
 
+import java.util.List;
+
 import com.healog.mvc.diary.model.dto.Pt;
 
 public interface PtService {
@@ -15,6 +17,20 @@ public interface PtService {
 	void deletePt(int id);
 
 	void requestInsert(int id, int time, int i);
+
+	List<Pt> getRequestByTrainer(String trainerId);
+
+	void acceptRequest(int diaryId);
+
+	void denyRequest(int diaryId);
+
+	List<Pt> getRequestByUser(String userId);
+
+	void checkResponse(int diaryId);
+
+	void requestUpdate(int diaryId, int time);
+
+	void requestDelete(int diaryId);
 
 
 }

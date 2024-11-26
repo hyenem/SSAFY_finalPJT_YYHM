@@ -14,6 +14,7 @@ import AccountViewTrainerSignup from '@/components/account/trainer/AccountViewTr
 import MyPageView from '@/views/MyPageView.vue';
 import MyPageViewInfo from '@/components/MyPage/MyPageViewInfo.vue';
 import MyPageViewSubscribe from '@/components/MyPage/MyPageViewSubscribe.vue';
+import MyPageRequest from '@/components/MyPage/MyPageRequest.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,11 @@ const router = createRouter({
           path: 'subscribe',
           name: 'subscribe',
           component: MyPageViewSubscribe
+        },
+        {
+          path: 'request',
+          name: 'request',
+          component : MyPageRequest
         }
       ]
     },

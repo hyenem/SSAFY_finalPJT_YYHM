@@ -1,9 +1,7 @@
 <template>
     <div class="nav">
         <img class="logo" @click="gotoHome" src="@/assets/logo.png"/>
-        <!--
-        <button @click="gotoHome">home</button>
-        -->
+
         <div v-if="userStore.loginUser.type==='trainer'">
             <div v-if="followerList.length===0">팔로워가 없습니다.</div>
             <div v-else>
@@ -16,6 +14,24 @@
                     </div>
                 </div>
             </div>
+      </div>
+      <div>
+        <font-awesome-icon 
+              :icon="['fas', 'bell']" 
+              class="icon" 
+            />
+        <div v-if="before+after ===0">알림이 없습니다.</div>
+        <div v-else-if="userStore.loginUser.type==='trainer'">
+          <div v-if="after!==0">{{ after }}개의 처리를 회원이 확인 중입니다.</div>
+          <div v-if="before!==0">{{ before }}개의 요청이 왔습니다.</div>
+          <button @click="router.push({name : 'request'})">확인하러 가기</button>
+        </div>
+        <div v-else>
+          <div v-if="before!==0">{{ before }}개의 요청에 대한 트레이너의 응답을 기다리는 중입니다.</div>
+          <div v-if="after!==0">{{ after }}개의 트레이너의 응답이 왔습니다.</div>
+          <button @click="router.push({name : 'request'})">확인하러 가기</button>
+        </div>
+
       </div>
         <div class="mypage">
             <div class="name">
@@ -43,7 +59,7 @@
 <script setup>
 import { useUserStore } from '@/stores/userStore';
 import axios from 'axios';
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const userStore = useUserStore()
@@ -52,6 +68,10 @@ const router = useRouter()
 const followerList = ref([])
 const showLogoutModal = ref(false); // 모달 표시 상태 관리
 const REST_API_SUBSCRIBE_URL = "http://localhost:8080/subscribe"
+
+const ptList = ref([])
+const before = ref(0)
+const after = ref(0)
 
 const setFollower = function(id, name){
     userStore.follower.id = id
@@ -90,7 +110,26 @@ onMounted(()=>{
               userStore.follower.id=res.data[0].id
               userStore.follower.name = res.data[0].name
             }
+            axios.get("http://localhost:8080/pt/request/trainer",{
+                params : {
+                    trainerId : userStore.loginUser.id
+                }
+            }).then((res)=>{
+                ptList.value = res.data
+                before.value = ptList.value.filter((pt)=>pt.requestState<=4).length
+                after.value = ptList.value.filter((pt)=>pt.requestState>4).length
+            })
         })
+    } else {
+      axios.get("http://localhost:8080/pt/request/user",{
+                params : {
+                    userId : userStore.loginUser.id
+                }
+            }).then((res)=>{
+                ptList.value = res.data
+                before.value = ptList.value.filter((pt)=>pt.requestState<=4).length
+                after.value = ptList.value.filter((pt)=>pt.requestState>4).length
+            })
     }
 })
 </script>

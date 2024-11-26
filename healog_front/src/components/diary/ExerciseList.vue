@@ -2,61 +2,108 @@
   <div>
     <div class="header">
       <h3>Exercise List</h3>
-      <p class="helper-text">Please upload square image, size less than 100KB</p>
+      <p class="helper-text" v-if="userStore.login.type==='trainer'">Please upload square image, size less than 100KB</p>
     </div>
     <p v-if="isLoading">Loading exercises...</p>
-    <div v-else-if="exercises.length">
-      <div class="exerciseList" v-for="exercise in exercises" :key="exercise.id">
-        <!-- Exercise Card -->
-        <!-- Done Checkbox -->
-        <input
-          type="checkbox"
-          class="large-checkbox"
-          :checked="exercise.done"
-          @change="toggleDone(exercise)"
-        />
-        <div class="exerciseCard" @click="openModal(exercise.id)">
-          <div class="category">
-            <div class="exercise">
-              {{ exercise.exercise }}
-            </div>
-            <div class="exerciseArea">
-              {{ exercise.exerciseArea }}
-            </div>
-          </div>
-          <div>
-            {{ exercise.set || 'N/A' }}세트 
-            <font-awesome-icon :icon="['fas', 'xmark']" />
-            {{ exercise.weight || 'N/A' }}kg
-            <font-awesome-icon :icon="['fas', 'xmark']" />
-            {{ exercise.count || 'N/A' }}회
-          </div>
-        </div>
-        <!-- Image Preview -->
-        <div class="image-preview">
-          <img
-            v-if="exercise.postureImg"
-            :src="resolveImagePath(exercise.postureImg)"
-            alt="Posture"
-            class="posture-img"
+    <div v-else-if="userStore.loginUser.type==='trainer'">
+      <div v-if="exercises.length">
+        <div class="exerciseList" v-for="exercise in exercises" :key="exercise.id">
+          <!-- Exercise Card -->
+          <!-- Done Checkbox -->
+          <input
+            type="checkbox"
+            class="large-checkbox"
+            :checked="exercise.done"
+            disabled
           />
-          <p v-else>No Image</p>
+          <div class="exerciseCard">
+            <div class="category">
+              <div class="exercise">
+                {{ exercise.exercise }}
+              </div>
+              <div class="exerciseArea">
+                {{ exercise.exerciseArea }}
+              </div>
+            </div>
+            <div>
+              {{ exercise.set || 'N/A' }}세트 
+              <font-awesome-icon :icon="['fas', 'xmark']" />
+              {{ exercise.weight || 'N/A' }}kg
+              <font-awesome-icon :icon="['fas', 'xmark']" />
+              {{ exercise.count || 'N/A' }}회
+            </div>
+          </div>
+          <!-- Image Preview -->
+          <div class="image-preview">
+            <img
+              v-if="exercise.postureImg"
+              :src="resolveImagePath(exercise.postureImg)"
+              alt="Posture"
+              class="posture-img"
+            />
+            <p v-else>No Image</p>
+          </div>
         </div>
       </div>
-    </div>
-    <p v-else>Plan을 추가해주세요.</p>
-    <button @click="openModal(null)" class="add-exercise">
-      <font-awesome-icon :icon="['fas', 'plus']" />
-    </button>
-    
-    <ExerciseListModal
-      v-if="isModalOpen"
-      :exerciseId="selectedExerciseId"
-      :diaryId="diaryId"
-      @close="closeModal"
-    />
 
-    <MealList :diaryId="diaryId" />
+      <MealList :diaryId="diaryId" />
+    </div>
+    <div v-else>
+      <div v-if="exercises.length">
+        <div class="exerciseList" v-for="exercise in exercises" :key="exercise.id">
+          <!-- Exercise Card -->
+          <!-- Done Checkbox -->
+          <input
+            type="checkbox"
+            class="large-checkbox"
+            :checked="exercise.done"
+            @change="toggleDone(exercise)"
+          />
+          <div class="exerciseCard" @click="openModal(exercise.id, exercise.done)">
+            <div class="category">
+              <div class="exercise">
+                {{ exercise.exercise }}
+              </div>
+              <div class="exerciseArea">
+                {{ exercise.exerciseArea }}
+              </div>
+            </div>
+            <div>
+              {{ exercise.set || 'N/A' }}세트 
+              <font-awesome-icon :icon="['fas', 'xmark']" />
+              {{ exercise.weight || 'N/A' }}kg
+              <font-awesome-icon :icon="['fas', 'xmark']" />
+              {{ exercise.count || 'N/A' }}회
+            </div>
+          </div>
+          <!-- Image Preview -->
+          <div class="image-preview">
+            <img
+              v-if="exercise.postureImg"
+              :src="resolveImagePath(exercise.postureImg)"
+              alt="Posture"
+              class="posture-img"
+            />
+            <p v-else>No Image</p>
+          </div>
+        </div>
+      </div>
+      <p v-else>Plan을 추가해주세요.</p>
+      <button @click="openModal(null)" class="add-exercise">
+        <font-awesome-icon :icon="['fas', 'plus']" />
+      </button>
+      
+      <ExerciseListModal
+        v-if="isModalOpen"
+        :exerciseId="selectedExerciseId"
+        :diaryId="diaryId"
+        :done="isDone"
+        @close="closeModal"
+      />
+
+      <MealList :diaryId="diaryId" />
+    </div>
+    
   </div>
 </template>
 
@@ -65,7 +112,9 @@ import { useExerciseStore } from '@/stores/exerciseStore';
 import { ref, computed, watch } from 'vue';
 import ExerciseListModal from './ExerciseListModal.vue';
 import MealList from './MealList.vue';
+import { useUserStore } from '@/stores/userStore';
 
+const userStore = useUserStore()
 const props = defineProps({
   diaryId: {
     type: Number,
@@ -78,11 +127,15 @@ const selectedExerciseId = ref(null);
 const isModalOpen = ref(false);
 const exercises = computed(() => exerciseStore.exercises);
 const isLoading = ref(false);
+const isDone = ref(false)
 
 const toggleDone = async (exercise) => {
   try {
+    console.log(exercise.done)
     await exerciseStore.markAsDone(exercise.id, null, exercise.done ? 0 : 1);
-    alert(`Exercise marked as ${exercise.done ? 'Not Done' : 'Done'}`);
+    console.log(exercise.done)
+
+    alert(`Exercise marked as ${exercise.done ? 'Done' : 'Not Done'}`);
   } catch (error) {
     console.error('Error toggling done status:', error);
     alert('Failed to update exercise status.');
@@ -109,14 +162,16 @@ const deleteExercise = async (exerciseId) => {
   }
 };
 
-const openModal = (exerciseId) => {
+const openModal = (exerciseId, done) => {
   selectedExerciseId.value = exerciseId;
   isModalOpen.value = true;
+  isDone.value = done
 };
 
 const closeModal = async () => {
   selectedExerciseId.value = null;
   isModalOpen.value = false;
+  isDone.value = false
   await exerciseStore.loadExercises(props.diaryId);
 };
 

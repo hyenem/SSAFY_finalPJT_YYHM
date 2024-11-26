@@ -25,12 +25,11 @@ const type = userStore.loginUser.type
 
 localStorage.setItem('lastVisitedUrl', location.href)
 
-onMounted((to, from, next)=>{
+onMounted(()=>{
     if(!userStore.loginUser.id){
         alert("로그인 해주세요.")
         location.href="/"
     } else {
-        router.replace({name : 'info'})
     }
 })
 </script>

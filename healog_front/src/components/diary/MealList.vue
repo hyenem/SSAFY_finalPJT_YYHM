@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <h3>Meal</h3>
-      <p class="helper-text">Please upload square image, size less than 100KB</p>
+      <p class="helper-text" v-if="userStore.loginUser.type==='user'">Please upload square image, size less than 100KB</p>
     </div>
     <div class="meal">
     <!-- Breakfast -->
@@ -65,6 +65,7 @@
 import { useMealStore } from '@/stores/mealStore';
 import { ref, computed, watch } from 'vue';
 import MealListModal from './MealListModal.vue';
+import { useUserStore } from '@/stores/userStore';
 
 const props = defineProps({
   diaryId: {
@@ -72,6 +73,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const userStore = useUserStore()
 
 const mealStore = useMealStore();
 const meals = computed(() => mealStore.meals);
@@ -89,6 +92,7 @@ const resolveImagePath = (path) => {
 
 // 모달 열기
 const openModal = (mealType) => {
+  if(userStore.loginUser.type==='trainer') return
   selectedMealType.value = mealType;
   isModalOpen.value = true;
 };

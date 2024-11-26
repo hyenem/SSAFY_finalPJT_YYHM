@@ -9,8 +9,11 @@
 	</select>
 	
 	<insert id="insertPt">
-		INSERT INTO personaltraining (trainer_id, diary_id, time)
-		VALUES (#{trainerId}, #{diaryId}, #{time})
+		INSERT INTO personaltraining (trainer_id, diary_id, time, requestState)
+		VALUES (#{trainerId}, #{diaryId}, #{time}, 1)
+		ON DUPLICATE KEY UPDATE 
+		    time = VALUES(time),
+		    requestState = VALUES(requestState)
 	</insert>
 	
 	<select id="selectPtByDiaryId" parameterType="int" resultType="Pt">
@@ -38,4 +41,57 @@
 		    requestState = VALUES(requestState),
 		    requestTime = VALUES(requestTime);
 	</insert>
+	
+	<select id="selectRequestPtByTrainer" parameterType="String" resultType="Pt">
+		SELECT 
+		    pt.*, 
+		    CONCAT(d1.year, '-', LPAD(d1.month, 2, '0'), '-', LPAD(d1.day, 2, '0')) AS date,
+		    CONCAT(d2.year, '-', LPAD(d2.month, 2, '0'), '-', LPAD(d2.day, 2, '0')) AS requestDate,
+		    u.name AS userName
+		FROM 
+		    personaltraining pt
+		LEFT JOIN 
+		    diary d1 ON pt.diary_id = d1.id
+		LEFT JOIN 
+		    diary d2 ON pt.requestDiary = d2.id
+		LEFT JOIN 
+		    user u ON d1.user_id = u.id
+		WHERE 
+		    pt.trainer_id = #{trainerId} 
+		    AND pt.requestState IN (2, 3, 4, 5, 6, 7, 8, 9, 10);
+	</select>
+	
+	<update id="updateRequestState">
+		UPDATE personaltraining
+		SET requestState = requestState + #{num}
+		WHERE diary_id = #{diaryId}
+	</update>
+	
+	<update id="updateRequestStateDirect">
+		UPDATE personaltraining
+		SET requestState = #{num}
+		WHERE diary_id = #{diaryId}
+	</update>
+	
+	<select id="selectRequestPyByUserId" resultType="Pt">
+		SELECT 
+		    pt.*, 
+		    CONCAT(d1.year, '-', LPAD(d1.month, 2, '0'), '-', LPAD(d1.day, 2, '0')) AS date,
+		    CONCAT(d2.year, '-', LPAD(d2.month, 2, '0'), '-', LPAD(d2.day, 2, '0')) AS requestDate,
+		    u.name AS userName
+		FROM 
+		    personaltraining pt
+		LEFT JOIN 
+		    diary d1 ON pt.diary_id = d1.id
+		LEFT JOIN 
+		    diary d2 ON pt.requestDiary = d2.id
+		LEFT JOIN 
+		    user u ON d1.user_id = u.id
+		WHERE 
+		    pt.diary_id IN (
+		    	SELECT id FROM diary
+		    	WHERE user_id = #{userId}
+		    )
+		    AND pt.requestState IN (2, 3, 4, 5, 6, 7, 8, 9, 10);
+	</select>
 </mapper>
