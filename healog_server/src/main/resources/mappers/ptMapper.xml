@@ -12,6 +12,7 @@
 		INSERT INTO personaltraining (trainer_id, diary_id, time, requestState)
 		VALUES (#{trainerId}, #{diaryId}, #{time}, 1)
 		ON DUPLICATE KEY UPDATE 
+			trainer_id = #{trainerId},
 		    time = VALUES(time),
 		    requestState = VALUES(requestState)
 	</insert>
@@ -35,7 +36,8 @@
 	<insert id = "insertOrUpdatePt">
 	    INSERT INTO personaltraining (trainer_id, diary_id, time, requestDiary, requestState, requestTime)
 		VALUES (#{trainerId}, #{id}, #{time}, #{requestDiary}, #{requestState}, #{requestTime})
-		ON DUPLICATE KEY UPDATE 
+		ON DUPLICATE KEY UPDATE
+			trainer_id = #{trainerId},
 		    time = VALUES(time),
 		    requestDiary = VALUES(requestDiary),
 		    requestState = VALUES(requestState),

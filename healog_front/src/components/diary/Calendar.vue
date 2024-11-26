@@ -30,7 +30,7 @@
               v-for="date in week"
               :key="date.day"
               :class="{ today : date.day===year+'-'+month+'-'+day,
-                        isPt : isPt(date.day),
+                        isPt : isPt(date.day.split('-')[0], date.day.split('-')[1], date.day.split('-')[2]),
                         notThisMonth : notThisMonth(date.day)}"
               @click="onDateChange(date.day)"
             >
@@ -109,10 +109,12 @@ const dateOfThisMonth = computed(()=>{
   return diaryList;
 })
 
-const isPt = function(date){
+const isPt = function(year, month, day){
   let result = false
   ptList.value.forEach((pt)=>{
-    if(pt.date===date) {
+    if(pt.date===year+"-"+month+"-"+day || pt.date===year+"-0"+month+"-"+day
+        || pt.date===year+"-"+month+"-0"+day || pt.date===year+"-0"+month+"-0"+day
+    ) {
       result = true
     }
   })
@@ -208,7 +210,7 @@ onMounted(()=>{
     ptList.value = res.data
   })
 
-  axios.get("http://localhost:8080/user/diary")
+  // axios.get("http://localhost:8080/user/diary")
 })
 </script>
 

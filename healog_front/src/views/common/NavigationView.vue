@@ -1,8 +1,8 @@
 <template>
     <div class="nav">
-        <div class="nav-first">
-          <img class="logo" @click="gotoHome" src="@/assets/logo.png"/>
-          <div v-if="userStore.loginUser.type==='trainer'">
+      <div class="nav-first">
+        <img class="logo" @click="gotoHome" src="@/assets/logo.png"/>
+        <div v-if="userStore.loginUser.type==='trainer'">
             <div v-if="followerList.length===0">팔로워가 없습니다.</div>
             <div v-else>
               <div class="follwers">
@@ -34,7 +34,7 @@
         <hr>
         <div class="mypage">
           <div class="name">
-            Hello, {{ loginUserInfo.name }}
+            Hello, {{ loginUserInfo.name }}님
           </div>
           <font-awesome-icon
             class="user"
