@@ -24,6 +24,8 @@ public interface PtDao {
 	
 	void updateRequestStateDirect(int diaryId, int num);
 
-	List<Pt> selectRequestPyByUserId(String userId);
+	List<Pt> selectPtByUserId(String userId);
+
+	List<Pt> selectRequestPtByUserId(String userId);
 	
 }

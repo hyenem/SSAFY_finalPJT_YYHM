@@ -6,7 +6,7 @@
           <Calendar @dateSelected="onDateSelected" />
         </div>
         <div class="feedbackWrapper">
-          <Feedback />
+          <Feedback :selectedDate="selectedDate"/>
         </div>
       </div>
       <div class="rightPanel">

@@ -84,7 +84,7 @@ public class PtServiceImpl implements PtService {
 
 	@Override
 	public List<Pt> getRequestByUser(String userId) {
-		return ptDao.selectRequestPyByUserId(userId);
+		return ptDao.selectRequestPtByUserId(userId);
 	}
 
 	@Override
@@ -111,5 +111,10 @@ public class PtServiceImpl implements PtService {
 	@Override
 	public void requestDelete(int diaryId) {
 		ptDao.updateRequestStateDirect(diaryId, 4);
+	}
+
+	@Override
+	public List<Pt> getPtByUser(String userId) {
+		return ptDao.selectPtByUserId(userId);
 	}
 }

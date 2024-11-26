@@ -125,6 +125,17 @@ public class PtController {
 		}
 	}
 	
+	@GetMapping("/user")
+	public ResponseEntity<?> getPtByUser(@RequestParam String userId){
+		try {
+			List<Pt> ptList = ptService.getPtByUser(userId);
+			return new ResponseEntity<List<Pt>>(ptList, HttpStatus.OK);
+		}catch(Exception e) {
+			e.printStackTrace();	
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
 	@PatchMapping("/accept")
 	public ResponseEntity<?> accept(@RequestBody Map<String, String> map){
 		int diaryId = Integer.parseInt(map.get("diaryId"));
@@ -184,4 +195,5 @@ public class PtController {
 			return ResponseEntity.internalServerError().build();
 		}
 	}
+	
 }

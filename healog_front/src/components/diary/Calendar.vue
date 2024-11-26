@@ -23,7 +23,9 @@
             <td
               v-for="date in week"
               :key="date.day"
-              :class="{ today : date.day===year+'-'+month+'-'+day}"
+              :class="{ today : date.day===year+'-'+month+'-'+day,
+                        isPt : isPt(date.day),
+                        notThisMonth : notThisMonth(date.day)}"
               @click="onDateChange(date.day)"
             >
               {{ date.day.split("-")[2] }}
@@ -40,10 +42,10 @@
 import { getDiariesByUserId } from '@/api/diary';
 import { useUserStore } from '@/stores/userStore';
 import axios from 'axios';
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 const userStore = useUserStore()
-let ptList = []
+const ptList = ref([])
 
 const today = new Date()
 const year = ref(today.getFullYear())
@@ -68,7 +70,6 @@ const dateOfThisMonth = computed(()=>{
     for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
       weekDates.push({
         day : d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(),
-        pt : false
       })
     }
     
@@ -83,23 +84,15 @@ const dateOfThisMonth = computed(()=>{
   return diaryList;
 })
 
-
-watch(dateOfThisMonth, ()=>{
-  let ptList = []
-  axios.get("http://localhost:8080/pt/month", {
-    params : {
-      month : month.value
-    }
-  }).then((res)=>{
-    ptList = res.data
-    if(ptList!==null && ptList.length!==0){
-      dateOfThisMonth.forEach((date)=>{
-
-      })
+const isPt = function(date){
+  let result = false
+  ptList.value.forEach((pt)=>{
+    if(pt.date===date) {
+      result = true
     }
   })
-})
-
+  return result
+}
 
 const emit = defineEmits(['dateSelected']);
 const selectedDate = ref({
@@ -116,6 +109,7 @@ const lastMonth = function(){
     month.value = month.value-1
   }
 }
+
 const nextMonth = function(){
   if(month.value+1==13){
     year.value = year.value+1
@@ -128,9 +122,18 @@ const nextMonth = function(){
 const checkFollow = computed(()=>{
   return userStore.follower.id
 })
+
 watch([checkFollow],()=>{
     selectedDate.value = null
+    axios.get("http://localhost:8080/pt/user", {
+    params : {
+      userId : userStore.loginUser.type==='user'? userStore.loginUser.id : userStore.follower.id,
+    }
+  }).then((res)=>{
+    ptList.value = res.data
+  }).then(()=>{
     onDateChange(year.value+"-"+month.value+"-"+day.value)
+  })
 })
 
 const onDateChange = (date) => {
@@ -167,7 +170,19 @@ const isToday = (date) => {
   );
 };
 
+const notThisMonth = function(date){
+  return month.value != date.split('-')[1]
+}
 
+onMounted(()=>{
+  axios.get("http://localhost:8080/pt/user", {
+    params : {
+      userId : userStore.loginUser.type==='user'? userStore.loginUser.id : userStore.follower.id,
+    }
+  }).then((res)=>{
+    ptList.value = res.data
+  })
+})
 </script>
 
 <style scoped>
@@ -267,6 +282,15 @@ const isToday = (date) => {
 
 .calendar button:hover {
   background-color: #65A45B;
+}
+
+td.isPt {
+  background-color: red;
+}
+
+td.notThisMonth{
+  background-color: rgb(233, 233, 233);
+  color: #b0b0b0;
 }
 </style>
 

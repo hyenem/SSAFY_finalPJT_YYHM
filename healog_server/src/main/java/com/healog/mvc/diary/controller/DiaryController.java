@@ -63,5 +63,6 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save diary.");
         }
     }
+    
 }
 
