@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`category` (
   `exercise` VARCHAR(45) NOT NULL,
   `exercise_area` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `exercise_UNIQUE` (`exercise` ASC) VISIBLE)
+  UNIQUE INDEX `exercise_UNIQUE` (`exercise` ASC) VISIBLE),
 ENGINE = InnoDB
 AUTO_INCREMENT = 12
 DEFAULT CHARACTER SET = utf8mb4
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`diary` (
   `day` INT NOT NULL,
   `user_id` VARCHAR(45) NOT NULL,
   `condition` TEXT NULL DEFAULT NULL,
-  `feedback` VARCHAR(45) NULL DEFAULT NULL,
+  `feedback` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `unique_diary_date` (`year` ASC, `month` ASC, `day` ASC, `user_id` ASC) VISIBLE,
   INDEX `fk_diary_user1_idx` (`user_id` ASC) VISIBLE,
