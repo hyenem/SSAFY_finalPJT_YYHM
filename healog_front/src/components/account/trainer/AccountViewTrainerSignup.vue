@@ -87,6 +87,15 @@
                 v-model="phoneNumber"
                 placeholder="Enter your phone number"
                 />
+
+                <label for="location">Gym (*)</label>
+                <select 
+                id="location"
+                v-model="location"
+                >
+                <option v-for="gym in gyms" :value="gym.id">{{ gym.name }}</option>
+                </select>
+
             </div>
             <button @click="signup" class="primary-btn">회원가입</button>
         </div>
@@ -263,7 +272,8 @@ h3 {
   text-align: left;
 }
 
-.usersignup input {
+.usersignup input, 
+.usersignup select {
   padding: 0.8rem;
   font-size: 1rem;
   border: 1px solid #ddd;
@@ -272,7 +282,8 @@ h3 {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.usersignup input:focus {
+.usersignup input:focus
+.usersignup select:focus {
   border-color: #7fc678;
   box-shadow: 0px 0px 4px rgba(127, 198, 120, 0.5);
   outline: none;
