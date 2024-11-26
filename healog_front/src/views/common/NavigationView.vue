@@ -7,13 +7,15 @@
         <div v-if="userStore.loginUser.type==='trainer'">
             <div v-if="followerList.length===0">팔로워가 없습니다.</div>
             <div v-else>
-                <div v-for="follower in followerList" @click = "setFollower(follower.id, follower.name)" class="subscribeUser" >
+                <div v-for="follower in followerList" @click = "setFollower(follower.id, follower.name)" class="follwer" >
+                  <div class="subscribeUser">
                     <div>
                       <font-awesome-icon :icon="['fas', 'circle-user']" />
                     </div>
                     <div class="subscribeUserName">
                       {{ follower.name }}
                     </div>
+                  </div>
                 </div>
             </div>
       </div>
@@ -129,6 +131,11 @@ onMounted(()=>{
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.2s ease-in-out;
+}
+
+.followerList {
+  display: flex; /* 가로 방향 배치 */
+  gap: 16px; /* 각 그룹 사이 간격 */
 }
 
 .subscribeUser {
