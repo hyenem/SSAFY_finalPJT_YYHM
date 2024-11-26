@@ -14,9 +14,10 @@
             type="checkbox"
             class="large-checkbox"
             :checked="exercise.done"
-            disabled
+            :disabled="userStore.loginUser.type==='trainer'"
+            @change="toggleDone(exercise)"
           />
-          <div class="exerciseCard">
+          <div class="exerciseCard" @click="openModal(exercise.id, false, exercise.done)">
             <div class="category">
               <div class="exercise">
                 {{ exercise.exercise }}
@@ -41,10 +42,22 @@
               alt="Posture"
               class="posture-img"
             />
-            <p v-else>No Image</p>
           </div>
         </div>
       </div>
+      <p v-else>Plan을 추천해주세요.</p>
+      <button @click="openModal(null, true, false)" class="add-exercise">
+        <font-awesome-icon :icon="['fas', 'plus']" />
+      </button>
+      
+      <ExerciseListModal
+        v-if="isModalOpen"
+        :exerciseId="selectedExerciseId"
+        :diaryId="diaryId"
+        :done="isDone"
+        :isCreate="isCreate"
+        @close="closeModal"
+      />
 
       <MealList :diaryId="diaryId" />
     </div>
@@ -84,7 +97,6 @@
               alt="Posture"
               class="posture-img"
             />
-            <p v-else>No Image</p>
           </div>
         </div>
       </div>
