@@ -9,17 +9,12 @@ public class DiaryDto {
 	private String userId;
 	private String condition;
 	private String feedback;
-	private int doneCount;
-	private int notDoneCount;
 	
 	public DiaryDto() {
 	}
 	
 	
-
-
-	public DiaryDto(int id, int year, int month, int day, String userId, String condition, String feedback,
-			int doneCount, int notDoneCount) {
+	public DiaryDto(int id, int year, int month, int day, String userId, String condition, String feedback) {
 		super();
 		this.id = id;
 		this.year = year;
@@ -28,25 +23,8 @@ public class DiaryDto {
 		this.userId = userId;
 		this.condition = condition;
 		this.feedback = feedback;
-		this.doneCount = doneCount;
-		this.notDoneCount = notDoneCount;
 	}
 
-	public int getDoneCount() {
-		return doneCount;
-	}
-
-	public void setDoneCount(int doneCount) {
-		this.doneCount = doneCount;
-	}
-
-	public int getNotDoneCount() {
-		return notDoneCount;
-	}
-
-	public void setNotDoneCount(int notDoneCount) {
-		this.notDoneCount = notDoneCount;
-	}
 
 	public String getFeedback() {
 		return feedback;

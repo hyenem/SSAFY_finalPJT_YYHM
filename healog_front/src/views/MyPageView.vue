@@ -30,6 +30,9 @@ onMounted(()=>{
         alert("로그인 해주세요.")
         location.href="/"
     } else {
+      if(location.href.split('/')[location.href.split('/').length-1]==="mypage"){
+        router.push({name : 'info'})
+      }
     }
 })
 </script>
