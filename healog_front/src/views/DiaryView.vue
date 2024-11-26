@@ -107,6 +107,7 @@
                 PT 일정
               </button>
               <div class="hover-content">
+                <div v-if="isPt!==3 && isPt!==6 && isPt!==9" class="helper-text">오늘 {{ ptInfo? ptInfo.time : "" }}시에 PT 일정이 있습니다.</div>
                 <p>{{ isPt <= 4 ? "트레이너의 응답을 기다리는 중입니다." : "트레이너의 응답이 도착했습니다." }}</p>
                 <button @click="gotoRequest">보러가기</button>
               </div>
