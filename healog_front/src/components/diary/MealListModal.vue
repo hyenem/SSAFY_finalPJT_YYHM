@@ -12,8 +12,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button class="delete-btn" @click="deleteImage(mealType)">Delete</button>
-      <button class="create-btn" @click="uploadImage">Create</button>
+      <button class="delete-btn" v-if="exist" @click="deleteImage(mealType)">Delete</button>
     </div>
   </div>
 </template>
@@ -30,7 +29,10 @@ const props = defineProps({
   diaryId: {
     type: Number,
     required: true,
-  },
+  },exist: {
+    type: String,
+    required : true
+  }
 });
 
 const emit = defineEmits(['close']);

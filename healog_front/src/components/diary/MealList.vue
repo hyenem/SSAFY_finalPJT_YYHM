@@ -56,6 +56,7 @@
       v-if="isModalOpen"
       :mealType="selectedMealType"
       :diaryId="props.diaryId"
+      :exist="meals[`${selectedMealType}Img`]"
       @close="closeModal"
     />
   </div>
