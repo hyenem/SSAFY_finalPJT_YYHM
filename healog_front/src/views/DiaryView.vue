@@ -21,8 +21,8 @@
             </div>
           </div>
         </div>
-        <div v-else-if="isPt===1">
-          <div>pt 시간 : {{ ptInfo.time }}시</div>
+        <div v-else-if="isPt===1" class="header">
+          <div>PT 시간 : {{ ptInfo.time }}시</div>
           <button @click="openPtModal=!openPtModal">pt 일정 수정하기</button>
           <div v-if="openPtModal" class="openPtModal" >
             <div class="modal-header">
@@ -47,7 +47,6 @@
               :icon="['fas', 'bell']" 
               class="icon" 
             />
-                  
             <div class="hover-content">
               <p>{{ isPt <= 4 ? "해당 일에 PT 요청이 있습니다." : "회원이 요청 처리를 확인 중입니다." }}</p>
               <button @click="gotoRequest">요청 보러가기</button>
@@ -56,7 +55,7 @@
         </div>
       </div>
       <div v-else>
-        <div v-if="isPt===0">
+        <div v-if="isPt===0" class="header">
           <button @click="openPtModal=!openPtModal">PT 요청하기</button>
           <div v-if="openPtModal" ref="modalRef" class="openPtModal">
             <div class="modal-header">
@@ -74,43 +73,42 @@
             </div>
           </div>
         </div>
-        <div v-else-if="isPt===1">
-          <div>PT 시간 : {{ ptInfo.time }}</div>
-          <button @click="openPtModal=!openPtModal">PT 일정 수정 요청하기</button>
-          <div v-if="openPtModal">
-            <hr>
+        <div v-else-if="isPt===1" class="header">
+          <button @click="openPtModal=!openPtModal" class="pt-btn">
+            <font-awesome-icon :icon="['fas', 'calendar-days']" />
+            PT 일정
+          </button>
+          <div v-if="openPtModal" class="openPtModal">
             <div class="modal-header">
-              <h3 for ="time">Personal Training Schedule</h3>
+              <h3 for ="time">PT Schedule</h3>
               <button @click="openPtModal = false" class="close-btn">X</button>
             </div>
             <div>
+              <div style="text-align: center; font-size: 0.8rem;">오늘 {{ ptInfo.time }}:00 에 PT 일정이 있습니다.</div>
               <select id="time" v-model="selectedTime">
                 <option v-for="i in time">{{ i }}</option>
               </select>
             </div>
             <div class="modal-footer">
-              <button @click="requestUpdate">시간 수정 요청하기</button>
-              <button @click="requestDelete">삭제 요청하기</button>
+              <button @click="requestUpdate">변경 요청</button>
+              <button @click="requestDelete">삭제 요청</button>
             </div>
-            <hr>
           </div>
         </div>
         <div v-else>
-          <div v-if="isPt!==3 && isPt!==6 && isPt!==9">pt 시간 : {{ ptInfo? ptInfo.time : "" }}시</div>
           <div class="icon-container">
-            <font-awesome-icon 
-              :icon="['fas', 'bell']" 
-              class="icon" 
-            />
-                  
-            <div class="hover-content">
-              <p>{{ isPt <= 4 ? "트레이너의 응답을 기다리는 중입니다." : "트레이너의 응답이 도착했습니다." }}</p>
-              <button @click="gotoRequest">보러가기</button>
-            </div>
-          </div>
+            <button @click="openPtModal=!openPtModal" class="pt-btn">
+            <font-awesome-icon :icon="['fas', 'calendar-days']" />
+            PT 일정
+          </button>
+          <div class="hover-content">
+            <p>{{ isPt <= 4 ? "트레이너의 응답을 기다리는 중입니다." : "트레이너의 응답이 도착했습니다." }}</p>
+            <button @click="gotoRequest">보러가기</button>
+        </div>
         </div>
       </div>
     </div>
+  </div>
     <div>
       <div v-if="userStore.loginUser.type === 'user'">
           <input v-model="condition" placeholder="Enter condition here" />
@@ -414,6 +412,12 @@ onMounted(()=>{
   color: #888;
 }
 
+.pt-btn {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .openPtModal {
   position: absolute;
   display: flex;
@@ -517,6 +521,8 @@ button.close-btn {
 
 .hover-content {
   position: absolute;
+  display: flex;
+  flex-direction: column;
   top: 100%; /* 아이콘 바로 아래에 위치 */
   left: 50%;
   transform: translateX(-50%); /* 중앙 정렬 */

@@ -6,7 +6,7 @@
         </div>
         <div class="button-section">
             <button @click="gotoUser" class="primary-btn">회원</button>
-            <button @click="gotoTrainter" class="primary-btn">트레이너</button>
+            <button @click="gotoTrainter" class="second-btn">트레이너</button>
         </div>
     </div>
 </template>
@@ -72,7 +72,15 @@ button {
 }
 
 .primary-btn:hover {
-  background-color: #65a45b;
+  transform: scale(1.05);
+}
+
+.second-btn {
+  background-color: #e0f1e2;
+  color: black;
+}
+
+.second-btn:hover {
   transform: scale(1.05);
 }
 

@@ -1,11 +1,12 @@
 <template>
     <div class="nav">
-        <img class="logo" @click="gotoHome" src="@/assets/logo.png"/>
-
-        <div v-if="userStore.loginUser.type==='trainer'">
+        <div class="nav-first">
+          <img class="logo" @click="gotoHome" src="@/assets/logo.png"/>
+          <div v-if="userStore.loginUser.type==='trainer'">
             <div v-if="followerList.length===0">팔로워가 없습니다.</div>
             <div v-else>
-                <div v-for="follower in followerList" @click = "setFollower(follower.id, follower.name)" class="follwer" >
+              <div class="follwers">
+                <div v-for="follower in followerList" @click = "setFollower(follower.id, follower.name)" >
                   <div class="subscribeUser">
                     <div>
                       <font-awesome-icon :icon="['fas', 'circle-user']" />
@@ -15,46 +16,54 @@
                     </div>
                   </div>
                 </div>
+              </div>
             </div>
-      </div>
-      <div>
-        <font-awesome-icon 
-              :icon="['fas', 'bell']" 
-              class="icon" 
-            />
-        <div v-if="before+after ===0">알림이 없습니다.</div>
-        <div v-else-if="userStore.loginUser.type==='trainer'">
-          <div v-if="after!==0">{{ after }}개의 처리를 회원이 확인 중입니다.</div>
-          <div v-if="before!==0">{{ before }}개의 요청이 왔습니다.</div>
-          <button @click="router.push({name : 'request'})">확인하러 가기</button>
         </div>
-        <div v-else>
-          <div v-if="before!==0">{{ before }}개의 요청에 대한 트레이너의 응답을 기다리는 중입니다.</div>
-          <div v-if="after!==0">{{ after }}개의 트레이너의 응답이 왔습니다.</div>
-          <button @click="router.push({name : 'request'})">확인하러 가기</button>
-        </div>
-
       </div>
+      <div class="nav-second">
+        <div class="alarm">
+          <font-awesome-icon 
+            :icon="['fas', 'bell']" 
+            @click="router.push({name : 'request'})"
+            class="icon" 
+          />
+          <div v-if="before+after === 0" class="badge">{{ before + after }}</div>
+          <div v-else-if="userStore.loginUser.type==='trainer'">
+            <div v-if="before + after > 0" class="badge">
+              {{ before + after }}
+            </div>
+            <!--
+            <div v-if="after!==0" class="badge">{{ after }}</div>
+            <div v-if="before!==0" class="badge">{{ before }}</div>
+            -->
+          </div>
+          <div v-else>
+            <div v-if="before!==0" class="badge">{{ before }}</div>
+            <div v-if="after!==0" class="badge">{{ after }}</div>
+          </div>
+        </div>
+        <hr>
         <div class="mypage">
-            <div class="name">
-                Hello, {{ loginUserInfo.name }}
-            </div>
-            <font-awesome-icon
-                class="user"
-                @click="toggleLogoutModal"
-                :icon="['fas', 'circle-user']"
-            />
-            <div v-if="showLogoutModal" class="logout-modal">
-                <button @click="userStore.logout" class="setting">
-                  <font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" />
-                  로그아웃
-                </button>
-                <button @click="gotoMyPage" class="setting">
-                  <font-awesome-icon :icon="['fas', 'user']" />
-                  마이페이지
-                </button>
-            </div>
+          <div class="name">
+            Hello, {{ loginUserInfo.name }}
+          </div>
+          <font-awesome-icon
+            class="user"
+            @click="toggleLogoutModal"
+            :icon="['fas', 'circle-user']"
+          />
+          <div v-if="showLogoutModal" class="logout-modal">
+            <button @click="userStore.logout" class="setting">
+              <font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" />
+              로그아웃
+            </button>
+            <button @click="gotoMyPage" class="setting">
+              <font-awesome-icon :icon="['fas', 'user']" />
+              마이페이지
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 </template>
 
@@ -144,9 +153,25 @@ onMounted(()=>{
   padding: 10px 20px;
 }
 
+.nav-first {
+  display: flex;
+  gap: 3rem;
+}
+
+.nav-second {
+  display: flex;
+  gap: 2rem;
+}
+
+.follwers {
+  display: flex;
+  gap: 1rem;
+}
+
 .logo {
   width: 5rem;
   cursor: pointer;
+  margin-bottom: 0.3rem;
 }
 
 .logo:hover {
@@ -172,11 +197,6 @@ onMounted(()=>{
   transition: background-color 0.2s ease-in-out;
 }
 
-.followerList {
-  display: flex; /* 가로 방향 배치 */
-  gap: 16px; /* 각 그룹 사이 간격 */
-}
-
 .subscribeUser {
   display: flex;
   flex-direction: column;
@@ -191,6 +211,55 @@ onMounted(()=>{
 .user {
   font-size: 2rem;
   cursor: pointer;
+}
+
+.alarm {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem; /* 알림 박스 크기 */
+  height: 2.5rem;
+  background-color: #e7e9ef; /* 박스 배경색 */
+  border-radius: 1rem; /* 박스를 둥글게 */
+}
+
+.alarm .icon {
+  font-size: 1.3rem; /* 아이콘 크기 */
+  color: #1d1d1e; /* 아이콘 색상 */
+  cursor: pointer;
+}
+
+.alarm .badge {
+  position: absolute;
+  top: -0.5rem; /* 배지 위치 조정 */
+  right: -0.5rem;
+  background-color: #ff3b30; /* 배지 배경색 (빨간색) */
+  color: white; /* 배지 텍스트 색상 */
+  font-size: 0.7rem;
+  font-weight: bold;
+  border: 1px solid white;
+  border-radius: 50%; /* 배지를 동그랗게 */
+  padding: 0.2rem 0.1rem; /* 배지 내부 여백 */
+  min-width: 1rem; /* 배지 최소 크기 */
+  text-align: center;
+  line-height: 1; /* 텍스트 정렬 */
+}
+
+.alarm:hover {
+  background-color: #d3d6dd; /* Hover 시 밝은 색으로 변경 */
+  transform: scale(1.1); /* 살짝 확대 */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+.user:hover {
+  transform: scale(1.2); /* 크기 확대 */
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.subscribeUser:hover {
+  transform: scale(1.2); /* 크기 확대 */
+  transition: background-color 0.3s ease;
 }
 
 .logout-modal {

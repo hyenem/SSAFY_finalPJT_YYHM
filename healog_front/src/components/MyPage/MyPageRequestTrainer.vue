@@ -1,31 +1,50 @@
 <template>
     <div class="request">
-        <div>
-            <label for="all">all</label>
-            <input id="all" type="radio" value=0 v-model="filterCondition" name="filterCondition">
-            <label for="before">트레이너 승인대기</label>
-            <input id="before" type="radio" value=1 v-model="filterCondition" name="filterCondition">
-            <label for="after">회원 확인중</label>
-            <input id="after" type="radio" value=2 v-model="filterCondition" name="filterCondition">
+        <div class="selectOption">
+            <div
+                :class="['option', filterCondition === 0 ? 'active' : '']"
+                @click="filterCondition = 0"
+            >
+                All
+            </div>
+            <div
+                :class="['option', filterCondition === 1 ? 'active' : '']"
+                @click="filterCondition = 1"
+            >
+                트레이너 승인대기
+            </div>
+            <div
+                :class="['option', filterCondition === 2 ? 'active' : '']"
+                @click="filterCondition = 2"
+            >
+                회원 확인중
+            </div>
         </div>
-        <div>
+
+        <div class="alarmlist">
             <div v-for="pt in filteredPtList">
-                <hr>
-                <div>{{ stateList[pt.requestState] }}</div>
-                <div> 요청 회원 : {{ pt.userName }}</div>
-                <div v-if="pt.requestState===2 || pt.requestState===5 || pt.requestState===8">
-                    <div>수정 전 일정 : {{ pt.date }} {{ pt.time }}:00</div>
-                    <div>수정 후 일정 : {{ pt.requestDate }} {{ pt.requestTime }}:00</div>
+                <div class="alarm-info">
+                    <div class="alarm-state">{{ stateList[pt.requestState] }}</div>
                 </div>
-                <div v-else>
-                    <div>요청 일정 : {{ pt.date }} {{ pt.time }}:00</div>
+                <div class="alarm-info">
+                    <label>회원</label>
+                    <div>{{ pt.userName }}</div>
                 </div>
-                <div v-if="pt.requestState>=2 && pt.requestState<=4">
-                    <button @click="accept(pt.diaryId)">accept</button>
+                <div>
+                    <div v-if="pt.requestState===2 || pt.requestState===5 || pt.requestState===8">
+                        <div>수정 전 일정 : {{ pt.date }} {{ pt.time }}:00</div>
+                        <div>수정 후 일정 : {{ pt.requestDate }} {{ pt.requestTime }}:00</div>
+                    </div>
+                    <div v-else class="alarm-info">
+                        <label>요청 일정</label>
+                        <div>{{ pt.date }} {{ pt.time }}:00</div>
+                    </div>
+                </div>
+                <div v-if="pt.requestState>=2 && pt.requestState<=4" class="btn-list">
                     <button @click="deny(pt.diaryId)">deny</button>
+                    <button @click="accept(pt.diaryId)">accept</button>
                 </div>
                 <div v-else>회원 확인 후 반영됩니다.</div>
-                <hr>
             </div>
         </div>
     </div>
@@ -92,81 +111,123 @@ onMounted(()=>{
 </script>
   
 <style scoped>
+/* 전체 컨테이너 */
 .request {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 2rem;
 }
-  
-.title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
+
+/* 선택 옵션 섹션 */
+.selectOption {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 0.5rem;
+  border-radius: 3px;
 }
-  
-  .account-card {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 1.5rem;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-  }
-  
-  .account-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+
+.option {
+  padding: 0.8rem 1.0rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.option:hover {
+  background-color: #eef5eb;
+  color: #7fc678;
+}
+
+.option.active {
+  background-color: #7fc678;
+  color: white;
+  border-color: #7fc678;
+  transform: scale(1.05);
+}
+
+/* 알림 리스트 */
+.alarmlist {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 각 요청 카드 */
+.alarmlist > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.alarm-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.alarm-info:last-child {
+  border-bottom: none;
+}
+
+.alarm-state, label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #555;
+  min-width: 100px;
+}
+
+.btn-list {
+    display: flex; 
+    justify-content: flex-end;
     gap: 1rem;
-    padding: 0.8rem;
-    border-bottom: 1px solid #f0f0f0;
-  }
-  
-  .account-info:last-child {
-    border-bottom: none;
-  }
-  
-  label {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #555;
-    min-width: 100px;
-  }
-  
-  .trainer-info {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #7fc678;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-  
-  .trainer-info:hover {
-    color: #65a45b;
-  }
-  
-  div {
-    font-size: 1rem;
-    color: #444;
-  }
-  
-  .btn-primary {
-    padding: 0.5rem 1rem;
-    background-color: #7fc678;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-primary:hover {
-    background-color: #65a45b;
-  }
-  
-  </style>
-  
+}
+
+/* 버튼 스타일 */
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #65a45b;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:last-of-type {
+  background-color: #7fc678;
+  color: white;
+}
+
+button:first-of-type {
+  background-color: #ff5b5b;
+  color: white;
+}
+
+/* 상태 텍스트 스타일링 */
+.alarmlist > div > .state {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #7fc678;
+}
+</style>
