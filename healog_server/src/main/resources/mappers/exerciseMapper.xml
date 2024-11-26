@@ -48,7 +48,7 @@
     <!-- 운동 완료 여부 업데이트 -->
 	<update id="markExerciseAsDone" parameterType="map">
 	    UPDATE exercise
-	    SET done = #{done},
+	    SET done = 1-done,
 	        posture_img = #{postureImg}
 	    WHERE id = #{id};
 	</update>

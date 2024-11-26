@@ -6,7 +6,8 @@
             <div v-if="followerList.length===0">팔로워가 없습니다.</div>
             <div v-else>
               <div class="follwers">
-                <div v-for="follower in followerList" @click = "setFollower(follower.id, follower.name)" >
+                <div v-for="follower in followerList" @click = "setFollower(follower.id, follower.name)" 
+                                        :class="{selectedFollower : follower.id === userStore.follower.id}">
                   <div class="subscribeUser">
                     <div>
                       <font-awesome-icon :icon="['fas', 'circle-user']" />
@@ -27,20 +28,8 @@
             @click="router.push({name : 'request'})"
             class="icon" 
           />
-          <div v-if="before+after === 0" class="badge">{{ before + after }}</div>
-          <div v-else-if="userStore.loginUser.type==='trainer'">
-            <div v-if="before + after > 0" class="badge">
-              {{ before + after }}
-            </div>
-            <!--
-            <div v-if="after!==0" class="badge">{{ after }}</div>
-            <div v-if="before!==0" class="badge">{{ before }}</div>
-            -->
-          </div>
-          <div v-else>
-            <div v-if="before!==0" class="badge">{{ before }}</div>
-            <div v-if="after!==0" class="badge">{{ after }}</div>
-          </div>
+          <div v-if="userStore.loginUser.type==='user' && after !== 0" class="badge">{{ after }}</div>
+          <div v-else-if="userStore.loginUser.type==='trainer' && before !==0" class="badge">{{ before }}</div>
         </div>
         <hr>
         <div class="mypage">
@@ -253,7 +242,7 @@ onMounted(()=>{
 }
 
 .user:hover {
-  transform: scale(1.2); /* 크기 확대 */
+  transform: scale(1.3); /* 크기 확대 */
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
@@ -298,6 +287,11 @@ onMounted(()=>{
 
 .mypage div:hover {
   color: #0056b3;
+}
+
+.selectedFollower{
+  transform: scale(1.4); /* 크기 확대 */
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 </style>
 

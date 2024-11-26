@@ -56,7 +56,7 @@
         </div>
         <!-- 버튼 -->
         <div class="button-group">
-          <button type="button" class="delete-btn" @click="deleteExercise(exercise.id)">Delete</button>
+          <button type="button" class="delete-btn" v-if="!isCreate" @click="deleteExercise(exercise.id)">Delete</button>
           <button type="submit" class="save-btn">{{ isEditing ? "Save" : "Create" }}</button>
         </div>
       </form>
@@ -79,6 +79,10 @@ const props = defineProps({
     required: true,
   },
   done : {
+    type : Boolean,
+    required : true
+  },
+  isCreate : {
     type : Boolean,
     required : true
   }

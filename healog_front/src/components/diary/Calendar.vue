@@ -1,9 +1,15 @@
 <template>
   <div class="calendar">
     <div class="calendarDiary">
+      <div class="calendarUpperHeader">
+        <select v-model="year">
+          <option v-for="year in years">{{ year }}</option>
+        </select>
+        <button @click="goToday">today</button>
+      </div>
       <div class="calendarHeader">
         <div @click="lastMonth"> < </div>
-        <div>{{ year }} 년 {{ month }} 월</div>
+        <p>{{ monthToEnglish[month-1] }}</p>
         <div @click="nextMonth"> > </div>
       </div>
       <table>
@@ -33,7 +39,6 @@
           </tr>
         </tbody>
       </table>
-      <button @click="goToday">today</button>
     </div>
   </div>
 </template>
@@ -51,6 +56,26 @@ const today = new Date()
 const year = ref(today.getFullYear())
 const month = ref(today.getMonth()+1)
 const day = ref(today.getDate())
+
+const years = []
+for(let i = 1990; i<=2050; i++){
+  years.push(i)
+}
+
+const monthToEnglish = [
+  "JANUARY",   // 1월
+  "FEBRUARY",  // 2월
+  "MARCH",     // 3월
+  "APRIL",     // 4월
+  "MAY",       // 5월
+  "JUNE",      // 6월
+  "JULY",      // 7월
+  "AUGUST",    // 8월
+  "SEPTEMBER", // 9월
+  "OCTOBER",   // 10월
+  "NOVEMBER",  // 11월
+  "DECEMBER"   // 12월
+];
 
 const dateOfThisMonth = computed(()=>{
   const diaryList = []
@@ -182,6 +207,8 @@ onMounted(()=>{
   }).then((res)=>{
     ptList.value = res.data
   })
+
+  axios.get("http://localhost:8080/user/diary")
 })
 </script>
 
@@ -207,13 +234,14 @@ onMounted(()=>{
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1.5rem;
+  padding: 3rem;
 }
 
 .calendar td.today {
-  background-color: #B7E0B2;
-  color: black; /* 가독성을 위해 텍스트 색상을 검정으로 변경 */
-  font-weight: bold;
+  border: 9px solid rgba(42, 116, 42, 0.587); /* 초록색 테두리 */
+  border-radius: 8px; /* 둥근 모서리 */
+  padding: 0px; /* 내용과 테두리 간의 간격 */
+  box-sizing: border-box; /* 테두리가 크기에 포함되도록 설정 */
 }
 
 .calendarDiary {
@@ -239,12 +267,22 @@ onMounted(()=>{
 
 .calendarHeader div {
   width: 40px;
-  height: 40px;
+  height: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
 }
+
+.calendarHeader p {
+  width: 40px;
+  height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+}
+
 
 .calendar table {
   width: 100%;
@@ -267,6 +305,7 @@ onMounted(()=>{
 }
 
 .calendar td:hover {
+  
   background-color: #7FC678;
   color: white;
 }
@@ -285,13 +324,44 @@ onMounted(()=>{
 }
 
 td.isPt {
-  background-color: red;
+  background-color: rgba(176, 212, 176, 0.291);
 }
 
 td.notThisMonth{
   background-color: rgb(233, 233, 233);
   color: #b0b0b0;
 }
+
+.calendarUpperHeader{
+  width: 100%;
+  display: flex;
+  justify-content:space-between;
+}
+
+
+select {
+  background-color: transparent; /* 배경색 제거 */
+  border: none; /* 테두리 제거 */
+  border-radius: 4px; /* 살짝 둥근 모서리 */
+  padding: 10px 12px; /* 여백 */
+  font-size: 19px; /* 부모의 폰트 크기 상속 */
+  font-family: inherit; /* 부모의 폰트 상속 */
+  text-align: center;
+  color: inherit; /* 부모의 글씨 색상 상속 */
+  cursor: pointer; /* 포인터 모양 변경 */
+  width: 150px; /* 드롭다운 너비 */
+  padding-top: 0%;
+  padding-bottom: 0%;
+}
+
+select:hover {
+  color: gray; /* 호버 시 부모의 글씨 색상 유지 */
+}
+
+select:focus {
+  outline: none; /* 포커스 시 외곽선 제거 */
+}
+
 </style>
 
 
