@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`category` (
   `exercise` VARCHAR(45) NOT NULL,
   `exercise_area` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `exercise_UNIQUE` (`exercise` ASC) VISIBLE),
+  UNIQUE INDEX `exercise_UNIQUE` (`exercise` ASC) VISIBLE)
 ENGINE = InnoDB
 AUTO_INCREMENT = 12
 DEFAULT CHARACTER SET = utf8mb4
