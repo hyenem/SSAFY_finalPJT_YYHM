@@ -17,6 +17,7 @@
         </RouterLink>
         <RouterLink 
             :to="{name : 'request'}" 
+            v-if="userStore.loginUser.type==='trainer' || userStore.loginUser.trainerExist===1"
             class="link"
         >
         <font-awesome-icon :icon="['fas', 'hand']" class="icon"/>
