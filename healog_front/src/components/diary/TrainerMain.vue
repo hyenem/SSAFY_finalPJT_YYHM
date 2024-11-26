@@ -5,7 +5,7 @@
                 <Calendar v-if="userStore.follower.id" @dateSelected="onDateSelected" />  
             </div>
             <div class="feedbackWrapper">
-                <Feedback/>
+                <Feedback :selectedDate="selectedDate"/>
             </div>
         </div>
         <div class="rightPanel">

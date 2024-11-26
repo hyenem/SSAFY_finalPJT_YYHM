@@ -32,5 +32,7 @@ public interface PtService {
 
 	void requestDelete(int diaryId);
 
+	List<Pt> getPtByUser(String userId);
+
 
 }
