@@ -3,7 +3,7 @@
 <mapper namespace="com.healog.mvc.diary.model.dao.DiaryDao">
     <!-- 다이어리 목록 조회 -->
     <select id="getDiaryListByUserId" parameterType="string" resultType="com.healog.mvc.diary.model.dto.DiaryDto">
-        SELECT id, year, month, day, user_id, `condition`
+        SELECT *
         FROM diary
         WHERE user_id = #{userId}
         ORDER BY year ASC, month ASC, day ASC;
@@ -11,7 +11,7 @@
 
     <!-- 특정 날짜의 다이어리 조회 -->
     <select id="getDiaryByDate" parameterType="map" resultType="com.healog.mvc.diary.model.dto.DiaryDto">
-	    SELECT id, year, month, day, user_id, `condition`
+	    SELECT *
 	    FROM diary
 	    WHERE user_id = #{userId} 
 	      AND year = #{year} 
@@ -21,9 +21,11 @@
 
     <!-- 다이어리 생성 및 업데이트 -->
     <insert id="insertOrUpdateDiary" parameterType="com.healog.mvc.diary.model.dto.DiaryDto">
-        INSERT INTO diary (year, month, day, user_id, `condition`)
-        VALUES (#{year}, #{month}, #{day}, #{userId}, #{condition})
-        ON DUPLICATE KEY UPDATE `condition` = VALUES(`condition`);
+        INSERT INTO diary (year, month, day, user_id, `condition`, `feedback`)
+		VALUES (#{year}, #{month}, #{day}, #{userId}, #{condition}, #{feedback})
+		ON DUPLICATE KEY UPDATE 
+		    `condition` = IF(VALUES(`condition`) IS NOT NULL, VALUES(`condition`), `condition`),
+		    `feedback` = IF(VALUES(`feedback`) IS NOT NULL, VALUES(`feedback`), `feedback`);
     </insert>
 </mapper>
 

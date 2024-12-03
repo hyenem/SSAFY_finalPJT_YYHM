@@ -17,7 +17,6 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
-    @Autowired
     public DiaryController(DiaryService diaryService) {
         this.diaryService = diaryService;
     }
@@ -41,6 +40,9 @@ public class DiaryController {
             @RequestParam int day) {
         try {
             DiaryDto diary = diaryService.getDiaryByDate(userId, year, month, day);
+            
+            System.out.println("*********");
+            System.out.println(diary);
             if (diary == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
@@ -61,5 +63,6 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save diary.");
         }
     }
+    
 }
 

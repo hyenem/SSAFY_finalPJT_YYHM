@@ -14,6 +14,7 @@ import AccountViewTrainerSignup from '@/components/account/trainer/AccountViewTr
 import MyPageView from '@/views/MyPageView.vue';
 import MyPageViewInfo from '@/components/MyPage/MyPageViewInfo.vue';
 import MyPageViewSubscribe from '@/components/MyPage/MyPageViewSubscribe.vue';
+import MyPageRequest from '@/components/MyPage/MyPageRequest.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,11 @@ const router = createRouter({
           path: 'subscribe',
           name: 'subscribe',
           component: MyPageViewSubscribe
+        },
+        {
+          path: 'request',
+          name: 'request',
+          component : MyPageRequest
         }
       ]
     },
@@ -98,20 +104,42 @@ router.beforeEach((to, from, next)=>{
         'access-token' : sessionStorage.getItem('access-token')
       }
     }).then((res)=>{
+      userStore.loginUser.name = res.data.name
       userStore.loginUser.id = res.data.id
       userStore.loginUser.type = res.data.type
+      if(userStore.loginUser.type==='trainer'){
+        if(!userStore.follower.id){
+          axios.get("http://localhost:8080/subscribe/follow?id="+userStore.loginUser.id)
+          .then((res)=>{
+            if(res.data.length!==0){
+              userStore.follower.id = res.data[0].id
+              userStore.follower.name = res.data[0].name
+            }
+          })
+        }
+      } else {
+        userStore.loginUser.trainerExist = res.data.trainerExist
+      }
       next()
     }).catch(()=>{
       sessionStorage.removeItem('access-token')
+      userStore.loginUser.name = null
       userStore.loginUser.id = null
       userStore.loginUser.type = null
+      userStore.follower.name = null
+      userStore.follower.id = null
+      userStore.loginUser.trainerExist = null
       alert("유효하지 않은 접근입니다. 다시 로그인해주세요.")
       next({name : 'main'})
     })
   } else {
     if(to.fullPath.split('/')[1]!=='account'){
+      userStore.loginUser.name=null
       userStore.loginUser.id=null
       userStore.loginUser.type=null
+      userStore.follower.id = null
+      userStore.follower.name=null
+      userStore.loginUser.trainerExist = null
       next({name : 'account'})
     } else{
       next()

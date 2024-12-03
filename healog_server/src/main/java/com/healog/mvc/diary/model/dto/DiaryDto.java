@@ -8,11 +8,33 @@ public class DiaryDto {
 	private int day;
 	private String userId;
 	private String condition;
+	private String feedback;
 	
 	public DiaryDto() {
-		// TODO Auto-generated constructor stub
 	}
 	
+	
+	public DiaryDto(int id, int year, int month, int day, String userId, String condition, String feedback) {
+		super();
+		this.id = id;
+		this.year = year;
+		this.month = month;
+		this.day = day;
+		this.userId = userId;
+		this.condition = condition;
+		this.feedback = feedback;
+	}
+
+
+	public String getFeedback() {
+		return feedback;
+	}
+
+
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
+	}
+
 
 	public int getId() {
 		return id;
@@ -60,6 +82,13 @@ public class DiaryDto {
 
 	public void setCondition(String condition) {
 		this.condition = condition;
+	}
+
+
+	@Override
+	public String toString() {
+		return "DiaryDto [id=" + id + ", year=" + year + ", month=" + month + ", day=" + day + ", userId=" + userId
+				+ ", condition=" + condition + "]";
 	}
 	
 	

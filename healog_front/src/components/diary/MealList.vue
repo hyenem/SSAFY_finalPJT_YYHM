@@ -1,38 +1,53 @@
 <template>
   <div>
-    <h3>Meal</h3>
+    <div class="header">
+      <h3>Meal</h3>
+      <p class="helper-text" v-if="userStore.loginUser.type==='user'">Please upload square image, size less than 100KB</p>
+    </div>
     <div class="meal">
     <!-- Breakfast -->
-    <div>
+    <div class="mealImg">
+      <img v-if="meals.breakfastImg"
+        :src="resolveImagePath(meals.breakfastImg)"
+        alt="Breakfast Image"
+        @click="openModal('breakfast')"
+      />
+      <img v-else 
+        src="@/assets/default-image.png"
+        alt="Breakfast Image"
+        @click="openModal('breakfast')"
+      />
       <h4>Breakfast</h4>
-        <img
-          :src="resolveImagePath(meals.breakfastImg)"
-          alt="Breakfast Image"
-          @click="openModal('breakfast')"
-        />
-        <button @click="deleteImage('breakfast')">Delete Breakfast</button>
     </div>
 
     <!-- Lunch -->
-    <div>
+    <div class="mealImg">
+      <img v-if="meals.lunchImg"
+        :src="resolveImagePath(meals.lunchImg)"
+        alt="Lunch Image"
+        @click="openModal('lunch')"
+      />
+      <img v-else 
+        src="@/assets/default-image.png"
+        alt="Lunch Image"
+        @click="openModal('lunch')"
+      />
       <h4>Lunch</h4>
-        <img
-          :src="resolveImagePath(meals.lunchImg)"
-          alt="Lunch Image"
-          @click="openModal('lunch')"
-        />
-        <button @click="deleteImage('lunch')">Delete Lunch</button>
     </div>
 
     <!-- Dinner -->
-    <div>
+    <div class="mealImg">
+      <img v-if="meals.dinnerImg"
+        :src="resolveImagePath(meals.dinnerImg)"
+        alt="Dinner Image"
+        @click="openModal('dinner')"
+      />
+      <img v-else 
+        src="@/assets/default-image.png"
+        alt="Dinner Image"
+        @click="openModal('dinner')"
+      />
       <h4>Dinner</h4>
-        <img
-          :src="resolveImagePath(meals.dinnerImg)"
-          alt="Dinner Image"
-          @click="openModal('dinner')"
-        />
-        <button @click="deleteImage('dinner')">Delete Dinner</button>
     </div>
     </div>
 
@@ -41,6 +56,7 @@
       v-if="isModalOpen"
       :mealType="selectedMealType"
       :diaryId="props.diaryId"
+      :exist="meals[`${selectedMealType}Img`]"
       @close="closeModal"
     />
   </div>
@@ -50,6 +66,7 @@
 import { useMealStore } from '@/stores/mealStore';
 import { ref, computed, watch } from 'vue';
 import MealListModal from './MealListModal.vue';
+import { useUserStore } from '@/stores/userStore';
 
 const props = defineProps({
   diaryId: {
@@ -57,6 +74,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const userStore = useUserStore()
 
 const mealStore = useMealStore();
 const meals = computed(() => mealStore.meals);
@@ -72,23 +91,9 @@ const resolveImagePath = (path) => {
 };
 
 
-// 이미지 삭제
-const deleteImage = async (mealType) => {
-  const mealId = meals.value.id; // 현재 다이어리의 mealId
-  try {
-    const confirmed = confirm(`Are you sure you want to delete ${mealType}?`);
-    if (!confirmed) return;
-
-    await mealStore.deleteMealImage(mealId, mealType);
-    alert(`${mealType} image deleted successfully.`);
-  } catch (error) {
-    console.error('Error deleting image:', error);
-    alert(`Failed to delete ${mealType} image.`);
-  }
-};
-
 // 모달 열기
 const openModal = (mealType) => {
+  if(userStore.loginUser.type==='trainer') return
   selectedMealType.value = mealType;
   isModalOpen.value = true;
 };
@@ -118,27 +123,51 @@ watch(
 <style scoped>
 .meal {
   display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
-h3 {
-  font-size: 1.2rem;
+.meal h4 {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
   margin-bottom: 1rem;
-  color: #333;
+}
+
+.header h3 {
+  margin-bottom: 0.1rem;
+}
+
+.helper-text {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.mealImg {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 
 img {
-  width: 100px;
-  height: 100px;
+  width: 15rem;
+  height: 15rem;
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid #ddd;
   cursor: pointer;
-  margin-bottom: 0.5rem;
 }
 
 button {
   padding: 0.5rem 1rem;
-  background-color: #f44336;
+  background-color: #7FC678;
   color: white;
   border: none;
   border-radius: 4px;
@@ -147,7 +176,7 @@ button {
 }
 
 button:hover {
-  background-color: #d32f2f;
+  background-color: #65A45B;
 }
 
 .no-image-placeholder {
@@ -156,4 +185,3 @@ button:hover {
   text-align: center;
 }
 </style>
-

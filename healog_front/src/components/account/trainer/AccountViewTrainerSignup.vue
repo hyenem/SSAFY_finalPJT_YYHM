@@ -1,41 +1,104 @@
 <template>
-    <div>
-        <h3>trainer signup</h3>
-        <label for="name">name(*): </label>
-        <input type="text" maxlength="10" name="name" id="name" v-model="name">
-        <br>
-        <label for="email">email(*): </label>
-        <input @click="alertCheck" type="email" disabled maxlength="10" name="name" id="id" :value="checkedEmail">
-        <button @click="openEmailCheck">email 중복 검사</button>
-        <div v-if="isOpenEmailCheck">
-            <pr>이메일을 입력해주세요.</pr>
-            <input type="email" v-model="checkingEmail">
-            <button @click="emailCheck">이메일 중복 확인</button>
+    <div class="signup-container">
+        <div class="signup-card">
+            <img src="@/assets/logo.png" alt="Healog Logo" class="logo" />
+            <h3>HEALOG</h3>
+            <div class="usersignup">
+                <label for="name">Name (*)</label>
+                <input
+                type="text"
+                maxlength="10"
+                name="name"
+                id="name"
+                v-model="name"
+                placeholder="Enter your name"
+                />
+
+                <label for="email">Email (*)</label>
+                <input
+                @click="alertCheck"
+                type="email"
+                disabled
+                maxlength="10"
+                name="name"
+                id="id"
+                :value="checkedEmail"
+                />
+                <button @click="openEmailCheck" class="secondary-btn">
+                Email 중복 검사
+                </button>
+                <div v-if="isOpenEmailCheck" class="email-check">
+                <input
+                    type="email"
+                    v-model="checkingEmail"
+                    placeholder="Enter your email"
+                />
+                <button @click="emailCheck" class="secondary-btn">
+                    이메일 중복 확인
+                </button>
+                </div>
+
+                <label for="password">Password (*)</label>
+                <input
+                type="password"
+                maxlength="40"
+                name="password"
+                id="password"
+                v-model="password"
+                placeholder="Enter your password"
+                />
+
+                <label for="checkpassword">Confirm Password (*)</label>
+                <input
+                type="password"
+                maxlength="40"
+                name="checkpassword"
+                id="checkpassword"
+                v-model="checkPassword"
+                placeholder="Confirm your password"
+                />
+                <p v-if="password !== '' && checkPassword !== ''" class="password-msg">
+                {{ passwordCheckMessage }}
+                </p>
+
+                <label for="gender">Gender (*)</label>
+                <div class="gender-options">
+                <input type="radio" name="gender" id="male" value="0" v-model="gender" />
+                <label for="male">Male</label>
+                <input type="radio" name="gender" id="female" value="1" v-model="gender" />
+                <label for="female">Female</label>
+                </div>
+
+                <label for="birthday">Birthday</label>
+                <input
+                type="date"
+                maxlength="10"
+                name="birthday"
+                id="birthday"
+                v-model="birthday"
+                />
+
+                <label for="phonenumber">Phone Number (*)</label>
+                <input
+                type="tel"
+                maxlength="13"
+                name="phonenumber"
+                id="phonenumber"
+                v-model="phoneNumber"
+                placeholder="Enter your phone number"
+                />
+
+                <label for="location">Gym (*)</label>
+                <select 
+                id="location"
+                v-model="location"
+                >
+                <option v-for="gym in gyms" :value="gym.id">{{ gym.name }}</option>
+                </select>
+
+            </div>
+            <button @click="signup" class="primary-btn">회원가입</button>
         </div>
-        <br>
-        <label for="password">password(*): </label>
-        <input type="password" maxlength="40" name="password" id="password" v-model="password">
-        <br>
-        <label for="checkpassword">checkpassword:(*) </label>
-        <input type="password" maxlength="40" name="checkpassword" id="checkpassword" v-model="checkPassword">
-        <p v-if="password!=='' && checkPassword!==''">{{ passwordCheckMessage }}</p>
-        <br>
-        <label for="gender">gender(*): </label>
-        <input type="radio" name="gender" id="" value=0 v-model="gender"> male
-        <input type="radio" name="gender" id="" value=1 v-model="gender"> female
-        <br>
-        <label for="birthday">birthday: </label>
-        <input type="date" maxlength="10" name="name" id="id" v-model="birthday">
-        <br>
-        <label for="phonenumber">phonenumber(*): </label>
-        <input type="tel" maxlength="13" name="name" id="id" v-model="phoneNumber">
-        <br>
-        <label for="location">location(*): </label>
-        <select name="location" id="location" v-model="location">
-            <option v-for="gym in gyms" :value="gym.id">{{ gym.name }}</option>
-        </select>
-        <br>
-        <button @click="signup">회원가입</button>
     </div>
 </template>
 
@@ -133,5 +196,159 @@ onMounted(()=>{
 </script>
 
 <style scoped>
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  background: linear-gradient(to bottom, #f9f9f9, #e0f1e2);
+  font-family: Arial, sans-serif;
+  overflow-y: auto;
+  padding: 1rem; /* 모바일에서도 여백 확보 */
+}
 
+.signup-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.usersignup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .signup-card {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .usersignup label,
+  .usersignup input {
+    font-size: 0.9rem;
+  }
+
+  .primary-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .secondary-btn {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+/* 로고 */
+.logo {
+  width: 100px;
+}
+
+/* 제목 */
+h3 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* 입력 필드 스타일 */
+.usersignup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.usersignup label {
+  font-size: 0.9rem;
+  color: #555;
+  text-align: left;
+}
+
+.usersignup input, 
+.usersignup select {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.usersignup input:focus
+.usersignup select:focus {
+  border-color: #7fc678;
+  box-shadow: 0px 0px 4px rgba(127, 198, 120, 0.5);
+  outline: none;
+}
+
+.email-check {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.gender-options {
+  display: flex;
+  justify-content: start;
+  gap: 1rem;
+}
+
+.password-msg {
+  font-size: 0.8rem;
+  color: #e74c3c;
+}
+
+/* 버튼 스타일 */
+.primary-btn {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  background-color: #7fc678;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.primary-btn:hover {
+  background-color: #65a45b;
+  transform: scale(1.05);
+}
+
+.secondary-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: #7fc678;
+  background: transparent;
+  border: 1px solid #7fc678;;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.secondary-btn:hover {
+  color: white;
+  background-color: #7fc678;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>

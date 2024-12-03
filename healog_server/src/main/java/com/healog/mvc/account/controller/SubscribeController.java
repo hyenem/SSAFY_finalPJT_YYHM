@@ -1,5 +1,6 @@
 package com.healog.mvc.account.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -49,10 +50,8 @@ public class SubscribeController {
 	@GetMapping("/trainer")
 	public ResponseEntity<?> getTrainerInfo(@RequestParam("id") String userid){
 		Trainer trainer = subscribeService.getTrainerInfo(userid);
-		if(trainer!=null && trainer.getId()!=null) {
-			return new ResponseEntity<Trainer>(trainer, HttpStatus.OK);
-		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		return new ResponseEntity<Trainer>(trainer, HttpStatus.OK);
+
 	}
 	
 	@GetMapping("/gym")
@@ -68,9 +67,29 @@ public class SubscribeController {
 	@PatchMapping("/check")
 	public ResponseEntity<?> checkValid(@RequestParam String id){
 		int num = subscribeService.checkValid(id);
+
 		if(num==0) {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+	}
+	
+	@PatchMapping("/cancel")
+	public ResponseEntity<?> cancelSubscribe(@RequestBody Map<String, String> map){
+		String userId = map.get("userId");
+		String trainerId = map.get("trainerId");
+		int num = subscribeService.cancelSubscribe(userId);
+		userService.changeTrainerExist(userId, 0);
+		trainerService.substractUserCount(trainerId);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+	
+	@GetMapping("/follow")
+	public ResponseEntity<?> follower(@RequestParam String id){
+		List<Map<String, String>> followerList = subscribeService.getFollowerById(id);
+		System.out.println(followerList);
+		return new ResponseEntity<List<Map<String, String>>>(followerList, HttpStatus.OK);
+
 	}
 }

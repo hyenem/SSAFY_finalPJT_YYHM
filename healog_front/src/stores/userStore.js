@@ -1,26 +1,38 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import router from '@/router'
+import { computed, ref, watch } from 'vue'
 
 const REST_API_TRAINER_URL = 'http://localhost:8080/trainer'
 const REST_API_USER_URL = 'http://localhost:8080/user'
 const REST_API_USER_LOGIN_URL ='http://localhost:8080/user/login'
 const REST_API_TRAINER_LOGIN_URL ='http://localhost:8080/trainer/login'
+const REST_API_SUBSCRIBE_URL = 'http://localhost:8080/subscribe'
 
 
 
 export const useUserStore = defineStore('user', () => {
   const loginUser = {
+    name : null,
     id : null,
-    type : null
+    type : null,
+    trainerExist : null
+  }
+
+  const follower = {
+    id : null,
+    name : null
   }
 
   const logout = function(){
-    loginUser.id=null
-    loginUser.type=null
     sessionStorage.removeItem('access-token')
+    loginUser.id = null
+    loginUser.type= null
+    follower.id = null
+    follower.name = null
     router.push({name : "account"})
   }
+
 
   const login = function(email, password, type){
     if(type==='user'){
@@ -74,7 +86,6 @@ export const useUserStore = defineStore('user', () => {
 
     axios.get(`${API_URL}?id=${loginUser.id}`)
     .then((res)=>{
-      console.log(res.data)
       callback(res.data)
     }).catch((error)=>{
       console.log(error)
@@ -85,5 +96,5 @@ export const useUserStore = defineStore('user', () => {
   }
 
 
-  return { loginUser, logout, login, getUser }
+  return { loginUser, logout, login, getUser, follower }
 })

@@ -14,15 +14,16 @@ public class Trainer {
 	private String birthday;
 	private String phonenumber;
 	private int location;
-	private int user_count;
+	private int userCount;
 	private String img;
 	private String bio;
+	private String type="trainer";
 	
 	public Trainer() {}
 	
 	
 	public Trainer(String id, String name, String email, String password, String salt, String createdAtDatetime,
-			int gender, String birthday, String phonenumber, int location, int user_count, String img, String bio) {
+			int gender, String birthday, String phonenumber, int location, int userCount, String img, String bio) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -34,9 +35,30 @@ public class Trainer {
 		this.birthday = birthday;
 		this.phonenumber = phonenumber;
 		this.location = location;
-		this.user_count = user_count;
+		this.userCount = userCount;
 		this.img = img;
 		this.bio = bio;
+	}
+
+
+	
+	public int getUserCount() {
+		return userCount;
+	}
+
+
+	public void setUserCount(int userCount) {
+		this.userCount = userCount;
+	}
+
+
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 
@@ -101,10 +123,10 @@ public class Trainer {
 		this.location = location;
 	}
 	public int getUser_count() {
-		return user_count;
+		return userCount;
 	}
-	public void setUser_count(int user_count) {
-		this.user_count = user_count;
+	public void setUser_count(int userCount) {
+		this.userCount = userCount;
 	}
 	public String getImg() {
 		return img;
@@ -122,7 +144,7 @@ public class Trainer {
 	public String toString() {
 		return "Trainer [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", salt=" + salt
 				+ ", createdAtDatetime=" + createdAtDatetime + ", gender=" + gender + ", birthday=" + birthday
-				+ ", phonenumber=" + phonenumber + ", location=" + location + ", user_count=" + user_count + ", img="
+				+ ", phonenumber=" + phonenumber + ", location=" + location + ", userC	ount=" + userCount + ", img="
 				+ img + ", bio=" + bio + "]";
 	}
 	

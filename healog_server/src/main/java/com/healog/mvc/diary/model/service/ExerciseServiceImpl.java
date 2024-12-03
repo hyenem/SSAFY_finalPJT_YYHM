@@ -40,12 +40,14 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public void markExerciseAsDone(int id, String postureImg) {
+    public void markExerciseAsDone(int id, String postureImg, int done) {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("postureImg", postureImg);
+        params.put("done", done);
         exerciseDao.markExerciseAsDone(params);
     }
+
     
 
 }

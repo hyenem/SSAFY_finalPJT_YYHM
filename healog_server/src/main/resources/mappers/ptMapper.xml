@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.healog.mvc.diary.model.dao.PtDao">
+	<select id="selectPt" parameterType="int" resultType="int">
+		SELECT requestState FROM personaltraining
+		WHERE diary_id = #{id};
+	</select>
+	
+	<insert id="insertPt">
+		INSERT INTO personaltraining (trainer_id, diary_id, time, requestState)
+		VALUES (#{trainerId}, #{diaryId}, #{time}, 1)
+		ON DUPLICATE KEY UPDATE 
+			trainer_id = #{trainerId},
+		    time = VALUES(time),
+		    requestState = VALUES(requestState)
+	</insert>
+	
+	<select id="selectPtByDiaryId" parameterType="int" resultType="Pt">
+		SELECT * FROM personaltraining
+		WHERE diary_id=#{id}
+	</select>
+	
+	<update id="updateTime">
+		UPDATE personaltraining
+		SET time = #{time}
+		WHERE diary_id = #{id}
+	</update>
+	
+	<delete id="deletePt">
+		DELETE FROM personaltraining
+		WHERE diary_id=#{id}
+	</delete>
+	
+	<insert id = "insertOrUpdatePt">
+	    INSERT INTO personaltraining (trainer_id, diary_id, time, requestDiary, requestState, requestTime)
+		VALUES (#{trainerId}, #{id}, #{time}, #{requestDiary}, #{requestState}, #{requestTime})
+		ON DUPLICATE KEY UPDATE
+			trainer_id = #{trainerId},
+		    time = VALUES(time),
+		    requestDiary = VALUES(requestDiary),
+		    requestState = VALUES(requestState),
+		    requestTime = VALUES(requestTime);
+	</insert>
+	
+	<select id="selectRequestPtByTrainer" parameterType="String" resultType="Pt">
+		SELECT 
+		    pt.*, 
+		    CONCAT(d1.year, '-', LPAD(d1.month, 2, '0'), '-', LPAD(d1.day, 2, '0')) AS date,
+		    CONCAT(d2.year, '-', LPAD(d2.month, 2, '0'), '-', LPAD(d2.day, 2, '0')) AS requestDate,
+		    u.name AS userName
+		FROM 
+		    personaltraining pt
+		LEFT JOIN 
+		    diary d1 ON pt.diary_id = d1.id
+		LEFT JOIN 
+		    diary d2 ON pt.requestDiary = d2.id
+		LEFT JOIN 
+		    user u ON d1.user_id = u.id
+		WHERE 
+		    pt.trainer_id = #{trainerId} 
+		    AND pt.requestState IN (2, 3, 4, 5, 6, 7, 8, 9, 10);
+	</select>
+	
+	<update id="updateRequestState">
+		UPDATE personaltraining
+		SET requestState = requestState + #{num}
+		WHERE diary_id = #{diaryId}
+	</update>
+	
+	<update id="updateRequestStateDirect">
+		UPDATE personaltraining
+		SET requestState = #{num}
+		WHERE diary_id = #{diaryId}
+	</update>
+	
+	<select id="selectRequestPtByUserId" resultType="Pt">
+		SELECT 
+		    pt.*, 
+		    CONCAT(d1.year, '-', LPAD(d1.month, 2, '0'), '-', LPAD(d1.day, 2, '0')) AS date,
+		    CONCAT(d2.year, '-', LPAD(d2.month, 2, '0'), '-', LPAD(d2.day, 2, '0')) AS requestDate,
+		    u.name AS userName
+		FROM 
+		    personaltraining pt
+		LEFT JOIN 
+		    diary d1 ON pt.diary_id = d1.id
+		LEFT JOIN 
+		    diary d2 ON pt.requestDiary = d2.id
+		LEFT JOIN 
+		    user u ON d1.user_id = u.id
+		WHERE 
+		    pt.diary_id IN (
+		    	SELECT id FROM diary
+		    	WHERE user_id = #{userId}
+		    )
+		    AND pt.requestState IN (2, 3, 4, 5, 6, 7, 8, 9, 10);
+	</select>
+	
+	<select id="selectPtByUserId" resultType="Pt">
+		SELECT 
+		    pt.*, 
+		    CONCAT(d1.year, '-', LPAD(d1.month, 2, '0'), '-', LPAD(d1.day, 2, '0')) AS date,
+		    CONCAT(d2.year, '-', LPAD(d2.month, 2, '0'), '-', LPAD(d2.day, 2, '0')) AS requestDate,
+		    u.name AS userName
+		FROM 
+		    personaltraining pt
+		LEFT JOIN 
+		    diary d1 ON pt.diary_id = d1.id
+		LEFT JOIN 
+		    diary d2 ON pt.requestDiary = d2.id
+		LEFT JOIN 
+		    user u ON d1.user_id = u.id
+		WHERE 
+		    pt.diary_id IN (
+		    	SELECT id FROM diary
+		    	WHERE user_id = #{userId}
+		    )
+		    AND pt.requestState IN (1, 2, 4, 5, 7, 8, 10);
+	</select>
+</mapper>

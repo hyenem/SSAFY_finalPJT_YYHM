@@ -24,5 +24,8 @@ public interface TrainerDao {
 	List<Trainer> selectAllTrainers();
 
 	void updateUserCount(@Param("id") String id,@Param("count") int count);
+
 	
+	String selectTrainerByDiary(int id);
 }
+

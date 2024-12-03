@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`diary` (
   `day` INT NOT NULL,
   `user_id` VARCHAR(45) NOT NULL,
   `condition` TEXT NULL DEFAULT NULL, -- 해당 일에 컨디션을 트레이너에게 전달하기 위해서 text타입의 컨디션을 저장합니다.
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`year`, `month`, `day`, `user_id`),
   INDEX `fk_diary_user1_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_diary_user1`
     FOREIGN KEY (`user_id`)
@@ -139,35 +139,13 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
--- -----------------------------------------------------
--- Table `healog`.`feedback`
--- -----------------------------------------------------
--- 하나의 diary(어떤 사람의 어떤 날)에 트레이너가 작성하는 feedback을 저장하기 위함입니다.
-CREATE TABLE IF NOT EXISTS `healog`.`feedback` (
-  `id` INT NOT NULL,
-  `diary_id` INT NOT NULL,
-  `trainer_id` VARCHAR(45) NOT NULL,
-  `comment` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_feedback_diary1_idx` (`diary_id` ASC) VISIBLE,
-  INDEX `fk_feedback_trainer1_idx` (`trainer_id` ASC) VISIBLE,
-  CONSTRAINT `fk_feedback_diary1`
-    FOREIGN KEY (`diary_id`)
-    REFERENCES `healog`.`diary` (`id`),
-  CONSTRAINT `fk_feedback_trainer1`
-    FOREIGN KEY (`trainer_id`)
-    REFERENCES `healog`.`trainer` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
 
 -- -----------------------------------------------------
 -- Table `healog`.`meal`
 -- -----------------------------------------------------
 -- 하루의 diary의 아침, 점심, 저녁 식단 이미지를 저장하기 위함입니다.
 CREATE TABLE IF NOT EXISTS `healog`.`meal` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `breakfast_img` VARCHAR(255) NULL DEFAULT NULL,
   `lunch_img` VARCHAR(255) NULL DEFAULT NULL,
   `dinner_img` VARCHAR(255) NULL DEFAULT NULL,
@@ -181,24 +159,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
--- -----------------------------------------------------
--- Table `healog`.`menstrauting`
--- -----------------------------------------------------
--- 여성회원의 생리주기를 저장하기 위함입니다.
-CREATE TABLE IF NOT EXISTS `healog`.`menstrauting` (
-  `id` INT NOT NULL,
-  `user_id` VARCHAR(45) NOT NULL,
-  `start_date` VARCHAR(45) NOT NULL,
-  `end_date` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_menstrauting_user1_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_menstrauting_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `healog`.`user` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -224,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `healog`.`subscription` (
     REFERENCES `healog`.`user` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+COLLATE = utf8mbpersonaltraining4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -232,12 +192,13 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- PT 일정을 저장하기 위함입니다.
 CREATE TABLE IF NOT EXISTS `healog`.`personaltraining` (
-  `id` INT NOT NULL,
   `trainer_id` VARCHAR(45) NOT NULL,
   `diary_id` INT NOT NULL, -- diary의 id를 통해서 pt 날짜를 알 수 있습니다.
-  `requestDate` VARCHAR(45) NULL, -- 회원이 수정 날짜를 전송할 수 있습니다.
+  `requestDiary` INT NULL, -- 회원이 수정 날짜를 전송할 수 있습니다.
   `requestState` INT NULL, -- 트레이너의 수정 요청에 대한 처리여부를 표시합니다. 미확인(0), 승인(1), 거절(2)
-  PRIMARY KEY (`id`),
+  `time` INT NOT NULL,
+	`requestTime` INT NULL,
+  PRIMARY KEY (`diary_id`),
   INDEX `fk_personaltraining_trainer1_idx` (`trainer_id` ASC) VISIBLE,
   INDEX `fk_personaltraining_diary1_idx` (`diary_id` ASC) VISIBLE,
   CONSTRAINT `fk_personaltraining_trainer1`
